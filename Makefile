@@ -1,25 +1,52 @@
 UID=1000
 DOCKER_ARGS=--log-level=ERROR
-NGINX_SERVICE=bb-nginx
-CLI_SERVICE=bb-cli
-FPM_SERVICE=bb-fpm
 
-init: docker-down docker-pull docker-build docker-up bb-init post-install
+# common services
+TRAEFIK=bb-traefik
 
-up: docker-up
+# be services
+BE-POSTGRES=bb-postgres
+BE-NGINX=bb-nginx
+BE-FPM=bb-fpm
+BE-CLI=bb-cli
+
+# admin services
+ADMIN_NODE=fb-admin-node
+ADMIN_NGINX=fb-admin-nginx
+ADMIN_NODE=fb-admin-node
+
+# init apps
+be-init: docker-down be-docker-pull be-docker-build be-docker-up be-init be-post-install
+amin-init: docker-down admin-docker-pull admin-init admin-post-install
+
+# common command
 down: docker-down
-restart: down up
-test: bb-test
 ps: docker-ps
+#restart: down up
+#test: bb-test
+
+# backend command
+b-up: be-docker-up
+
+# admin command
+admin-up: admin-docker-up
+admin-shell:
+	@docker exec -it $(ADMIN_NODE) sh
+
+admin-serve:
+	@docker exec -it $(ADMIN_NODE) yarn dev
 
 b-shell:
-	@docker exec -it bb-fpm bash
+	@docker exec -it $(BE-FPM) bash
 
 cli-shell:
-	@docker exec -it bb-cli bash
+	@docker exec -it $(BE-CLI) bash
 
-docker-up:
-	docker-compose up -d
+be-docker-up:
+	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
+
+admin-docker-up:
+	docker-compose up -d -- $(TRAEFIK) $(ADMIN_NGINX) $(ADMIN_NODE)
 
 docker-ps:
 	@docker-compose ps
@@ -30,33 +57,38 @@ docker-down:
 #docker-down-clear:
 #	docker-compose down -v --remove-orphans
 
-docker-pull:
-	docker-compose pull
+be-docker-pull:
+	docker-compose pull -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
 
-docker-build:
-	docker-compose build
+admin-docker-pull:
+	docker-compose pull -- $(TRAEFIK) $(ADMIN_NGINX) $(ADMIN_NODE)
 
-bb-init: bb-composer-install bb-wait-db bb-migrations
+be-docker-build:
+	docker-compose build -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
+
+be-init: bb-composer-install bb-wait-db bb-migrations
+
+admin-init:
+	@docker-compose run --rm $(ADMIN_NODE) yarn install
 
 bb-composer-install:
-	@docker-compose run --rm $(CLI_SERVICE) composer install
-
-bb-assets-dev:
-	docker-compose run --rm bb-node npm run dev
+	@docker-compose run --rm $(BE-CLI) composer install
 
 bb-wait-db:
-	until docker-compose exec -T bb-postgres pg_isready --timeout=0 --dbname=shop ; do sleep 1 ; done
+	until docker-compose exec -T $(BE-POSTGRES) pg_isready --timeout=0 --dbname=shop ; do sleep 1 ; done
 
-post-install: b-chown
+be-post-install: b-chown
+
+admin-post-install: admin-chown
 
 bb-migrations:
-	@docker-compose run --rm $(CLI_SERVICE) php bin/console do:mi:mi --no-interaction
+	@docker-compose run --rm $(BE-CLI) php bin/console do:mi:mi --no-interaction
 
 bb-test:
-	@docker-compose run --rm $(CLI_SERVICE) php bin/phpunit
+	@docker-compose run --rm $(BE-CLI) php bin/phpunit
 
-f-chown:
-	@docker exec ft-node chown -R $(UID):$(UID) ./
+admin-chown:
+	@docker exec $(ADMIN_NODE) chown -R $(UID):$(UID) ./
 
 b-chown:
-	@docker-compose $(DOCKER_ARGS) exec $(NGINX_SERVICE) chown -R $(UID):$(UID) ./
+	@docker exec $(BE-NGINX) chown -R $(UID):$(UID) ./
