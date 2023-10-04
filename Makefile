@@ -36,6 +36,9 @@ admin-shell:
 admin-serve:
 	@docker exec -it $(ADMIN_NODE) yarn dev
 
+admin-lint:
+	@docker exec -it $(ADMIN_NODE) yarn lint
+
 b-shell:
 	@docker exec -it $(BE-FPM) bash
 
