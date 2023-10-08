@@ -1,5 +1,6 @@
 import Main from '@layout/main/main.vue';
 import Login from '@layout/login/login.vue';
+import RecoverPassword from '@layout/recover-password/recover-password.vue';
 
 import auth from './middleware/auth.ts';
 import guest from './middleware/guest.ts';
@@ -30,6 +31,16 @@ const routes: RouteRecordRaw[] = [
 		path: '/login',
 		name: 'Login',
 		component: Login,
+		meta: {
+			middleware: [
+				guest,
+			] as Middleware[]
+		}
+	},
+	{
+		path: '/recover-password',
+		name: 'RecoverPassword',
+		component: RecoverPassword,
 		meta: {
 			middleware: [
 				guest,
