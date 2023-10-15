@@ -9,42 +9,56 @@
                 </router-link>
             </div>
             <div class="card-body">
-                <form action="#" method="post">
+                <form @submit.prevent="login">
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input
+                            type="email"
+                            v-model="loginForm.email.value"
+                            class="form-control"
+                            :class="{'is-invalid': ! loginForm.email.isValid}"
+                            placeholder="Email"
+                        >
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
+                        <div class="invalid-feedback">
+                            {{ loginForm.email.errorMessage }}
+                        </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Пароль">
+                        <input
+                            :type="isPassShow ? 'text' : 'password'"
+                            v-model="loginForm.password.value"
+                            class="form-control"
+                            :class="{'is-invalid': ! loginForm.password.isValid}"
+                            placeholder="Пароль"
+                        >
                         <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                            <div
+                                @click="isPassShow = ! isPassShow"
+                                class="input-group-text login-box__show-pass"
+                            >
+                                <span
+                                    class="fas"
+                                    :class="isPassShow ? 'fa-eye' : 'fa-eye-slash'"
+                                ></span>
                             </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            {{ loginForm.password.errorMessage }}
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Запомнить меня
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
+                    <div class="row justify-content-end">
+                        <div class="col">
                             <button type="submit" class="btn btn-info btn-block">Вход</button>
                         </div>
-
                     </div>
                 </form>
 
                 <div class="social-auth-links text-center mt-2 mb-3">
-                    <a href="#" class="btn btn-block btn-secondary">
+                    <a href="#" class="btn btn-block btn-secondary disabled">
                         <i class="fab fa-vk mr-2"></i> Вход через VK
                     </a>
                 </div>
