@@ -1,17 +1,18 @@
 Интернет магазин материалов для защиты растений
 
-## Структура проекта:
+## BACKEND Структура проекта:
 Http\
 Cli\
 Auth\
 -- Shared\
 ---- Domain\
--- Command\
--- Query\
--- Domain\
----- Entity\
----- Repository\
----- Service\
+-- User\
+---- Command\
+---- Query\
+---- Domain\
+------ Entity\
+------ Repository\
+------ Service\
 Shop\
 -- Shared\
 ---- Domain\
@@ -30,6 +31,7 @@ Shop\
 ------ Repository\
 ------ Service\
 Infrastructure\
+-- Blog\
 -- Shop\
 -- Shared
 
@@ -57,13 +59,16 @@ Infrastructure\
 - Blog
 - Shared
 
-## Основные технологии
+### Основные технологии
 `Backend:`
 - PHP 8.2
 - Symfony 6.3
 - minio (файловое хранилище)
 - Архитектурный подход CQRS + DDD
 
-`Frontend:`
-- Админка на базе Admin LTE через шаблоны твиг. Для каждого модуля своя админка, которая будет доступна по адресу `/<module-name>/adimn` н-р `/shop/admin`
-- Фронтенд-часть которая смотрит наружу - Nuxt.js 
+## FRONTEND
+### Основные технологии
+- Nuxt.js 
+- Vue 3
+- TS
+- Админка на базе Admin LTE (доступна по адресу `admin.bunches`)
