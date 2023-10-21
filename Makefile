@@ -10,14 +10,17 @@ BE-NGINX=bb-nginx
 BE-FPM=bb-fpm
 BE-CLI=bb-cli
 
-# admin services
+
+# fe admin services
 ADMIN_NODE=fb-admin-node
 ADMIN_NGINX=fb-admin-nginx
 ADMIN_NODE=fb-admin-node
 
+
 # init apps
-be-init: docker-down be-docker-pull be-docker-build be-docker-up be-init be-post-install
+be-init: docker-down be-docker-pull be-docker-build be-docker-up be-post-install
 amin-init: docker-down admin-docker-pull admin-init admin-post-install
+
 
 # common command
 down: docker-down
@@ -25,25 +28,22 @@ ps: docker-ps
 #restart: down up
 #test: bb-test
 
+
 # backend command
 b-up: be-docker-up
+b-shell:
+	@docker-compose run --rm $(BE-CLI) sh
+
 
 # admin command
 admin-up: admin-docker-up
 admin-shell:
 	@docker exec -it $(ADMIN_NODE) sh
-
 admin-serve:
 	@docker exec -it $(ADMIN_NODE) yarn dev
-
 admin-lint:
 	@docker exec -it $(ADMIN_NODE) yarn lint
 
-b-shell:
-	@docker exec -it $(BE-FPM) bash
-
-cli-shell:
-	@docker exec -it $(BE-CLI) bash
 
 be-docker-up:
 	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
@@ -69,8 +69,6 @@ admin-docker-pull:
 be-docker-build:
 	docker-compose build -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
 
-be-init: bb-composer-install bb-wait-db bb-migrations
-
 admin-init:
 	@docker-compose run --rm $(ADMIN_NODE) yarn install
 
@@ -80,7 +78,7 @@ bb-composer-install:
 bb-wait-db:
 	until docker-compose exec -T $(BE-POSTGRES) pg_isready --timeout=0 --dbname=shop ; do sleep 1 ; done
 
-be-post-install: b-chown
+be-post-install: bb-composer-install bb-wait-db bb-migrations b-chown
 
 admin-post-install: admin-chown
 

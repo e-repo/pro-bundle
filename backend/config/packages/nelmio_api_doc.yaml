@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: API интернет магазина защиты растений
+            description: Документация к API интернет магазина защиты растений
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$)

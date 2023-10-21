@@ -1,8 +1,12 @@
 Интернет магазин материалов для защиты растений
 
 ## BACKEND Структура проекта:
-Http\
-Cli\
+UI\
+-- Http\
+---- Auth\
+---- Blog\
+---- Shop\
+-- Cli\
 Auth\
 -- Shared\
 ---- Domain\
@@ -65,6 +69,11 @@ Infrastructure\
 - Symfony 6.3
 - minio (файловое хранилище)
 - Архитектурный подход CQRS + DDD
+
+### Список модулей сервиса:
+- Auth
+- Blog
+- Shop
 
 ## FRONTEND
 ### Основные технологии
