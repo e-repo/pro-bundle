@@ -1,0 +1,4 @@
+parameters:
+    exceptions:
+        RuntimeException: { code: 400, hidden: false }
+        DomainException: { code: 422, hidden: false }

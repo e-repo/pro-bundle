@@ -17,6 +17,8 @@ Auth\
 ------ Entity\
 ------ Repository\
 ------ Service\
+---- Infra\
+------ Repository\
 Shop\
 -- Shared\
 ---- Domain\
@@ -27,6 +29,8 @@ Shop\
 ------ Entity\
 ------ Repository\
 ------ Service\
+---- Infra\
+------ Repository\
 -- Order\
 ---- Command\
 ---- Query\
@@ -34,10 +38,9 @@ Shop\
 ------ Entity\
 ------ Repository\
 ------ Service\
-Infrastructure\
--- Blog\
--- Shop\
--- Shared
+---- Infra\
+------ Repository\
+Infra\
 
 ### Разбивка по слоям
 

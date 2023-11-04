@@ -1,6 +1,6 @@
 <?php
 
-use Infra\Common\Kernel;
+use Infra\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 

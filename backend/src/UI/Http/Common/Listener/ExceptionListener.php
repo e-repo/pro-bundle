@@ -1,0 +1,133 @@
+<?php
+
+declare(strict_types=1);
+
+namespace UI\Http\Common\Listener;
+
+use DomainException;
+use Psr\Log\LoggerInterface;
+use ReflectionClass;
+use ReflectionProperty;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Throwable;
+use UI\Http\Common\Exception\Resolver;
+use UI\Http\Common\Exception\Resolver\ExceptionAttributes;
+use UI\Http\Common\Exception\ViolationException;
+use UI\Http\Common\Response\ResponseFactory;
+use UI\Http\Common\Response\Violation;
+use UI\Http\Common\Response\Violation\ViolationItem;
+
+final readonly class ExceptionListener
+{
+    public function __construct(
+        private ResponseFactory $responseFactory,
+        private Resolver $exceptionResolver,
+        private LoggerInterface $logger,
+        private bool $isDebug,
+    ) {}
+
+    public function __invoke(ExceptionEvent $event): void
+    {
+        $throwable = $event->getThrowable();
+
+        $response = match (get_class($throwable)) {
+            ViolationException::class => $this->makeResponseFromViolations($throwable->violations),
+            default => $this->resolveResponse($throwable)
+        };
+
+        $event->setResponse($response);
+    }
+
+    private function makeResponseFromViolations(ConstraintViolationListInterface $violations): JsonResponse
+    {
+        $violationList = [];
+
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violations as $violation) {
+            $violationList[] = new ViolationItem(
+                source: $violation->getPropertyPath(),
+                detail: $violation->getMessage()
+            );
+        }
+
+        return $this->responseFactory->toBadRequestJsonResponse(
+            new Violation(
+                message: 'Некорректные данные запроса.',
+                errors: $violationList
+            )
+        );
+    }
+
+    private function resolveResponse(Throwable $throwable): JsonResponse
+    {
+        if ($throwable instanceof HandlerFailedException) {
+            $throwable = $throwable->getPrevious();
+        }
+
+        $exceptionAttributes = $this->exceptionResolver->resolve(get_class($throwable));
+
+        if (null === $exceptionAttributes) {
+            $exceptionAttributes = ExceptionAttributes::fromExceptionCode(
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+        if (
+            $exceptionAttributes->code >= Response::HTTP_INTERNAL_SERVER_ERROR ||
+            true === $exceptionAttributes->loggable
+        ) {
+            $this->logger->error($throwable->getMessage(), [
+                'exception' => $throwable,
+            ]);
+        }
+
+        $message = $exceptionAttributes->hidden
+            ? Response::$statusTexts[$exceptionAttributes->code]
+            : $throwable->getMessage();
+
+        $exceptionData = $this->getExceptionData($throwable);
+
+        return $this->responseFactory->toJsonResponse(
+            data: new Violation(
+                message: 'Логическая ошибка системы.',
+                errors: [
+                    new ViolationItem(
+                        source: $this->isDebug ? $throwable->getTraceAsString() : '',
+                        detail: $message,
+                        data: $exceptionData,
+                    )
+                ]
+            ),
+            status: $exceptionAttributes->code
+        );
+    }
+
+    private function getExceptionData(Throwable $throwable): array
+    {
+        $exceptionData = [];
+
+        if (! is_subclass_of($throwable, DomainException::class)) {
+            return [];
+        }
+
+        $reflection = new ReflectionClass($throwable);
+        $classProperty = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
+
+        foreach ($classProperty as $property) {
+            $methodName = sprintf('get%s', ucfirst($property->getName()));
+
+            if (! method_exists($throwable, $methodName)) {
+                continue;
+            }
+
+            $exceptionData[$property->getName()] = $throwable->$methodName();
+        }
+
+        return $exceptionData;
+    }
+}

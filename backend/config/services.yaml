@@ -4,9 +4,29 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            bool $isDebug: '%kernel.debug%'
 
     Infra\:
         resource: '../src/Infra'
         exclude:
-            - '../src/Infra/{Kernel.php}'
+            - '../src/Infra/{Kernel.php,*Dto.php}'
             - '../src/Infra/{Entity,Enum,Event}'
+
+    UI\:
+        resource: '../src/UI'
+        exclude:
+            - '../src/UI/**/{*Command.php,*Query.php,*Response.php,*Request.php}'
+
+    # Subscriber and Listeners
+    UI\Http\Common\Listener\ExceptionListener:
+        tags: [ { name: 'kernel.event_listener', event: kernel.exception, priority: 10 } ]
+
+
+    # Another services
+    UI\Http\Common\Exception\Resolver:
+        arguments: [ '%exceptions%' ]
+
+    UI\Http\Common\Request\RequestArgumentResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 150 }
