@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="59370651">
+        <description>Created after removal of "sign-in-to-admin" from Backend Documentation</description>
+        <accepts>sign-in-to-admin.html</accepts>
+    </rule>
+    <rule id="4844d27d">
+        <description>Created after removal of "How to" from Backend Documentation</description>
+        <accepts>How-to.html</accepts>
+    </rule>
+    <rule id="2c5be0cc">
+        <description>Created after removal of "How to" from Backend Documentation</description>
+        <accepts>How-to.html</accepts>
+    </rule>
+    <rule id="7d8b7538">
+        <description>Created after removal of "Overview" from Backend Documentation</description>
+        <accepts>Overview.html</accepts>
+    </rule>
+    <rule id="685f607a">
+        <description>Created after removal of "About Backend Documentation" from Backend Documentation</description>
+        <accepts>starter-topic.html</accepts>
+    </rule>
+</rules>
