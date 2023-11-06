@@ -19,6 +19,7 @@ final class Action extends AbstractController
     )]
     public function __invoke(): Response
     {
+        throw new \Exception('Что-то не то.');
         return new Response('Pong!');
     }
 }

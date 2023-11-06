@@ -94,7 +94,7 @@ final readonly class ExceptionListener
 
         return $this->responseFactory->toJsonResponse(
             data: new Violation(
-                message: 'Логическая ошибка системы.',
+                message: 'Неизвестная ошибка системы, обратитесь к администратору.',
                 errors: [
                     new ViolationItem(
                         source: $this->isDebug ? $throwable->getTraceAsString() : '',
