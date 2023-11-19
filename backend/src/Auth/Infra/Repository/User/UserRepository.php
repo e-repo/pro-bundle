@@ -2,7 +2,8 @@
 
 namespace Auth\Infra\Repository\User;
 
-use Auth\Domain\Entity\User\User;
+use Auth\User\Domain\Entity\User;
+use Auth\User\Domain\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,10 +15,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function add(User $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        // TODO: Implement findByEmail() method.
     }
 }

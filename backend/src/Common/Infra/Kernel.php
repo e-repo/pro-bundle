@@ -1,6 +1,6 @@
 <?php
 
-namespace Infra;
+namespace Common\Infra;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;

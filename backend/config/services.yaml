@@ -6,12 +6,29 @@ services:
         autoconfigure: true
         bind:
             bool $isDebug: '%kernel.debug%'
+            string $appEmail: '%env(APP_EMAIL)%'
+            string $appDomain: '%env(APP_DOMAIN)%'
 
-    Infra\:
-        resource: '../src/Infra'
+    _instanceof:
+        Common\Application\Bus\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+
+        Common\Application\Bus\EventHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: event.bus }
+
+    Auth\:
+        resource: '../src/Auth'
         exclude:
-            - '../src/Infra/{Kernel.php,*Dto.php}'
-            - '../src/Infra/{Entity,Enum,Event}'
+            - '../src/Auth/{Kernel.php,*Dto.php}'
+            - '../src/Auth/{Entity,Enum,Event}'
+
+    Common\:
+        resource: '../src/Common'
+        exclude:
+            - '../src/Common/{Kernel.php,*Dto.php}'
+            - '../src/Common/{Entity,Enum,Event}'
 
     UI\:
         resource: '../src/UI'
@@ -21,6 +38,9 @@ services:
     # Subscriber and Listeners
     UI\Http\Common\Listener\ExceptionListener:
         tags: [ { name: 'kernel.event_listener', event: kernel.exception, priority: 10 } ]
+
+    UI\Http\Common\Listener\ResponseListener:
+        tags: [ { name: 'kernel.event_listener' } ]
 
 
     # Another services
