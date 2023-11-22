@@ -7,14 +7,13 @@ namespace UI\Http\Common\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use UI\Http\Common\Exception\ViolationException;
 
 final readonly class RequestArgumentResolver implements ValueResolverInterface
 {
     public function __construct(
-        private DenormalizerInterface $denormalizer,
+        private BooleanAttributeDenormalizer $denormalizer,
         private ValidatorInterface $validator,
     ) {}
 
