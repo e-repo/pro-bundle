@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Common\Listener;
+namespace UI\Http\Common\Subscriber;
 
 use DomainException;
 use Psr\Log\LoggerInterface;
@@ -50,8 +50,8 @@ final readonly class ExceptionListener
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             $violationList[] = new ViolationItem(
-                source: $violation->getPropertyPath(),
-                detail: $violation->getMessage()
+                detail: $violation->getMessage(),
+                source: $violation->getPropertyPath()
             );
         }
 
@@ -73,7 +73,8 @@ final readonly class ExceptionListener
 
         if (null === $exceptionAttributes) {
             $exceptionAttributes = ExceptionAttributes::fromExceptionCode(
-                Response::HTTP_INTERNAL_SERVER_ERROR
+                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+                isHidden: ! $this->isDebug
             );
         }
 
@@ -97,8 +98,8 @@ final readonly class ExceptionListener
                 message: 'Неизвестная ошибка системы, обратитесь к администратору.',
                 errors: [
                     new ViolationItem(
-                        source: $this->isDebug ? $throwable->getTraceAsString() : '',
                         detail: $message,
+                        source: $this->isDebug ? $throwable->getTraceAsString() : '',
                         data: $exceptionData,
                     )
                 ]

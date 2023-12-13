@@ -1,4 +1,6 @@
 parameters:
+    app.email: 'bunches.app@mail.ru'
+    app.domain: 'bunches.shop'
 
 services:
     _defaults:
@@ -6,15 +8,15 @@ services:
         autoconfigure: true
         bind:
             bool $isDebug: '%kernel.debug%'
-            string $appEmail: '%env(APP_EMAIL)%'
-            string $appDomain: '%env(APP_DOMAIN)%'
+            string $appEmail: '%app.email%'
+            string $appDomain: '%app.domain%'
 
     _instanceof:
         Common\Application\Bus\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
 
-        Common\Application\Bus\EventHandlerInterface:
+        Common\Application\Bus\EventListenerInterface:
             tags:
                 - { name: messenger.message_handler, bus: event.bus }
 
@@ -36,12 +38,15 @@ services:
             - '../src/UI/**/{*Command.php,*Query.php,*Response.php,*Request.php}'
 
     # Subscriber and Listeners
-    UI\Http\Common\Listener\ExceptionListener:
+    UI\Http\Common\Subscriber\ExceptionListener:
         tags: [ { name: 'kernel.event_listener', event: kernel.exception, priority: 10 } ]
 
-    UI\Http\Common\Listener\ResponseListener:
+    UI\Http\Common\Subscriber\ResponseListener:
         tags: [ { name: 'kernel.event_listener' } ]
 
+    Common\Application\Subscriber\DomainEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     # Another services
     UI\Http\Common\Exception\Resolver:
@@ -50,3 +55,7 @@ services:
     UI\Http\Common\Request\RequestArgumentResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }
+
+    Common\Infra\FixPostgreSQLDefaultSchemaListener:
+        tags:
+            - { name: doctrine.event_listener, event: postGenerateSchema }

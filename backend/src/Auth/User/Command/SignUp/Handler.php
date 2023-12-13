@@ -26,19 +26,13 @@ final readonly class Handler implements CommandHandlerInterface
 {
     public function __construct(
         private Hasher $hasher,
-        private FlusherInterface $flusher,
         private UserRepositoryInterface $userRepository,
         private UniqueEmailSpecification $uniqueEmailSpecification,
-        private MailerInterface $mailer,
-        private Environment $twig,
-        private string $appEmail,
-        private string $appDomain,
     ) {
     }
 
     public function __invoke(Command $command): void
     {
-        $emailConfirmToken = Uuid::uuid4()->toString();
         $emailVo = new EmailVo($command->email);
 
         $user = new User(
@@ -48,30 +42,8 @@ final readonly class Handler implements CommandHandlerInterface
             password: $command->password,
             uniqueEmailSpecification: $this->uniqueEmailSpecification,
             hasher: $this->hasher,
-            emailConfirmToken: $emailConfirmToken,
         );
 
         $this->userRepository->add($user);
-        $this->flusher->flush();
-
-        $this->mailer->send(
-            $this->makeConfirmMessage($emailVo, $emailConfirmToken)
-        );
-    }
-
-    /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     */
-    private function makeConfirmMessage(EmailVo $email, string $emailConfirmToken): Email
-    {
-        return (new TemplatedEmail())
-            ->from($this->appEmail)
-            ->to($email->value)
-            ->html($this->twig->render('mail/auth/signup.html.twig', [
-                'token' => $emailConfirmToken,
-                'appDomain' => $this->appDomain
-            ]));
     }
 }

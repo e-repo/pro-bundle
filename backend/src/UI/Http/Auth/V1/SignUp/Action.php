@@ -8,8 +8,9 @@ use Auth\User\Command\SignUp\Command;
 use Common\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use UI\Http\Common\Response\ResponseDataWrapper;
 
 final class Action extends AbstractController
 {
@@ -23,7 +24,7 @@ final class Action extends AbstractController
         name: 'auth_service_ping',
         methods: ['POST']
     )]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): ApiResponse
     {
         $command = new Command(
             firstName: $request->firstName,
@@ -33,6 +34,10 @@ final class Action extends AbstractController
 
         $this->commandBus->dispatch($command);
 
-        return new JsonResponse();
+        return new JsonResponse(
+            new ResponseDataWrapper(
+                data: new Response('User created successfully')
+            )
+        );
     }
 }

@@ -2,6 +2,6 @@
 
 namespace Common\Application\Bus;
 
-interface EventHandlerInterface
+interface EventListenerInterface
 {
 }

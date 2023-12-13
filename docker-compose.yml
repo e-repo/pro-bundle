@@ -48,6 +48,8 @@ services:
         container_name: bb-cli
         build:
             context: ./backend/docker/development/cli
+        environment:
+            PHP_IDE_CONFIG: "serverName=bb.local"
         volumes:
             - ./backend/:/app
             - vol-bb-composer:/root/.composer/cache
@@ -105,8 +107,15 @@ services:
     bb-mailer:
         container_name: bb-mailer
         image: mailhog/mailhog
-        ports:
-            - "8081:8025"
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=bb-traefik-network
+            - traefik.http.routers.bb-mailer.rule=Host(`mailer.localhost`)
+            - traefik.http.routers.bb-mailer.entryPoints=http
+            - traefik.http.services.bb-mailer.loadBalancer.server.port=8025
+        networks:
+            - bb-traefik-network
+            - default
 
 #    bb-zookeeper:
 #        image: bitnami/zookeeper:latest

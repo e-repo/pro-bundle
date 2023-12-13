@@ -13,6 +13,8 @@ use Common\Domain\Entity\HasEventsInterface;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`', schema: 'auth')]
@@ -63,13 +65,6 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, options: ['comment' => 'Дата создания пользователя'])]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(
-        type: Types::DATETIMETZ_IMMUTABLE,
-        nullable: true,
-        options: ['comment' => 'Дата обновления пользователя']
-    )]
-    private ?DateTimeImmutable $updatedAt = null;
-
     public function __construct(
         IdVo $id,
         NameVo $name,
@@ -77,17 +72,17 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         string $password,
         UniqueEmailSpecification $uniqueEmailSpecification,
         Hasher $hasher,
-        ?string $emailConfirmToken = null,
         Status $status = Status::WAIT,
         Role $role = Role::USER,
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->emailConfirmToken = $emailConfirmToken;
+        $this->emailConfirmToken = Uuid::uuid4()->toString();
         $this->passwordHash = $password;
         $this->status = $status;
         $this->role = $role;
+        $this->createdAt = new DateTimeImmutable();
 
         if (! $uniqueEmailSpecification->isSatisfiedBy($this)) {
             throw new EmailNotUniqueException($email);
@@ -128,6 +123,11 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return  $this->passwordHash;
     }
 
+    public function getEmailConfirmToken(): string
+    {
+        return $this->emailConfirmToken;
+    }
+
     public function changePlainPassword(string $passwordHash): void
     {
         $this->passwordHash = $passwordHash;
@@ -139,6 +139,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             firstname: $this->name->first,
             lastname: $this->name->last,
             email: $this->email->value,
+            emailConfirmToken: $this->emailConfirmToken,
             status: $this->status->value,
             role: $this->role->value,
             createdAt: $this->createdAt

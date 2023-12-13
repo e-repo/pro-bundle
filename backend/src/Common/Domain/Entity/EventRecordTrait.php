@@ -2,15 +2,15 @@
 
 namespace Common\Domain\Entity;
 
-use Symfony\Contracts\EventDispatcher\Event;
+use Common\Domain\EventInterface;
 
 trait EventRecordTrait
 {
-    /** @var Event[] */
+    /** @var EventInterface[] */
     private array $events = [];
 
     /**
-     * @return Event[]
+     * @return EventInterface[]
      */
     public function getRecordedEvents(): array
     {
@@ -22,7 +22,7 @@ trait EventRecordTrait
         $this->events = [];
     }
 
-    public function record(Event $event): void
+    public function record(EventInterface $event): void
     {
         $this->events[] = $event;
     }

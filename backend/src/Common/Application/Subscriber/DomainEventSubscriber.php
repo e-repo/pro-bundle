@@ -6,12 +6,12 @@ namespace Common\Application\Subscriber;
 
 use Common\Application\Bus\EventBusInterface;
 use Common\Domain\Entity\HasEventsInterface;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final readonly class DomainEventSubscriber implements EventSubscriberInterface
+final readonly class DomainEventSubscriber implements EventSubscriber
 {
     public function __construct(
         private EventBusInterface $eventBus,
@@ -19,7 +19,7 @@ final readonly class DomainEventSubscriber implements EventSubscriberInterface
     }
 
 
-    public static function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush
@@ -51,7 +51,7 @@ final readonly class DomainEventSubscriber implements EventSubscriberInterface
             }
         }
 
-        // ToDo: проверить бага двойной отправки
+        // ToDo: проверить багу двойной отправки
         $collectionSources = [
             $uow->getScheduledCollectionDeletions(),
             $uow->getScheduledCollectionUpdates(),

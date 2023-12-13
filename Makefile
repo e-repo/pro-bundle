@@ -9,6 +9,7 @@ BE-POSTGRES=bb-postgres
 BE-NGINX=bb-nginx
 BE-FPM=bb-fpm
 BE-CLI=bb-cli
+BE-MAILER=bb-mailer
 
 
 # fe admin services
@@ -46,7 +47,7 @@ admin-lint:
 
 
 be-docker-up:
-	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
+	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX) $(BE-MAILER)
 
 admin-docker-up:
 	docker-compose up -d -- $(TRAEFIK) $(ADMIN_NGINX) $(ADMIN_NODE)

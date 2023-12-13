@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Test\Functional\:
+        resource: '../tests/Functional/**/*Fixture.php'

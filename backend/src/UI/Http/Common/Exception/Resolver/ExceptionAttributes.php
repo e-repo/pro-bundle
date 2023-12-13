@@ -12,11 +12,11 @@ final readonly class ExceptionAttributes
         public bool $loggable,
     ) {}
 
-    public static function fromExceptionCode(int $code): self
+    public static function fromExceptionCode(int $code, bool $isHidden = true): self
     {
         return new self(
             code: $code,
-            hidden: true,
+            hidden: $isHidden,
             loggable: false
         );
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Common\Listener;
+namespace UI\Http\Common\Subscriber;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;

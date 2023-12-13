@@ -6,8 +6,9 @@ namespace UI\Http\Auth\V1\SignUp;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
+use UI\Http\Common\Request\RequestPayloadInterface;
 
-final class Request
+final class Request implements RequestPayloadInterface
 {
     #[Assert\Length(
         min: 2,
