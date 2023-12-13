@@ -1,6 +1,7 @@
 parameters:
     app.email: 'bunches.app@mail.ru'
-    app.domain: 'bunches.shop'
+#    app.domain: 'bunches.shop'
+    app.domain: 'admin.localhost'
 
 services:
     _defaults:

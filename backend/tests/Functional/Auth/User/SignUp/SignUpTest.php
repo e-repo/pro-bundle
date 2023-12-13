@@ -48,7 +48,7 @@ final class SignUpTest extends FunctionalTestCase
 
         // assert
         self::assertResponseIsSuccessful();
-        self::assertEquals('User created successfully', $responseData['status']);
+        self::assertEquals('Пользователь создан успешно.', $responseData['status']);
 
         self::assertEquals($userEmail, $user['email']);
         self::assertEquals('wait', $user['status']);

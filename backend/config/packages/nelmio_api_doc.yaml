@@ -4,6 +4,27 @@ nelmio_api_doc:
             title: API интернет магазина защиты растений
             description: Документация к API интернет магазина защиты растений
             version: 1.0.0
+        components:
+            parameters:
+                offsetParam:
+                    name: 'offset'
+                    in: 'query'
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        minimum: 0
+                        default: 0
+                limitParam:
+                    name: 'limit'
+                    in: 'query'
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        minimum: 1
+                        maximum: 100
+                        default: 100
     areas:
         path_patterns:
             - ^/api(?!/doc$)
