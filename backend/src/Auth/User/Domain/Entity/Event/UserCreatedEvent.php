@@ -10,6 +10,7 @@ use DateTimeImmutable;
 final readonly class UserCreatedEvent implements EventInterface
 {
     public function __construct(
+        public string $id,
         public string $firstname,
         public ?string $lastname,
         public string $email,

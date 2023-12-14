@@ -2,35 +2,34 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\SignUp;
+namespace UI\Http\Auth\V1\ConfirmEmail;
 
-use Auth\User\Command\SignUp\Command;
+use Auth\User\Command\ConfirmEmail\Command;
 use Common\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use UI\Http\Auth\V1\ConfirmEmail\Response;
-use UI\Http\Common\Response\ResponseDataWrapper;
+use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use UI\Http\Common\Response\ResponseDataWrapper;
 use UI\Http\Common\Response\Violation;
 
 #[OA\Tag(name: 'Регистрация')]
 #[OA\Post(
-    summary: 'Создание пользователя',
+    summary: 'Подтвержение email пользователя',
     requestBody: new OA\RequestBody(
         content: new OA\JsonContent(ref: new Model(type: Request::class))
     ),
     responses: [
         new OA\Response(
             response: 200,
-            description: 'Пользователь успешно создан',
+            description: 'Email пользователя успешно подтвержден',
             content: new OA\JsonContent(
                 ref: new Model(type: ResponseDataWrapper::class),
                 example: new ResponseDataWrapper(
                     data: new Response(
-                        status: 'Пользователь создан успешно.'
+                        status: 'Email пользователя успешно подтвержден.'
                     )
                 )
             )
@@ -55,23 +54,22 @@ final class Action extends AbstractController
     }
 
     #[Route(
-        path: 'api/auth/v1/sign-up',
-        name: 'auth_sign-up',
+        path: 'api/auth/v1/confirm-email',
+        name: 'auth_confirm-email',
         methods: ['POST']
     )]
     public function __invoke(Request $request): ApiResponse
     {
-        $command = new Command(
-            firstName: $request->firstName,
-            email: $request->email,
-            password: $request->password,
+        $this->commandBus->dispatch(
+            new Command(
+                userId: $request->userId,
+                token: $request->token,
+            )
         );
-
-        $this->commandBus->dispatch($command);
 
         return new JsonResponse(
             new ResponseDataWrapper(
-                data: new Response('Пользователь создан успешно.')
+                data: new Response('Email пользователя успешно подтвержден.')
             )
         );
     }

@@ -13,6 +13,7 @@ use Auth\User\Domain\Entity\User;
 use Auth\User\Domain\Service\PasswordHasher\Hasher;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 final class UserFixture extends Fixture
 {
@@ -35,7 +36,6 @@ final class UserFixture extends Fixture
                 password: $item['password'],
                 uniqueEmailSpecification: $this->uniqueEmailSpecification,
                 hasher: $this->hasher,
-                status: Status::tryFrom($item['status'])
             );
 
             $manager->persist($user);
@@ -53,7 +53,6 @@ final class UserFixture extends Fixture
                 'lastName' => 'TestLastName_1',
                 'email' => 'test_1@test.ru',
                 'password' => 'secret_1',
-                'status' => Status::WAIT->value,
             ],
             [
                 'id' => '125d7cd7-0b77-409a-bc5c-19b44416a5fa',
@@ -61,15 +60,6 @@ final class UserFixture extends Fixture
                 'lastName' => 'TestLastName_2',
                 'email' => 'test_2@test.ru',
                 'password' => 'secret_2',
-                'status' => Status::ACTIVE->value,
-            ],
-            [
-                'id' => '283b5d61-dc29-47a6-bab1-e01114e4e56f',
-                'firstName' => 'TestFirstName_3',
-                'lastName' => 'TestLastName_3',
-                'email' => 'test_3@test.ru',
-                'password' => 'secret_3',
-                'status' => Status::BLOCKED->value,
             ],
         ];
     }

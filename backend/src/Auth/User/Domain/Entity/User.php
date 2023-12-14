@@ -13,6 +13,7 @@ use Common\Domain\Entity\HasEventsInterface;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 
@@ -72,16 +73,14 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         string $password,
         UniqueEmailSpecification $uniqueEmailSpecification,
         Hasher $hasher,
-        Status $status = Status::WAIT,
-        Role $role = Role::USER,
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->emailConfirmToken = Uuid::uuid4()->toString();
         $this->passwordHash = $password;
-        $this->status = $status;
-        $this->role = $role;
+        $this->status = Status::WAIT;
+        $this->role = Role::USER;
+        $this->emailConfirmToken = Uuid::uuid4()->toString();
         $this->createdAt = new DateTimeImmutable();
 
         if (! $uniqueEmailSpecification->isSatisfiedBy($this)) {
@@ -89,7 +88,6 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         }
 
         $hasher->hash($this);
-
         $this->record($this->makeUserCreatedEvent());
     }
 
@@ -133,9 +131,20 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->passwordHash = $passwordHash;
     }
 
+    public function confirmUserEmail(string $emailConfirmToken): void
+    {
+        if ($emailConfirmToken !== $this->emailConfirmToken) {
+            throw new DomainException('Передан не верный токен для подтверждения email.');
+        }
+
+        $this->status = Status::ACTIVE;
+        $this->emailConfirmToken = null;
+    }
+
     private function makeUserCreatedEvent(): UserCreatedEvent
     {
         return new UserCreatedEvent(
+            id: $this->id->value,
             firstname: $this->name->first,
             lastname: $this->name->last,
             email: $this->email->value,

@@ -3,6 +3,7 @@
 namespace Auth\Infra\Repository\User;
 
 use Auth\User\Domain\Entity\EmailVo;
+use Auth\User\Domain\Entity\IdVo;
 use Auth\User\Domain\Entity\User;
 use Auth\User\Domain\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

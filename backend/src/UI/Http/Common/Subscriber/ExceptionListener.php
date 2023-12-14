@@ -95,7 +95,7 @@ final readonly class ExceptionListener
 
         return $this->responseFactory->toJsonResponse(
             data: new Violation(
-                message: 'Неизвестная ошибка системы, обратитесь к администратору.',
+                message: 'Ошибка бизнес-логики.',
                 errors: [
                     new ViolationItem(
                         detail: $message,

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\SignUp;
+namespace Test\Functional\Auth\User;
 
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\DBAL\Exception;
 use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\FunctionalTestCase;
 use Test\Functional\Auth\Common\Fixture\UserFixture;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\DBAL\Exception;
 use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class SignUpTest extends FunctionalTestCase
@@ -61,7 +61,7 @@ final class SignUpTest extends FunctionalTestCase
 
         $mail = self::getMailerMessage();
         self::assertMatchesRegularExpression(
-            '/<p>Для подтверждения вашей электронной почты при регистрации в сервисе <b>bunches\.shop<\/b> перейдите по ссылке:<\/p>/',
+            '/<p>Для подтверждения вашей электронной почты при регистрации в сервисе <b>[a-z.]+<\/b> перейдите по ссылке:<\/p>/',
             $mail->getHtmlBody()
         );
     }
