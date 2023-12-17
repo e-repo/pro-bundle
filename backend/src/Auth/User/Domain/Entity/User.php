@@ -45,6 +45,9 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     #[ORM\Column(length: 255, options: ['comment' => 'Хэш пароля'])]
     private string $passwordHash;
 
+    #[ORM\Column(length: 100, nullable: true, options: ['comment' => 'Хост-источник пользователя'])]
+    private string $host;
+
     #[ORM\Column(length: 50, nullable: true, options: ['comment' => 'Токен сброса пароля'])]
     private ?string $resetPasswordToken = null;
 
@@ -71,6 +74,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         NameVo $name,
         EmailVo $email,
         string $password,
+        string $host,
         UniqueEmailSpecification $uniqueEmailSpecification,
         Hasher $hasher,
     ) {
@@ -78,6 +82,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->name = $name;
         $this->email = $email;
         $this->passwordHash = $password;
+        $this->host = $host;
         $this->status = Status::WAIT;
         $this->role = Role::USER;
         $this->emailConfirmToken = Uuid::uuid4()->toString();
@@ -121,6 +126,11 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return  $this->passwordHash;
     }
 
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
     public function getEmailConfirmToken(): string
     {
         return $this->emailConfirmToken;
@@ -151,6 +161,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             emailConfirmToken: $this->emailConfirmToken,
             status: $this->status->value,
             role: $this->role->value,
+            host: $this->host,
             createdAt: $this->createdAt
         );
     }

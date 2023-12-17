@@ -19,7 +19,7 @@ final class Version20231122140441 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA auth');
+        $this->addSql('CREATE SCHEMA IF NOT EXISTS auth');
 
         $this->addSql('CREATE TABLE "auth"."user" (
                 id UUID NOT NULL, 

@@ -40,6 +40,7 @@ final readonly class Handler implements CommandHandlerInterface
             name: new NameVo($command->firstName),
             email: $emailVo,
             password: $command->password,
+            host: $command->host,
             uniqueEmailSpecification: $this->uniqueEmailSpecification,
             hasher: $this->hasher,
         );

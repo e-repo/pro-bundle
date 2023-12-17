@@ -34,6 +34,7 @@ final class UserFixture extends Fixture
                 ),
                 email: new EmailVo($item['email']),
                 password: $item['password'],
+                host: 'localhost',
                 uniqueEmailSpecification: $this->uniqueEmailSpecification,
                 hasher: $this->hasher,
             );

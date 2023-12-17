@@ -1,7 +1,5 @@
 parameters:
     app.email: 'bunches.app@mail.ru'
-#    app.domain: 'bunches.shop'
-    app.domain: 'admin.localhost'
 
 services:
     _defaults:
@@ -10,7 +8,6 @@ services:
         bind:
             bool $isDebug: '%kernel.debug%'
             string $appEmail: '%app.email%'
-            string $appDomain: '%app.domain%'
 
     _instanceof:
         Common\Application\Bus\CommandHandlerInterface:

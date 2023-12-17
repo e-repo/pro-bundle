@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
 use UI\Http\Common\Request\RequestPayloadInterface;
 
-final class Request implements RequestPayloadInterface
+final class Payload implements RequestPayloadInterface
 {
     #[Assert\Length(
         min: 2,

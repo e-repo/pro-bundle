@@ -21,7 +21,6 @@ final readonly class UserCreatedListener implements EventListenerInterface
         private MailerInterface $mailer,
         private Environment $twig,
         private string $appEmail,
-        private string $appDomain,
     ) {
     }
 
@@ -48,12 +47,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
             return;
         }
 
-        $mail = $this->makeConfirmMessage(
-            userId: $event->id,
-            email: $event->email,
-            emailConfirmToken: $event->emailConfirmToken
-        );
-
+        $mail = $this->makeConfirmMessage($event);
         $this->mailer->send($mail);
     }
 
@@ -62,18 +56,15 @@ final readonly class UserCreatedListener implements EventListenerInterface
      * @throws SyntaxError
      * @throws LoaderError
      */
-    private function makeConfirmMessage(
-        string $userId,
-        string $email,
-        string $emailConfirmToken
-    ): Email {
+    private function makeConfirmMessage(UserCreatedEvent $event): Email
+    {
         return (new TemplatedEmail())
             ->from($this->appEmail)
-            ->to($email)
+            ->to($event->email)
             ->html($this->twig->render('mail/auth/signup.html.twig', [
-                'userId' => $userId,
-                'token' => $emailConfirmToken,
-                'appDomain' => $this->appDomain
+                'userId' => $event->id,
+                'token' => $event->emailConfirmToken,
+                'host' => $event->host
             ]));
     }
 }
