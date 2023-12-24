@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UI\Http\Auth\V1\SignUp;
 
+use Auth\User\Domain\Entity\RegistrationSource;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
 use UI\Http\Common\Request\RequestPayloadInterface;
@@ -38,4 +39,12 @@ final class Payload implements RequestPayloadInterface
     #[Assert\NotBlank(message: 'Пароль является обязательным полем для заполнения.')]
     #[OA\Property(example: 'QwertY')]
     public string $password;
+
+    #[Assert\NotBlank(message: 'Источник регистрации является обязательным полем для заполнения.')]
+    #[Assert\Choice(
+        callback: [RegistrationSource::class, 'values'],
+        message: 'Источник регистрации не существует.'
+    )]
+    #[OA\Property(example: 'blog')]
+    public string $registrationSource;
 }

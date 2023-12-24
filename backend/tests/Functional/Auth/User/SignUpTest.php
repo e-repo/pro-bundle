@@ -27,6 +27,7 @@ final class SignUpTest extends FunctionalTestCase
         // arrange
         $userEmail = 'test@test.ru';
         $userFirstName = 'Test';
+        $registrationSource = 'blog';
 
         $client = $this->createClient();
 
@@ -38,6 +39,7 @@ final class SignUpTest extends FunctionalTestCase
                 'firstName' => $userFirstName,
                 'email' => $userEmail,
                 'password' => 'secret',
+                'registrationSource' => $registrationSource
             ]
         );
 
@@ -54,6 +56,7 @@ final class SignUpTest extends FunctionalTestCase
         self::assertEquals('wait', $user['status']);
         self::assertEquals('ROLE_USER', $user['role']);
         self::assertEquals($userFirstName, $user['name_first']);
+        self::assertEquals($registrationSource, $user['registration_source']);
         self::assertNotEmpty($user['password_hash']);
         self::assertNotEmpty($user['email_confirm_token']);
 
@@ -89,6 +92,7 @@ final class SignUpTest extends FunctionalTestCase
                 'firstName' => $loadedUser['firstName'],
                 'email' => $loadedUser['email'],
                 'password' => $loadedUser['password'],
+                'registrationSource' => $loadedUser['registrationSource'],
             ]
         );
 

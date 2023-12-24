@@ -34,7 +34,7 @@ final class UserFixture extends Fixture
                 ),
                 email: new EmailVo($item['email']),
                 password: $item['password'],
-                host: 'localhost',
+                registrationSource: $item['registrationSource'],
                 uniqueEmailSpecification: $this->uniqueEmailSpecification,
                 hasher: $this->hasher,
             );
@@ -54,6 +54,7 @@ final class UserFixture extends Fixture
                 'lastName' => 'TestLastName_1',
                 'email' => 'test_1@test.ru',
                 'password' => 'secret_1',
+                'registrationSource' => 'blog'
             ],
             [
                 'id' => '125d7cd7-0b77-409a-bc5c-19b44416a5fa',
@@ -61,6 +62,7 @@ final class UserFixture extends Fixture
                 'lastName' => 'TestLastName_2',
                 'email' => 'test_2@test.ru',
                 'password' => 'secret_2',
+                'registrationSource' => 'blog'
             ],
         ];
     }

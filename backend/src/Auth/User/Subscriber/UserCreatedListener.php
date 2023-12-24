@@ -6,6 +6,7 @@ namespace Auth\User\Subscriber;
 
 use Auth\User\Domain\Entity\Event\UserCreatedEvent;
 use Common\Application\Bus\EventListenerInterface;
+use DomainException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -21,6 +22,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
         private MailerInterface $mailer,
         private Environment $twig,
         private string $appEmail,
+        private array $registrationSources,
     ) {
     }
 
@@ -58,13 +60,19 @@ final readonly class UserCreatedListener implements EventListenerInterface
      */
     private function makeConfirmMessage(UserCreatedEvent $event): Email
     {
+        $domain = $this->registrationSources[$event->registrationSource] ?? null;
+
+        if (null === $domain) {
+            throw new DomainException('Источник регистрации не определен.');
+        }
+
         return (new TemplatedEmail())
             ->from($this->appEmail)
             ->to($event->email)
             ->html($this->twig->render('mail/auth/signup.html.twig', [
                 'userId' => $event->id,
                 'token' => $event->emailConfirmToken,
-                'host' => $event->host
+                'domain' => $domain
             ]));
     }
 }

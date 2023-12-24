@@ -45,8 +45,13 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     #[ORM\Column(length: 255, options: ['comment' => 'Хэш пароля'])]
     private string $passwordHash;
 
-    #[ORM\Column(length: 100, nullable: true, options: ['comment' => 'Хост-источник пользователя'])]
-    private string $host;
+    #[ORM\Column(
+        length: 100,
+        nullable: true,
+        enumType: RegistrationSource::class,
+        options: ['comment' => 'Система-источник регистрации пользователя'])
+    ]
+    private RegistrationSource $registrationSource;
 
     #[ORM\Column(length: 50, nullable: true, options: ['comment' => 'Токен сброса пароля'])]
     private ?string $resetPasswordToken = null;
@@ -74,7 +79,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         NameVo $name,
         EmailVo $email,
         string $password,
-        string $host,
+        string $registrationSource,
         UniqueEmailSpecification $uniqueEmailSpecification,
         Hasher $hasher,
     ) {
@@ -82,7 +87,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->name = $name;
         $this->email = $email;
         $this->passwordHash = $password;
-        $this->host = $host;
+        $this->registrationSource = RegistrationSource::tryFrom($registrationSource);
         $this->status = Status::WAIT;
         $this->role = Role::USER;
         $this->emailConfirmToken = Uuid::uuid4()->toString();
@@ -126,9 +131,9 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return  $this->passwordHash;
     }
 
-    public function getHost(): string
+    public function getRegistrationSource(): RegistrationSource
     {
-        return $this->host;
+        return $this->registrationSource;
     }
 
     public function getEmailConfirmToken(): string
@@ -161,7 +166,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             emailConfirmToken: $this->emailConfirmToken,
             status: $this->status->value,
             role: $this->role->value,
-            host: $this->host,
+            registrationSource: $this->registrationSource->value,
             createdAt: $this->createdAt
         );
     }

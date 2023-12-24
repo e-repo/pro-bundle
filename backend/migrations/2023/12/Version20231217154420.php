@@ -20,13 +20,13 @@ final class Version20231217154420 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE auth."user" ADD host VARCHAR(100) DEFAULT NULL');
-        $this->addSql('COMMENT ON COLUMN auth."user".host IS \'Хост-источник пользователя\'');
+        $this->addSql('ALTER TABLE auth."user" ADD registration_source VARCHAR(100) DEFAULT NULL');
+        $this->addSql('COMMENT ON COLUMN auth."user".registration_source IS \'Система-источник регистрации пользователя\'');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE "auth"."user" DROP host');
+        $this->addSql('ALTER TABLE "auth"."user" DROP registration_source');
     }
 }

@@ -8,7 +8,6 @@ use Auth\User\Command\SignUp\Command;
 use Common\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Auth\V1\ConfirmEmail\Response;
@@ -60,13 +59,13 @@ final class Action extends AbstractController
         name: 'auth_sign-up',
         methods: ['POST']
     )]
-    public function __invoke(Payload $payload, Request $request): ApiResponse
+    public function __invoke(Payload $payload): ApiResponse
     {
         $command = new Command(
             firstName: $payload->firstName,
             email: $payload->email,
             password: $payload->password,
-            host: $request->getHost()
+            registrationSource: $payload->registrationSource
         );
 
         $this->commandBus->dispatch($command);

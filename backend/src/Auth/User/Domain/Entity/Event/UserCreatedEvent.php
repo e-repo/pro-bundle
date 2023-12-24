@@ -17,7 +17,7 @@ final readonly class UserCreatedEvent implements EventInterface
         public ?string $emailConfirmToken,
         public string $status,
         public string $role,
-        public string $host,
+        public string $registrationSource,
         public DateTimeImmutable $createdAt,
     ) {
     }

@@ -1,5 +1,9 @@
 parameters:
-    app.email: 'bunches.app@mail.ru'
+    app.email: '%env(APP_EMAIL)%'
+
+    # AUTH REGISTRATION SOURCES
+    app.registration_sources:
+        { blog: '%env(BLOG_REGISTRATION_SOURCES)%', shop: '%env(SHOP_REGISTRATION_SOURCES)%' }
 
 services:
     _defaults:
@@ -8,6 +12,7 @@ services:
         bind:
             bool $isDebug: '%kernel.debug%'
             string $appEmail: '%app.email%'
+            array $registrationSources: '%app.registration_sources%'
 
     _instanceof:
         Common\Application\Bus\CommandHandlerInterface:
