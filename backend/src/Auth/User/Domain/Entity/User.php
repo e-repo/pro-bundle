@@ -2,7 +2,6 @@
 
 namespace Auth\User\Domain\Entity;
 
-use Auth\Infra\Repository\User\UserRepository;
 use Auth\User\Domain\Entity\Event\UserCreatedEvent;
 use Auth\User\Domain\Entity\Exception\EmailNotUniqueException;
 use Auth\User\Domain\Entity\Specification\UniqueEmailSpecification;
@@ -15,9 +14,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: '`user`', schema: 'auth')]
 class User implements PasswordHashedUserInterface, HasEventsInterface
 {
