@@ -83,4 +83,4 @@ Infra\
 - Nuxt.js 
 - Vue 3
 - TS
-- Админка на базе Admin LTE (доступна по адресу `admin.bunches`)
+- Админка на базе Admin LTE (доступна по адресу `admin.bundle`)

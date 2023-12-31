@@ -1,4 +1,4 @@
-# bb - backend "bunch", bunch - имя проекта
+# bb - backend "bundle", bundle - имя проекта
 version: '3.8'
 services:
 

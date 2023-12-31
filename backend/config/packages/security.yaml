@@ -7,18 +7,36 @@ security:
             id: Auth\Infra\User\Service\Security\UserProvider
 
     firewalls:
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern: ^/api
+            stateless: true
+            user_checker: Auth\Infra\User\Service\Security\UserChecker
+            jwt: ~
+            refresh_jwt:
+                check_path: api_refresh_token
+                provider: auth_module_provider
+            entry_point: jwt
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            pattern: ^/api
-            lazy: true
-#            provider: users_in_memory
 
     access_control:
+        - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/service/ping, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/sign-up, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/v1/confirm-email, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:

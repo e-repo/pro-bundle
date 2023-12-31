@@ -1,0 +1,12 @@
+<?php
+
+namespace Auth\User\Domain\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken as BaseRefreshToken;
+
+#[ORM\Entity]
+#[ORM\Table(name: '`refresh_tokens`', schema: 'auth')]
+class RefreshToken extends BaseRefreshToken
+{
+}

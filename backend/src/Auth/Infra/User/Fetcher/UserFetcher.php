@@ -34,7 +34,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
                 $qb->expr()->like('u.email', ':email')
             )
             ->setParameter('email', $email)
-            ->fetchOne();
+            ->fetchAssociative();
 
         return $user ? $this->makeUserDto($user) : null;
     }
@@ -49,7 +49,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
             passwordHash: $user['password_hash'],
             role: $user['role'],
             status: $user['status'],
-            createdAt: $user['created_at']
+            createdAt: \DateTimeImmutable::createFromFormat('Y-m-d H:m:sT', $user['created_at'])
         );
     }
 }

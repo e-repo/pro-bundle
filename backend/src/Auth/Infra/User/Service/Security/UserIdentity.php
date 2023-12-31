@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Auth\Infra\User\Service\Security;
 
+use Auth\User\Domain\Entity\Status;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final readonly class UserIdentity implements UserInterface, EquatableInterface
+final readonly class UserIdentity implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(
         public string $id,
@@ -41,7 +43,17 @@ final readonly class UserIdentity implements UserInterface, EquatableInterface
         return $this->email;
     }
 
+    public function isActive(): bool
+    {
+        return $this->status === Status::ACTIVE->value;
+    }
+
     public function eraseCredentials(): void
     {
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->passwordHash;
     }
 }
