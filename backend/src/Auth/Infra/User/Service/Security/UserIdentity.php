@@ -13,6 +13,7 @@ final readonly class UserIdentity implements UserInterface, EquatableInterface, 
 {
     public function __construct(
         public string $id,
+        public string $firstName,
         public string $email,
         public string $passwordHash,
         public string $role,

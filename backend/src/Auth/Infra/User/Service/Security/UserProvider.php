@@ -51,6 +51,7 @@ final readonly class UserProvider implements UserProviderInterface
     {
         return new UserIdentity(
             id: $user->id,
+            firstName: $user->firstName,
             email: $user->email,
             passwordHash: $user->passwordHash,
             role: $user->role,

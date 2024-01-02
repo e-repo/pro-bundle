@@ -1,3 +1,1 @@
-1. Подтверждения почты (confirm email)
-2. Настроить JWTCreatedListener
-3. Проверить работу JWT
+1. Рефреш JWT
