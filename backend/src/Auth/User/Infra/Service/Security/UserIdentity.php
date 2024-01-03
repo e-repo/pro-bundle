@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Infra\User\Service\Security;
+namespace Auth\User\Infra\Service\Security;
 
 use Auth\User\Domain\Entity\Status;
 use Symfony\Component\Security\Core\User\EquatableInterface;

@@ -6,24 +6,17 @@ namespace Common\Application\Subscriber;
 
 use Common\Application\Bus\EventBusInterface;
 use Common\Domain\Entity\HasEventsInterface;
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 
-final readonly class DomainEventSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::onFlush)]
+final readonly class DomainEventListener
 {
     public function __construct(
         private EventBusInterface $eventBus,
     ) {
-    }
-
-
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::onFlush
-        ];
     }
 
     public function onFlush(OnFlushEventArgs $args): void

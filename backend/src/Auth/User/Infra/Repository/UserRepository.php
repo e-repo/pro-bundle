@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Infra\User\Repository;
+namespace Auth\User\Infra\Repository;
 
 use Auth\User\Domain\Entity\EmailVo;
 use Auth\User\Domain\Entity\User;

@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Test\BrowserKitAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Mailer\EventListener\MessageLoggerListener;
 
 class FunctionalTestCase extends KernelTestCase
 {
@@ -27,13 +28,14 @@ class FunctionalTestCase extends KernelTestCase
     protected QueryBuilder $queryBuilder;
     protected AbstractDatabaseTool $databaseTool;
     protected Generator $faker;
+    protected ?MessageLoggerListener $mailerListener;
 
     public function setUp(): void
     {
         $kernel = self::bootKernel();
 
         $this->application = new Application($kernel);
-        $this->container = self::$kernel->getContainer();
+        $this->container = static::getContainer();
         $this->faker = Factory::create();
 
         $this->entityManager = $this->container
@@ -44,9 +46,11 @@ class FunctionalTestCase extends KernelTestCase
             ->getConnection()
             ->createQueryBuilder();
 
-        $this->databaseTool = $this->container
-            ->get(DatabaseToolCollection::class)
-            ->get();
+        /** @var DatabaseToolCollection $databaseTool */
+        $databaseTool = $this->container->get(DatabaseToolCollection::class);
+        $this->databaseTool = $databaseTool->get();
+
+        $this->mailerListener = $this->container->get('mailer.message_logger_listener');
     }
 
     public function tearDown(): void

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Infra\User\Fetcher;
+namespace Auth\User\Infra\Fetcher;
 
 use Auth\User\Domain\Dto\UserDto;
 use Auth\User\Domain\Fetcher\UserFetcherInterface;

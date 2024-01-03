@@ -63,10 +63,13 @@ final class SignUpTest extends FunctionalTestCase
         self::assertEmailCount(1);
 
         $mail = self::getMailerMessage();
-        self::assertMatchesRegularExpression(
-            '/<p>Для подтверждения вашей электронной почты при регистрации в сервисе <b>[a-z.]+<\/b> перейдите по ссылке:<\/p>/',
-            $mail->getHtmlBody()
+        $confirmEmailLink = sprintf(
+            '/https?:[\/]{2}[a-z.]+\/confirm-email\?userId=%s&amp;token=%s/',
+            $user['id'],
+            $user['email_confirm_token']
         );
+
+        self::assertMatchesRegularExpression($confirmEmailLink, $mail->getHtmlBody());
     }
 
     /**

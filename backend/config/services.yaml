@@ -47,9 +47,9 @@ services:
     UI\Http\Common\Subscriber\ResponseListener:
         tags: [ { name: 'kernel.event_listener' } ]
 
-    Common\Application\Subscriber\DomainEventSubscriber:
+    Common\Application\Subscriber\DomainEventListener:
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine.event_listener, event: onFlush }
 
     acme_api.event.jwt_created_listener:
         class: Auth\User\Subscriber\JWTCreatedListener

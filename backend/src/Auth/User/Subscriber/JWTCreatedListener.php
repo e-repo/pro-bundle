@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\User\Subscriber;
 
-use Auth\Infra\User\Service\Security\UserIdentity;
+use Auth\User\Infra\Service\Security\UserIdentity;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 final class JWTCreatedListener

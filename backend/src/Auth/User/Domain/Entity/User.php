@@ -3,6 +3,7 @@
 namespace Auth\User\Domain\Entity;
 
 use Auth\User\Domain\Entity\Event\UserCreatedEvent;
+use Auth\User\Domain\Entity\Event\UserPasswordResetEvent;
 use Auth\User\Domain\Entity\Exception\EmailNotUniqueException;
 use Auth\User\Domain\Entity\Specification\UniqueEmailSpecification;
 use Auth\User\Domain\Service\PasswordHasher\Hasher;
@@ -51,15 +52,8 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     ]
     private RegistrationSource $registrationSource;
 
-    #[ORM\Column(length: 50, nullable: true, options: ['comment' => 'Токен сброса пароля'])]
-    private ?string $resetPasswordToken = null;
-
-    #[ORM\Column(
-        type: Types::DATETIMETZ_IMMUTABLE,
-        nullable: true,
-        options: ['comment' => 'Дата действия токена сброса пароля']
-    )]
-    private ?DateTimeImmutable $passwordTokenExpires = null;
+    #[ORM\Embedded(class: ResetPasswordToken::class, columnPrefix: false)]
+    private ResetPasswordToken $resetPasswordToken;
 
     #[ORM\Column(
         type: 'user_email',
@@ -88,6 +82,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->registrationSource = RegistrationSource::tryFrom($registrationSource);
         $this->status = Status::WAIT;
         $this->role = Role::USER;
+        $this->resetPasswordToken = new ResetPasswordToken();
         $this->emailConfirmToken = Uuid::uuid4()->toString();
         $this->createdAt = new DateTimeImmutable();
 
@@ -154,6 +149,43 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->emailConfirmToken = null;
     }
 
+    public function block(): void
+    {
+        if ($this->status === Status::BLOCKED) {
+            throw new DomainException('Пользователь уже заблокирован');
+        }
+
+        $this->status = Status::ACTIVE;
+        $this->emailConfirmToken = null;
+    }
+
+    public function resetPassword(string $registrationSource): void
+    {
+        if (! $this->isActive()) {
+            throw new DomainException('Невозможно сбросить пароль т.к пользователь не является активным');
+        }
+
+        $currentDate = new DateTimeImmutable();
+
+        if (! $this->resetPasswordToken->isExpired($currentDate)) {
+            throw new DomainException('Запрос на сброс пароля уже был отправлен. Действует в течении суток');
+        }
+
+        $this->resetPasswordToken = new ResetPasswordToken(
+            resetPasswordToken: Uuid::uuid4()->toString(),
+            passwordTokenExpires: $currentDate->modify('+1 day')
+        );
+
+        $this->record(
+            new UserPasswordResetEvent(
+                email: $this->email,
+                resetPasswordToken: $this->resetPasswordToken->getToken(),
+                passwordTokenExpires: $this->resetPasswordToken->getPasswordTokenExpires(),
+                registrationSource: $registrationSource
+            )
+        );
+    }
+
     private function makeUserCreatedEvent(): UserCreatedEvent
     {
         return new UserCreatedEvent(
@@ -167,5 +199,10 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             registrationSource: $this->registrationSource->value,
             createdAt: $this->createdAt
         );
+    }
+
+    private function isActive(): bool
+    {
+        return Status::ACTIVE === $this->status;
     }
 }
