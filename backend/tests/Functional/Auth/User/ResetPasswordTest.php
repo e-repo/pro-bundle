@@ -42,6 +42,12 @@ final class ResetPasswordTest extends FunctionalTestCase
         $loadedUser = UserFixture::allItems()[1];
         $client = $this->createClient();
 
+        $expectedResponse = [
+            'data' => [
+                'status' => 'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту'
+            ]
+        ];
+
         // action
         $client->jsonRequest(
             method: 'POST',
@@ -53,16 +59,11 @@ final class ResetPasswordTest extends FunctionalTestCase
         );
 
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $responseData = $response['data'];
-
         $savedUser = $this->getUserByEmail($loadedUser['email']);
 
         // assert
         self::assertResponseIsSuccessful();
-        self::assertEquals(
-            'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту',
-            $responseData['status']
-        );
+        self::assertEquals($expectedResponse, $response);
 
         self::assertEquals($loadedUser['email'], $savedUser['email']);
         self::assertEquals($loadedUser['status'], $savedUser['status']);

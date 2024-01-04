@@ -41,6 +41,12 @@ final class ConfirmEmailTest extends FunctionalTestCase
         $loadedUser = UserFixture::allItems()[0];
         $client = $this->createClient();
 
+        $expectedResponse = [
+            'data' => [
+                'status' => 'Email пользователя успешно подтвержден.'
+            ]
+        ];
+
         // action
         $client->jsonRequest(
             method: 'POST',
@@ -55,10 +61,9 @@ final class ConfirmEmailTest extends FunctionalTestCase
         $changedUser = $this->getUserById($loadedUser['id']);
 
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $responseData = $response['data'];
 
         self::assertResponseIsSuccessful();
-        self::assertEquals('Email пользователя успешно подтвержден.', $responseData['status']);
+        self::assertEquals($expectedResponse, $response);
 
         self::assertEquals('active', $changedUser['status']);
     }
@@ -72,6 +77,17 @@ final class ConfirmEmailTest extends FunctionalTestCase
         // arrange
         $loadedUser = UserFixture::allItems()[0];
         $client = $this->createClient();
+
+        $expectedResponse = [
+            'message' => 'Ошибка бизнес-логики.',
+            'errors' => [
+                [
+                    'detail' => 'Передан не верный токен для подтверждения email.',
+                    'source' => '',
+                    'data' => []
+                ]
+            ]
+        ];
 
         // action
         $client->jsonRequest(
@@ -87,10 +103,9 @@ final class ConfirmEmailTest extends FunctionalTestCase
         $savedUser = $this->getUserById($loadedUser['id']);
 
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $error = reset($response['errors']);
 
         self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
-        self::assertEquals('Передан не верный токен для подтверждения email.', $error['detail']);
+        self::assertEquals($expectedResponse, $response);
         self::assertEquals('wait', $savedUser['status']);
     }
 
@@ -103,8 +118,18 @@ final class ConfirmEmailTest extends FunctionalTestCase
         // arrange
         $loadedUser = UserFixture::allItems()[0];
         $client = $this->createClient();
-
         $fakeUserId = Uuid::uuid4()->toString();
+
+        $expectedResponse = [
+            'message' => 'Ошибка бизнес-логики.',
+            'errors' => [
+                [
+                    'detail' => sprintf('Пользователь с идентификатором %s не найден.', $fakeUserId),
+                    'source' => '',
+                    'data' => []
+                ]
+            ]
+        ];
 
         // action
         $client->jsonRequest(
@@ -118,15 +143,10 @@ final class ConfirmEmailTest extends FunctionalTestCase
 
         // assert
         $savedUser = $this->getUserById($loadedUser['id']);
-
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $error = reset($response['errors']);
 
         self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
-        self::assertEquals(
-            sprintf('Пользователь с идентификатором %s не найден.', $fakeUserId),
-            $error['detail']
-        );
+        self::assertEquals($expectedResponse, $response);
         self::assertEquals('wait', $savedUser['status']);
     }
 

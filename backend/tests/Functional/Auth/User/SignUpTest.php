@@ -29,6 +29,12 @@ final class SignUpTest extends FunctionalTestCase
         $userFirstName = 'Test';
         $registrationSource = 'blog';
 
+        $expectedResponse = [
+            'data' => [
+                'status' => 'Пользователь создан успешно.'
+            ]
+        ];
+
         $client = $this->createClient();
 
         // action
@@ -44,13 +50,11 @@ final class SignUpTest extends FunctionalTestCase
         );
 
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $responseData = $response['data'];
-
         $user = $this->getUserByEmail($userEmail);
 
         // assert
         self::assertResponseIsSuccessful();
-        self::assertEquals('Пользователь создан успешно.', $responseData['status']);
+        self::assertEquals($expectedResponse, $response);
 
         self::assertEquals($userEmail, $user['email']);
         self::assertEquals('wait', $user['status']);
@@ -87,6 +91,19 @@ final class SignUpTest extends FunctionalTestCase
         $loadedUser = UserFixture::allItems()[0];
         $client = $this->createClient();
 
+        $expectedResponse = [
+            'message' => 'Ошибка бизнес-логики.',
+            'errors' => [
+                [
+                    'detail' => 'Пользователь с данным email уже существует.',
+                    'source' => '',
+                    'data' => [
+                        'email' => $loadedUser['email']
+                    ]
+                ]
+            ]
+        ];
+
         // action
         $client->jsonRequest(
             method: 'POST',
@@ -101,11 +118,9 @@ final class SignUpTest extends FunctionalTestCase
 
         // assert
         $response = $this->getDataFromJsonResponse($client->getResponse());
-        $violation = reset($response['errors']);
 
         self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
-        self::assertEquals('Пользователь с данным email уже существует.', $violation['detail']);
-        self::assertEquals($loadedUser['email'], $violation['data']['email']);
+        self::assertEquals($expectedResponse, $response);
     }
 
     /**

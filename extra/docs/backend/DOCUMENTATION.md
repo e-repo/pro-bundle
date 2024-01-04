@@ -1,14 +1,14 @@
 # Содержание:
 
 ---
-## Авторизация/Регистрация, модуль `Auth`
+## Модуль `Auth`
 
 ---
 
 ### Структуры:
 
 ---
-- [Структура сущности User](#user-structure)
+- [Структуры модели User](#user-structure)
 
 ---
 ### Варианты использования:
@@ -18,13 +18,19 @@
 - [Аутентификация в админку](#sign-in-to-admin)
 - [Запрос на сброс пароля в админку](#access-recovery-to-admin)
 - [Обновление пароля](#password-udate-to-admin)
-- [Обновление email](#email-udate-to-admin)
+- [Запрос на обновление email. Обновление email](#email-udate-to-admin)
+
+
+---
+## Модуль `Blog`
+
+---
 
 <br>
 <br>
 <br>
 
-### Структура сущности User <a name="user-structure"></a>
+### Структуры модели User <a name="user-structure"></a>
 
 `User`
 
@@ -134,6 +140,6 @@
 
 
 
-### Обновление email<a name="password-udate-to-admin"></a>
+### Запрос на обновление email. Обновление email<a name="password-udate-to-admin"></a>
 
 `*На данный момент это не является приоритетным функционалом, будет добавлен позднее`
