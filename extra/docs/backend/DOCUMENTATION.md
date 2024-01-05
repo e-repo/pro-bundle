@@ -32,6 +32,8 @@
 - [Структуры модели Reader](#reader-structure)
 - [Структуры модели Post](#post-structure)
 - [Структуры модели Category](#post-category-structure)
+- [Структуры модели Comment](#post-comment-structure)
+- [Структуры модели Tag](#post-tag-structure)
 
 <br>
 <br>
@@ -151,6 +153,8 @@
 
 `*На данный момент это не является приоритетным функционалом, будет добавлен позднее`
 
+
+
 ### Структуры модели Reader <a name="reader-structure"></a>
 
 `Reader`
@@ -161,7 +165,9 @@
 |       first_name       | varchar(255) |   нет    |          Имя           |
 |       last_name        | varchar(255) |    да    |        Фамилия         |
 |         email          | varchar(255) |   нет    |         Почта          |
-|       created_at       |  timestamp   |   нет    |     Дата создания      |
+|       created_at       |  timestampz  |   нет    |     Дата создания      |
+
+
 
 
 ### Структуры модели Post <a name="post-structure"></a>
@@ -180,7 +186,7 @@
 |    category_id    |     UUID     |   нет    |        Категория поста         |
 |   meta_keyword    | varchar(255) |    да    | Ключевые слова поста (для сео) |
 | meta_description  | varchar(255) |    да    |    Описание поста (для сео)    |
-|    created_at     |     UUID     |   нет    |         Дата создания          |
+|    created_at     |  timestampz  |   нет    |         Дата создания          |
 
 
 `Image`
@@ -193,6 +199,8 @@
 |       type        | varchar(50) |   нет    |  Тип изображения (main, content)  |
 
 
+
+
 ### Структуры модели Category <a name="post-category-structure"></a>
 
 `Category`
@@ -203,4 +211,43 @@
 |       label       | varchar(50)  |   нет    |        Метка категории         |
 |       name        | varchar(100) |   нет    |       Название категории       |
 |    description    | varchar(255) |   нет    |       Описание категории       |
-|    created_at     |     UUID     |   нет    |         Дата создания          |
+|    created_at     |  timestampz  |   нет    |         Дата создания          |
+
+
+
+
+### Структуры модели Comment <a name="post-comment-structure"></a>
+
+`Comment`
+
+| Название колонки |      Тип      | nullable |            Назначение            |
+|:----------------:|:-------------:|:--------:|:--------------------------------:|
+|        id        |     UUID      |   нет    |    Идентификатор комментария     |
+|    parent_id     |     UUID      |    да    |     Родительский комментарий     |
+|     post_id      |      int      |   нет    |         Пост комментария         |
+|     content      | varchar(1000) |   нет    |      Содержание комментария      |
+|    author_id     |     UUID      |   нет    | Идентификатор автора комментария |
+|    deleted_at    |  timestampz   |    да    |         Признак удаления         |
+|    created_at    |  timestampz   |   нет    |          Дата создания           |
+
+
+
+
+### Структуры модели Tag <a name="post-tag-structure"></a>
+
+`Tag`
+
+| Название колонки |     Тип      | nullable |     Назначение     |
+|:----------------:|:------------:|:--------:|:------------------:|
+|        id        |     int      |   нет    | Идентификатор тега |
+|       name       | varchar(50)  |   нет    | Наименование тега  |
+|   description    | varchar(255) |    да    |   Описание тега    |
+|    deleted_at    |  timestampz  |    да    |  Признак удаления  |
+|    created_at    |  timestampz  |   нет    |   Дата создания    |
+
+`TagPostLink` (реализовать составной первичный ключ)
+
+| Название колонки | Тип | nullable |     Назначение     |
+|:----------------:|:---:|:--------:|:------------------:|
+|      tag_id      | int |   нет    | Идентификатор тега |
+|     post_id      | int |   нет    | Наименование поста |
