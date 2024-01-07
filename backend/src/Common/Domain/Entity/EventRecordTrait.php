@@ -2,7 +2,7 @@
 
 namespace Common\Domain\Entity;
 
-use Common\Domain\EventInterface;
+use Common\Domain\Event\EventInterface;
 
 trait EventRecordTrait
 {

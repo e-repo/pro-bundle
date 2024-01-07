@@ -45,7 +45,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
      */
     private function sendConfirmEmail(UserCreatedEvent $event): void
     {
-        if (null === $event->emailConfirmToken) {
+        if (null === $event->getEmailConfirmToken()) {
             return;
         }
 
@@ -60,7 +60,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
      */
     private function makeConfirmMessage(UserCreatedEvent $event): Email
     {
-        $domain = $this->registrationSources[$event->registrationSource] ?? null;
+        $domain = $this->registrationSources[$event->getRegistrationSource()] ?? null;
 
         if (null === $domain) {
             throw new DomainException('Источник регистрации не определен.');
@@ -68,10 +68,10 @@ final readonly class UserCreatedListener implements EventListenerInterface
 
         return (new TemplatedEmail())
             ->from($this->appEmail)
-            ->to($event->email)
+            ->to($event->getEmail())
             ->html($this->twig->render('mail/auth/signup.html.twig', [
-                'userId' => $event->id,
-                'token' => $event->emailConfirmToken,
+                'userId' => $event->getId(),
+                'token' => $event->getEmailConfirmToken(),
                 'domain' => $domain
             ]));
     }

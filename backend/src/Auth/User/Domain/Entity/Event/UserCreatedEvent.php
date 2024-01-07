@@ -4,21 +4,67 @@ declare(strict_types=1);
 
 namespace Auth\User\Domain\Entity\Event;
 
-use Common\Domain\EventInterface;
+use Common\Domain\Event\EventInterface;
+use Common\Domain\Event\UserCreatedEventInterface;
 use DateTimeImmutable;
 
-final readonly class UserCreatedEvent implements EventInterface
+final readonly class UserCreatedEvent implements EventInterface, UserCreatedEventInterface
 {
     public function __construct(
-        public string $id,
-        public string $firstname,
-        public ?string $lastname,
-        public string $email,
-        public ?string $emailConfirmToken,
-        public string $status,
-        public string $role,
-        public string $registrationSource,
-        public DateTimeImmutable $createdAt,
+        private string $id,
+        private string $firstname,
+        private ?string $lastname,
+        private string $email,
+        private ?string $emailConfirmToken,
+        private string $status,
+        private string $role,
+        private string $registrationSource,
+        private DateTimeImmutable $createdAt,
     ) {
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getEmailConfirmToken(): ?string
+    {
+        return $this->emailConfirmToken;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function getRegistrationSource(): string
+    {
+        return $this->registrationSource;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }
