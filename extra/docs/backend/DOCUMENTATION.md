@@ -50,6 +50,8 @@
 - [Создание тега поста](#create-post-tag)
 - [Получение списка тегов](#get-blog-tag-list)
 - [Создание поста](#create-blog-post)
+- [Получение списка постов](#get-blog-posts)
+- [Получение поста](#get-blog-post)
 
 <br>
 <br>
@@ -147,6 +149,30 @@ ROLE_ADMIN
 
 `*Поле limit не может привышать 100 элементов`
 
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+meta: 
+-- offset:
+-- limit:
+-- total:
+```
+
 **Логика обработки данных запроса**
 
 1. Валидация входных данных.
@@ -173,6 +199,26 @@ ROLE_ADMIN
 
 **Логика обработки данных запроса**
 
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+```
+
 1. Получить информацию по пользователю из бд.
    <br>
    - firstName
@@ -186,7 +232,7 @@ ROLE_ADMIN
 
 
 
-### Аутентификация<a name="sign-in"></a>
+### Аутентификация <a name="sign-in"></a>
 
 **Бизнес смысл**
 
@@ -325,6 +371,26 @@ ROLE_USER
 
 **Логика обработки данных запроса**
 
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+```
+
 1. Валидация входных данных.
 2. Сходить в базу данных и сделать выборку пользователя по UUID.
 3. Запрос необходимо делать через специальный фетчер (возможно разделение Read/Write)
@@ -403,6 +469,134 @@ ROLE_ADMIN
 8. Если загрузка файла в хранилище прошло успешно сохраняем пост.
 
 
+### Получение списка постов <a name="get-blog-posts"></a>
+
+**Бизнес смысл**
+
+Получение списка постов блог
+
+**Доступ**
+
+PUBLIC_ACCESS
+
+**Входные данные**
+
+| Название поля | Обязательность |             Примечание              |
+|:-------------:|:--------------:|:-----------------------------------:|
+|     limit     |       да       |  Валидация int (min/max и прочее)   |
+|    offset     |       да       |  Валидация int (min/max и прочее)   |
+|     title     |      нет       | Валидация текста (min/max и прочее) |
+|  shortTitle   |      нет       | Валидация текста (min/max и прочее) |
+|    content    |      нет       | Валидация текста (min/max и прочее) |
+|  category_id  |      нет       |            Валидация int            |
+|    tag_id     |      нет       |            Валидация int            |
+|   published   |      нет       |          Валидация boolean          |
+
+`*Поле limit не может привышать 100 элементов`
+
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+meta: 
+-- offset:
+-- limit:
+-- total:
+```
+
+**Логика обработки данных запроса**
+
+1. Валидация входных данных.
+2. Сходить в базу данных и сделать выборку по постам с учетом фильтра сформированного из входных данных. Необязательные поля игнорируются при выборке
+3. Забрать следующие данные по посту
+   <br>
+   - id
+   - title
+   - short_title
+   - published
+   - created_at
+   - category_id (relationships: category)
+   - category_name (relationships: category)
+   - tag_id (relationships: tag)
+   - tag_name (relationships: tag)
+   - imageLink (relationships: fileStorage)
+   <br>
+4. Запрос необходимо делать через специальный фетчер (возможно разделение Read/Write)
+
+
+### Получение поста <a name="get-blog-post"></a>
+
+**Бизнес смысл**
+
+Вывод информации по посту
+
+**Доступ**
+
+PUBLIC_ACCESS
+
+**Входные данные**
+
+| Название поля | Обязательность |    Примечание     |
+|:-------------:|:--------------:|:-----------------:|
+|      id       |       да       |  из query string  |
+
+**Логика обработки данных запроса**
+
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+```
+
+1. Получить информацию по посту из бд.
+   <br>
+   - id
+   - slug
+   - title
+   - short_title
+   - content
+   - published
+   - commentAvailable
+   - metaKeyword
+   - metaDescription
+   - created_at
+   - category_id (relationships: category)
+   - category_name (relationships: category)
+   - tag_id (relationships: tag)
+   - tag_name (relationships: tag)
+   - imageLink (relationships: fileStorage)
+   <br>
+2. Сформировать ответ
+
+
 ### Структуры модели Category <a name="post-category-structure"></a>
 
 `Category`
@@ -461,6 +655,30 @@ PUBLIC_ACCESS
 
 `*Поле limit не может привышать 100 элементов`
 
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+meta: 
+-- offset:
+-- limit:
+-- total:
+```
+
 **Логика обработки данных запроса**
 
 1. Валидация входных данных.
@@ -486,12 +704,32 @@ PUBLIC_ACCESS
 
 **Логика обработки данных запроса**
 
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+```
+
 1. Получить информацию по пользователю из бд.
    <br>
    - name
    - description
    - craetedAt  
-     <br>
+   <br>
 2. Сформировать ответ
 
 
@@ -578,6 +816,30 @@ PUBLIC_ACCESS
 |    postId     |      нет       | Валидация текста (min/max и прочее) |
 
 `*Поле limit не может привышать 100 элементов`
+
+**Структура ответа**
+
+```
+data:
+-- id: 1
+-- attributes:
+---- attr1:
+---- attr2:
+---- ...
+-- relationships: 
+---- relation-name1: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+---- relation-name2: 
+------ attr-relation1:
+------ attr-relation2:
+------ ...
+meta: 
+-- offset:
+-- limit:
+-- total:
+```
 
 **Логика обработки данных запроса**
 
