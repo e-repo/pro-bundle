@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Auth\V1\ConfirmEmail\Response;
-use UI\Http\Common\Response\ResponseDataWrapper;
+use UI\Http\Common\Response\ResponseWrapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use UI\Http\Common\Response\Violation;
@@ -27,8 +27,8 @@ use UI\Http\Common\Response\Violation;
             response: 200,
             description: 'Пользователь успешно создан',
             content: new OA\JsonContent(
-                ref: new Model(type: ResponseDataWrapper::class),
-                example: new ResponseDataWrapper(
+                ref: new Model(type: ResponseWrapper::class),
+                example: new ResponseWrapper(
                     data: new Response(
                         status: 'Пользователь создан успешно.'
                     )
@@ -71,7 +71,7 @@ final class Action extends AbstractController
         $this->commandBus->dispatch($command);
 
         return new JsonResponse(
-            new ResponseDataWrapper(
+            new ResponseWrapper(
                 data: new Response('Пользователь создан успешно.')
             )
         );

@@ -44,7 +44,8 @@ final class ConfirmEmailTest extends FunctionalTestCase
         $expectedResponse = [
             'data' => [
                 'status' => 'Email пользователя успешно подтвержден.'
-            ]
+            ],
+            'meta' => null
         ];
 
         // action

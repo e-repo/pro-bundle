@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use UI\Http\Common\Response\ResponseDataWrapper;
+use UI\Http\Common\Response\ResponseWrapper;
 use UI\Http\Common\Response\Violation;
 
 #[OA\Tag(name: 'Регистрация')]
@@ -26,8 +26,8 @@ use UI\Http\Common\Response\Violation;
             response: 200,
             description: 'Email пользователя успешно подтвержден',
             content: new OA\JsonContent(
-                ref: new Model(type: ResponseDataWrapper::class),
-                example: new ResponseDataWrapper(
+                ref: new Model(type: ResponseWrapper::class),
+                example: new ResponseWrapper(
                     data: new Response(
                         status: 'Email пользователя успешно подтвержден.'
                     )
@@ -68,7 +68,7 @@ final class Action extends AbstractController
         );
 
         return new JsonResponse(
-            new ResponseDataWrapper(
+            new ResponseWrapper(
                 data: new Response('Email пользователя успешно подтвержден.')
             )
         );

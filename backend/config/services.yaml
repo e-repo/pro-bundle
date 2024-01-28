@@ -1,5 +1,6 @@
 parameters:
     app.email: '%env(APP_EMAIL)%'
+    app.timezone: 'Europe/Moscow'
 
     # AUTH REGISTRATION SOURCES
     app.registration_sources:
@@ -12,12 +13,17 @@ services:
         bind:
             bool $isDebug: '%kernel.debug%'
             string $appEmail: '%app.email%'
+            string $timezone: '%app.timezone%'
             array $registrationSources: '%app.registration_sources%'
 
     _instanceof:
         Common\Application\Bus\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
+
+        Common\Application\Bus\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
 
         Common\Application\Bus\EventListenerInterface:
             tags:

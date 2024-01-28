@@ -32,7 +32,8 @@ final class SignUpTest extends FunctionalTestCase
         $expectedResponse = [
             'data' => [
                 'status' => 'Пользователь создан успешно.'
-            ]
+            ],
+            'meta' => null
         ];
 
         $client = $this->createClient();

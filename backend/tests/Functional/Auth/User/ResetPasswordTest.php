@@ -45,7 +45,8 @@ final class ResetPasswordTest extends FunctionalTestCase
         $expectedResponse = [
             'data' => [
                 'status' => 'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту'
-            ]
+            ],
+            'meta' => null
         ];
 
         // action

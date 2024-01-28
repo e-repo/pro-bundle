@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Auth\V1\ConfirmEmail\Response;
-use UI\Http\Common\Response\ResponseDataWrapper;
+use UI\Http\Common\Response\ResponseWrapper;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use UI\Http\Common\Response\Violation;
 use OpenApi\Attributes as OA;
@@ -27,8 +27,8 @@ use OpenApi\Attributes as OA;
             response: 200,
             description: 'Запрос на сброс пароля успешно зарегистрирован',
             content: new OA\JsonContent(
-                ref: new Model(type: ResponseDataWrapper::class),
-                example: new ResponseDataWrapper(
+                ref: new Model(type: ResponseWrapper::class),
+                example: new ResponseWrapper(
                     data: new Response(
                         status: 'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту'
                     )
@@ -69,7 +69,7 @@ final class Action extends AbstractController
         );
 
         return new JsonResponse(
-            new ResponseDataWrapper(
+            new ResponseWrapper(
                 data: new Response('Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту')
             )
         );
