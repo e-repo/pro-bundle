@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\SignUp;
+namespace UI\Http\Auth\V1\User\SignUp;
 
 use Auth\User\Domain\Entity\RegistrationSource;
-use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 use UI\Http\Common\Request\RequestPayloadInterface;
 
 final class Payload implements RequestPayloadInterface

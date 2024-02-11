@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\SignUp;
+namespace UI\Http\Auth\V1\User\SignUp;
 
 use UI\Http\Common\Response\ResponseInterface;
 

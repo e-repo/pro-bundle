@@ -37,7 +37,7 @@ security:
         - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/service/ping, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/v1/sign-up, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/v1/user/sign-up, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/confirm-email, roles: PUBLIC_ACCESS }
         # ADMIN ACCESS
         - { path: ^/api/auth/v1/user, roles: ROLE_ADMIN }

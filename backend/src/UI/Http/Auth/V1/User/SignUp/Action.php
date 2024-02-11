@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\SignUp;
+namespace UI\Http\Auth\V1\User\SignUp;
 
 use Auth\User\Command\SignUp\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Auth\V1\ConfirmEmail\Response;
 use UI\Http\Common\Response\ResponseWrapper;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 use UI\Http\Common\Response\Violation;
 
 #[OA\Tag(name: 'Регистрация')]
@@ -55,7 +55,7 @@ final class Action extends AbstractController
     }
 
     #[Route(
-        path: 'api/auth/v1/sign-up',
+        path: 'api/auth/v1/user/sign-up',
         name: 'auth_sign-up',
         methods: ['POST']
     )]
