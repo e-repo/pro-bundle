@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\Service\Ping;
+namespace UI\Http\Service\V1\Ping;
 
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class Action extends AbstractController
 {
     #[Route(
-        path: '/api/auth/v1/service/ping',
+        path: '/api/service/v1/ping',
         name: 'auth_service_ping',
         methods: ['GET']
     )]
