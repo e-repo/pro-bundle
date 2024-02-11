@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\ResetPassword;
+namespace UI\Http\Auth\V1\User\ResetPassword;
 
 use Auth\User\Command\ResetPassword\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Auth\V1\ConfirmEmail\Response;
 use UI\Http\Common\Response\ResponseWrapper;
-use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use UI\Http\Common\Response\Violation;
-use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Регистрация')]
 #[OA\Post(
@@ -55,7 +55,7 @@ final class Action extends AbstractController
     }
 
     #[Route(
-        path: 'api/auth/v1/reset-password',
+        path: 'api/auth/v1/user/reset-password',
         name: 'auth_reset-password',
         methods: ['POST']
     )]

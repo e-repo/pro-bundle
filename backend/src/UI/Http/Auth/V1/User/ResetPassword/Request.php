@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\ResetPassword;
+namespace UI\Http\Auth\V1\User\ResetPassword;
 use Auth\User\Domain\Entity\RegistrationSource;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use UI\Http\Common\Request\RequestPayloadInterface;
 
 final class Request implements RequestPayloadInterface
