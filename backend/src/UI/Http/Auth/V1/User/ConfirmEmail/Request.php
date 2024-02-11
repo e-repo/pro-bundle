@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\ConfirmEmail;
+namespace UI\Http\Auth\V1\User\ConfirmEmail;
 
-use UI\Http\Common\Request\RequestPayloadInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints as Assert;
+use UI\Http\Common\Request\RequestPayloadInterface;
 
 final class Request implements RequestPayloadInterface
 {

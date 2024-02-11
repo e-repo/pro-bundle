@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\ConfirmEmail;
+namespace UI\Http\Auth\V1\User\ConfirmEmail;
 
 use Auth\User\Command\ConfirmEmail\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as ApiResponse;
+use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Common\Response\ResponseWrapper;
 use UI\Http\Common\Response\Violation;
 
@@ -54,7 +54,7 @@ final class Action extends AbstractController
     }
 
     #[Route(
-        path: 'api/auth/v1/confirm-email',
+        path: 'api/auth/v1/user/confirm-email',
         name: 'auth_confirm-email',
         methods: ['POST']
     )]

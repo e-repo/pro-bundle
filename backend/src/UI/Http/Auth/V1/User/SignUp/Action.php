@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use UI\Http\Auth\V1\ConfirmEmail\Response;
 use UI\Http\Common\Response\ResponseWrapper;
 use UI\Http\Common\Response\Violation;
 
