@@ -6,7 +6,7 @@ namespace Auth\User\Query\User\GetUser;
 
 use Auth\User\Domain\Dto\GetUserDto;
 use Auth\User\Domain\Fetcher\UserFetcherInterface;
-use Common\Application\Bus\QueryHandlerInterface;
+use CoreKit\Application\Bus\QueryHandlerInterface;
 
 final readonly class Handler implements QueryHandlerInterface
 {

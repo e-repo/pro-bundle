@@ -7,7 +7,7 @@ namespace Auth\User\Infra\Fetcher;
 use Auth\User\Domain\Dto\GetUserDto;
 use Auth\User\Domain\Dto\UserDto;
 use Auth\User\Domain\Fetcher\UserFetcherInterface;
-use Common\Infra\BaseFetcher;
+use CoreKit\Infra\BaseFetcher;
 use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use DomainException;

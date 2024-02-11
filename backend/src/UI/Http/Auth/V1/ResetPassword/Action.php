@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Auth\V1\ResetPassword;
 
 use Auth\User\Command\ResetPassword\Command;
-use Common\Application\Bus\CommandBusInterface;
+use CoreKit\Application\Bus\CommandBusInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

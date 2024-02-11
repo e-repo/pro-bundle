@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\User\Subscriber;
 
 use Auth\User\Domain\Entity\Event\UserPasswordResetEvent;
-use Common\Application\Bus\EventListenerInterface;
+use CoreKit\Application\Bus\EventListenerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;

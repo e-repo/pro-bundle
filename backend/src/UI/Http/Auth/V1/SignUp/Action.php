@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Auth\V1\SignUp;
 
 use Auth\User\Command\SignUp\Command;
-use Common\Application\Bus\CommandBusInterface;
+use CoreKit\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ApiResponse;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Common\Infra;
+namespace CoreKit\Infra;
 
-use Common\Application\FlusherInterface;
+use CoreKit\Application\FlusherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class Flusher implements FlusherInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\User\Domain\Entity\Event;
 
-use Common\Domain\Event\EventInterface;
+use CoreKit\Domain\Event\EventInterface;
 
 final readonly class UserPasswordResetEvent implements EventInterface
 {

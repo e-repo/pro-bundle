@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Application\Bus;
+namespace CoreKit\Application\Bus;
 
 interface QueryBusInterface
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Auth\User\Domain\Entity\Event;
 
-use Common\Domain\Event\EventInterface;
-use Common\Domain\Event\UserCreatedEventInterface;
+use CoreKit\Domain\Event\EventInterface;
+use CoreKit\Domain\Event\UserCreatedEventInterface;
 use DateTimeImmutable;
 
 final readonly class UserCreatedEvent implements EventInterface, UserCreatedEventInterface

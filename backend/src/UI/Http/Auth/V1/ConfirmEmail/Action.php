@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Auth\V1\ConfirmEmail;
 
 use Auth\User\Command\ConfirmEmail\Command;
-use Common\Application\Bus\CommandBusInterface;
+use CoreKit\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

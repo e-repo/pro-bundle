@@ -6,9 +6,9 @@ namespace UI\Http\Auth\V1\User\GetUser;
 
 use Auth\User\Domain\Dto\GetUserDto;
 use Auth\User\Query\User\GetUser\Query;
-use Common\Application\Bus\QueryBusInterface;
-use Common\Infra\DateTimeFormatter;
-use Common\Infra\OpenApiDateTime;
+use CoreKit\Application\Bus\QueryBusInterface;
+use CoreKit\Infra\DateTimeFormatter;
+use CoreKit\Infra\OpenApiDateTime;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Common\Application\Subscriber;
+namespace CoreKit\Application\Subscriber;
 
-use Common\Application\Bus\EventBusInterface;
-use Common\Domain\Entity\HasEventsInterface;
+use CoreKit\Application\Bus\EventBusInterface;
+use CoreKit\Domain\Entity\HasEventsInterface;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;

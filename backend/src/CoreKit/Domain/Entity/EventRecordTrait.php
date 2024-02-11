@@ -1,8 +1,8 @@
 <?php
 
-namespace Common\Domain\Entity;
+namespace CoreKit\Domain\Entity;
 
-use Common\Domain\Event\EventInterface;
+use CoreKit\Domain\Event\EventInterface;
 
 trait EventRecordTrait
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Domain\Entity;
+namespace CoreKit\Domain\Entity;
 
 use Symfony\Contracts\EventDispatcher\Event;
 

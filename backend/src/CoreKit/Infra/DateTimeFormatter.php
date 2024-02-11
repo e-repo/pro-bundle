@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Common\Infra;
+namespace CoreKit\Infra;
 
 use DateTimeImmutable;
 use DateTimeZone;

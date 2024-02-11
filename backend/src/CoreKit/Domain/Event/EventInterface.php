@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Domain\Event;
+namespace CoreKit\Domain\Event;
 
 interface EventInterface
 {

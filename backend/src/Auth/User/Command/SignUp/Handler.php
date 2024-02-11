@@ -11,16 +11,7 @@ use Auth\User\Domain\Entity\Specification\UniqueEmailSpecification;
 use Auth\User\Domain\Entity\User;
 use Auth\User\Domain\Repository\UserRepositoryInterface;
 use Auth\User\Domain\Service\PasswordHasher\Hasher;
-use Common\Application\Bus\CommandHandlerInterface;
-use Common\Application\FlusherInterface;
-use Ramsey\Uuid\Uuid;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use CoreKit\Application\Bus\CommandHandlerInterface;
 
 final readonly class Handler implements CommandHandlerInterface
 {

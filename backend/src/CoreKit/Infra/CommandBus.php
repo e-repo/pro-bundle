@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Common\Infra;
+namespace CoreKit\Infra;
 
-use Common\Application\Bus\QueryBusInterface;
+use CoreKit\Application\Bus\CommandBusInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
-final class QueryBus implements QueryBusInterface
+final class CommandBus implements CommandBusInterface
 {
     use HandleTrait;
 
     public function __construct(
-        private readonly MessageBusInterface $queryBus,
+        private readonly MessageBusInterface $commandBus,
     ) {
-        $this->messageBus = $this->queryBus;
+        $this->messageBus = $this->commandBus;
     }
 
     /**

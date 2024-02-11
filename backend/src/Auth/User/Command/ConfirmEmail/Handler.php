@@ -6,7 +6,7 @@ namespace Auth\User\Command\ConfirmEmail;
 
 use Auth\User\Domain\Entity\IdVo;
 use Auth\User\Domain\Repository\UserRepositoryInterface;
-use Common\Application\Bus\CommandHandlerInterface;
+use CoreKit\Application\Bus\CommandHandlerInterface;
 use DomainException;
 
 final readonly class Handler implements CommandHandlerInterface

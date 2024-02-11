@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\User\Command\ResetPassword;
 
 use Auth\User\Domain\Repository\UserRepositoryInterface;
-use Common\Application\Bus\CommandHandlerInterface;
+use CoreKit\Application\Bus\CommandHandlerInterface;
 use DomainException;
 
 final readonly class Handler implements CommandHandlerInterface

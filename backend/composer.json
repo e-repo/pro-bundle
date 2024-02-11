@@ -50,7 +50,7 @@
     "psr-4": {
       "UI\\": "src/UI",
       "Auth\\": "src/Auth",
-      "Common\\": "src/Common"
+      "CoreKit\\": "src/CoreKit"
     }
   },
   "autoload-dev": {

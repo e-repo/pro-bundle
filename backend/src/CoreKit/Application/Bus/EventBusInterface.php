@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Application\Bus;
+namespace CoreKit\Application\Bus;
 
 use Symfony\Contracts\EventDispatcher\Event;
 

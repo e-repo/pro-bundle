@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Common\Infra;
+namespace CoreKit\Infra;
 
-use Common\Application\Bus\EventBusInterface;
+use CoreKit\Application\Bus\EventBusInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class EventBus implements EventBusInterface

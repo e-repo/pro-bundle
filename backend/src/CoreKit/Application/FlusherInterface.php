@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Application;
+namespace CoreKit\Application;
 
 interface FlusherInterface
 {
