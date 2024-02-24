@@ -155,7 +155,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             throw new DomainException('Пользователь уже заблокирован');
         }
 
-        $this->status = Status::ACTIVE;
+        $this->status = Status::BLOCKED;
         $this->emailConfirmToken = null;
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Functional\Auth\User;
+namespace Test\Functional\Auth\User;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
@@ -16,7 +16,7 @@ final class ResetPasswordTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
 
-    private const ENDPOINT_URL = '/api/auth/v1/reset-password';
+    private const ENDPOINT_URL = '/api/auth/v1/user/reset-password';
 
     public function setUp(): void
     {
@@ -198,7 +198,7 @@ final class ResetPasswordTest extends FunctionalTestCase
             ]
         );
 
-        $this->entityManager->clear();
+//        $this->entityManager->clear();
 
         $client->jsonRequest(
             method: 'POST',

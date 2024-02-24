@@ -55,8 +55,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Test\\Common\\": "tests/Common",
-      "Test\\Functional\\Auth\\": "tests/Functional/Auth"
+      "Test\\": "tests"
     }
   },
   "replace": {

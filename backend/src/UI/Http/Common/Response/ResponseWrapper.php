@@ -7,7 +7,7 @@ namespace UI\Http\Common\Response;
 final class ResponseWrapper
 {
     public function __construct(
-        public ResponseInterface $data,
+        public ResponseInterface|array $data,
         public ?ResponseMeta $meta = null,
     ) {}
 }

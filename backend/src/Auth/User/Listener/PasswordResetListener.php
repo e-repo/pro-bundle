@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\User\Subscriber;
+namespace Auth\User\Listener;
 
 use Auth\User\Domain\Entity\Event\UserPasswordResetEvent;
 use CoreKit\Application\Bus\EventListenerInterface;

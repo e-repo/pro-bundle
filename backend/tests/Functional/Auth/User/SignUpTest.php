@@ -16,7 +16,7 @@ final class SignUpTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
 
-    private const ENDPOINT_URL = '/api/auth/v1/sign-up';
+    private const ENDPOINT_URL = '/api/auth/v1/user/sign-up';
 
     /**
      * @throws Exception

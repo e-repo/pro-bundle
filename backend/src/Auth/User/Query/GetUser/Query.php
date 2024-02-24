@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\User\Query\User\GetUser;
+namespace Auth\User\Query\GetUser;
 
 final readonly class Query
 {

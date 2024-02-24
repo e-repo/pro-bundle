@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UI\Http\Auth\V1\User\GetUser;
 
 use Auth\User\Domain\Dto\GetUserDto;
-use Auth\User\Query\User\GetUser\Query;
+use Auth\User\Query\GetUser\Query;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\DateTimeFormatter;
 use CoreKit\Infra\OpenApiDateTime;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Common\Subscriber;
+namespace UI\Http\Common\Listener;
 
 use DomainException;
 use Psr\Log\LoggerInterface;

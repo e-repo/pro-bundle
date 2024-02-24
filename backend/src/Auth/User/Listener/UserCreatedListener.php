@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\User\Subscriber;
+namespace Auth\User\Listener;
 
 use Auth\User\Domain\Entity\Event\UserCreatedEvent;
 use CoreKit\Application\Bus\EventListenerInterface;

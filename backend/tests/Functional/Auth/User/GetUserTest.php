@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Functional\Auth\User;
+namespace Test\Functional\Auth\User;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Test\Common\FunctionalTestCase;

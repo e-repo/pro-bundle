@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Functional\Auth\User;
+namespace Test\Functional\Auth\User;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
@@ -17,7 +17,7 @@ final class ConfirmEmailTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
 
-    private const ENDPOINT_URL = '/api/auth/v1/confirm-email';
+    private const ENDPOINT_URL = 'api/auth/v1/user/confirm-email';
 
     public function setUp(): void
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoreKit\Application\Subscriber;
+namespace CoreKit\Application\Listener;
 
 use CoreKit\Application\Bus\EventBusInterface;
 use CoreKit\Domain\Entity\HasEventsInterface;

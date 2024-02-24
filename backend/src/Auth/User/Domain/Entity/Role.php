@@ -5,7 +5,7 @@ namespace Auth\User\Domain\Entity;
 enum Role: string
 {
     case USER = 'ROLE_USER';
-    case ADMIN = 'ADMIN';
+    case ADMIN = 'ROLE_ADMIN';
 
     public static function values(): array
     {

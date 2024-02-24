@@ -17,15 +17,15 @@ services:
             array $registrationSources: '%app.registration_sources%'
 
     _instanceof:
-        Common\Application\Bus\CommandHandlerInterface:
+        CoreKit\Application\Bus\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
 
-        Common\Application\Bus\QueryHandlerInterface:
+        CoreKit\Application\Bus\QueryHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
 
-        Common\Application\Bus\EventListenerInterface:
+        CoreKit\Application\Bus\EventListenerInterface:
             tags:
                 - { name: messenger.message_handler, bus: event.bus }
 
@@ -35,11 +35,11 @@ services:
             - '../src/Auth/{Kernel.php,*Dto.php}'
             - '../src/Auth/{Entity,Enum,Event}'
 
-    Common\:
-        resource: '../src/Common'
+    CoreKit\:
+        resource: '../src/CoreKit'
         exclude:
-            - '../src/Common/{Kernel.php,*Dto.php}'
-            - '../src/Common/{Entity,Enum,Event}'
+            - '../src/CoreKit/{Kernel.php,*Dto.php}'
+            - '../src/CoreKit/{Entity,Enum,Event}'
 
     UI\:
         resource: '../src/UI'
@@ -47,18 +47,18 @@ services:
             - '../src/UI/**/{*Command.php,*Query.php,*Response.php,*Request.php}'
 
     # Subscriber and Listeners
-    UI\Http\Common\Subscriber\ExceptionListener:
+    UI\Http\Common\Listener\ExceptionListener:
         tags: [ { name: 'kernel.event_listener', event: kernel.exception, priority: 10 } ]
 
-    UI\Http\Common\Subscriber\ResponseListener:
+    UI\Http\Common\Listener\ResponseListener:
         tags: [ { name: 'kernel.event_listener' } ]
 
-    Common\Application\Subscriber\DomainEventListener:
+    CoreKit\Application\Listener\DomainEventListener:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
     acme_api.event.jwt_created_listener:
-        class: Auth\User\Subscriber\JWTCreatedListener
+        class: Auth\User\Listener\JWTCreatedListener
         arguments: [ '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
@@ -71,6 +71,6 @@ services:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }
 
-    Common\Infra\FixPostgreSQLDefaultSchemaListener:
+    CoreKit\Infra\FixPostgreSQLDefaultSchemaListener:
         tags:
             - { name: doctrine.event_listener, event: postGenerateSchema }

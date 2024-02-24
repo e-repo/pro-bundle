@@ -3,5 +3,5 @@ services:
         autowire: true
         autoconfigure: true
 
-    Test\Functional\:
-        resource: '../tests/Functional/**/*Fixture.php'
+    Test\:
+        resource: '%kernel.project_dir%/tests/**/*Fixture.php'
