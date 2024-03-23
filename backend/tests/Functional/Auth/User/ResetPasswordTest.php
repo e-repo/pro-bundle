@@ -44,9 +44,9 @@ final class ResetPasswordTest extends FunctionalTestCase
 
         $expectedResponse = [
             'data' => [
-                'status' => 'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту'
+                'status' => 'Запрос на сброс пароля успешно зарегистрирован, для дальнейших действий перейдите в указанную почту',
             ],
-            'meta' => null
+            'meta' => null,
         ];
 
         // action
@@ -101,9 +101,9 @@ final class ResetPasswordTest extends FunctionalTestCase
                 [
                     'detail' => 'Пользователь по указанному email не найден',
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action
@@ -142,9 +142,9 @@ final class ResetPasswordTest extends FunctionalTestCase
                 [
                     'detail' => 'Невозможно сбросить пароль т.к пользователь не является активным',
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action
@@ -183,9 +183,9 @@ final class ResetPasswordTest extends FunctionalTestCase
                 [
                     'detail' => 'Запрос на сброс пароля уже был отправлен. Действует в течении суток',
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action
@@ -198,7 +198,7 @@ final class ResetPasswordTest extends FunctionalTestCase
             ]
         );
 
-//        $this->entityManager->clear();
+        //        $this->entityManager->clear();
 
         $client->jsonRequest(
             method: 'POST',

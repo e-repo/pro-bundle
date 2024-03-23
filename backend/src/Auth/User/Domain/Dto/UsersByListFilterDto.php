@@ -12,6 +12,5 @@ final readonly class UsersByListFilterDto
     public function __construct(
         public array $userList,
         public int $total
-    ) {
-    }
+    ) {}
 }

@@ -11,6 +11,5 @@ final readonly class Command
         public string $email,
         public string $password,
         public string $registrationSource,
-    ) {
-    }
+    ) {}
 }

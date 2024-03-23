@@ -43,9 +43,9 @@ final class ConfirmEmailTest extends FunctionalTestCase
 
         $expectedResponse = [
             'data' => [
-                'status' => 'Email пользователя успешно подтвержден.'
+                'status' => 'Email пользователя успешно подтвержден.',
             ],
-            'meta' => null
+            'meta' => null,
         ];
 
         // action
@@ -85,9 +85,9 @@ final class ConfirmEmailTest extends FunctionalTestCase
                 [
                     'detail' => 'Передан не верный токен для подтверждения email.',
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action
@@ -127,9 +127,9 @@ final class ConfirmEmailTest extends FunctionalTestCase
                 [
                     'detail' => sprintf('Пользователь с идентификатором %s не найден.', $fakeUserId),
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action

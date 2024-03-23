@@ -10,12 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 final readonly class NameVo
 {
     public function __construct(
-        #[ORM\Column(length: 255, options: ['comment' => 'Имя'])]
+        #[ORM\Column(length: 255, options: [
+            'comment' => 'Имя',
+        ])]
         public string $first,
-        #[ORM\Column(length: 255, nullable: true, options: ['comment' => 'Фамилия'])]
+        #[ORM\Column(length: 255, nullable: true, options: [
+            'comment' => 'Фамилия',
+        ])]
         public ?string $last = null,
-    ) {
-    }
+    ) {}
 
     public function fullName(): string
     {

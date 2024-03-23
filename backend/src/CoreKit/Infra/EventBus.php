@@ -11,8 +11,7 @@ final class EventBus implements EventBusInterface
 {
     public function __construct(
         private MessageBusInterface $eventBus,
-    ) {
-    }
+    ) {}
 
     public function publish(object $event): void
     {

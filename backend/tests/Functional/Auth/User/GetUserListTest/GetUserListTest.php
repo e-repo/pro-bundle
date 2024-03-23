@@ -47,7 +47,7 @@ final class GetUserListTest extends FunctionalTestCase
         ];
 
         $expectedUserIds = array_map(
-            static fn(array $user) => $user['id'],
+            static fn (array $user) => $user['id'],
             UserFixture::allItems()
         );
 
@@ -96,7 +96,7 @@ final class GetUserListTest extends FunctionalTestCase
             parameters: [
                 'offset' => $offset,
                 'limit' => $limit,
-                'firstName' => 'TestFirstName_1'
+                'firstName' => 'TestFirstName_1',
             ]
         );
 
@@ -131,7 +131,7 @@ final class GetUserListTest extends FunctionalTestCase
             parameters: [
                 'offset' => $offset,
                 'limit' => $limit,
-                'lastName' => 'TestLastName_1'
+                'lastName' => 'TestLastName_1',
             ]
         );
 
@@ -163,7 +163,7 @@ final class GetUserListTest extends FunctionalTestCase
             parameters: [
                 'offset' => $offset,
                 'limit' => $limit,
-                'email' => 'test_2@test.ru'
+                'email' => 'test_2@test.ru',
             ]
         );
 
@@ -193,7 +193,7 @@ final class GetUserListTest extends FunctionalTestCase
             parameters: [
                 'offset' => $offset,
                 'limit' => $limit,
-                'role' => 'ROLE_ADMIN'
+                'role' => 'ROLE_ADMIN',
             ]
         );
 
@@ -221,7 +221,7 @@ final class GetUserListTest extends FunctionalTestCase
             parameters: [
                 'offset' => $offset,
                 'limit' => $limit,
-                'status' => 'blocked'
+                'status' => 'blocked',
             ]
         );
 

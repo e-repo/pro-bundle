@@ -15,7 +15,6 @@ BE-MAILER=bb-mailer
 # fe admin services
 ADMIN_NODE=fb-admin-node
 ADMIN_NGINX=fb-admin-nginx
-ADMIN_NODE=fb-admin-node
 
 
 # init apps

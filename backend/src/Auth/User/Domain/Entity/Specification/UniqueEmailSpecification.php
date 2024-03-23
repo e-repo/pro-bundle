@@ -11,12 +11,13 @@ final readonly class UniqueEmailSpecification
 {
     public function __construct(
         private UserRepositoryInterface $userRepository
-    ) {
-    }
+    ) {}
 
     public function isSatisfiedBy(User $user): bool
     {
-        $user  = $this->userRepository->findByEmail($user->getEmail());
+        $user = $this->userRepository->findByEmail(
+            $user->getEmail()->value
+        );
 
         return null === $user;
     }

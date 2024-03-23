@@ -19,8 +19,7 @@ final readonly class Handler implements CommandHandlerInterface
         private Hasher $hasher,
         private UserRepositoryInterface $userRepository,
         private UniqueEmailSpecification $uniqueEmailSpecification,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Command $command): void
     {

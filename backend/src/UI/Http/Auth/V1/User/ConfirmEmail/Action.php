@@ -50,8 +50,7 @@ final class Action extends AbstractController
 {
     public function __construct(
         private readonly CommandBusInterface $commandBus,
-    ) {
-    }
+    ) {}
 
     #[Route(
         path: 'api/auth/v1/user/confirm-email',

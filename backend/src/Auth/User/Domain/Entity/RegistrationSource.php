@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Auth\User\Domain\Entity;
 
 enum RegistrationSource: string

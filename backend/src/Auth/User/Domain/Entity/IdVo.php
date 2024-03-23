@@ -11,8 +11,7 @@ final readonly class IdVo implements Stringable
 {
     public function __construct(
         public string $value
-    ) {
-    }
+    ) {}
 
     public static function next(): self
     {

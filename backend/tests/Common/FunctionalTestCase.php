@@ -10,6 +10,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\BrowserKitAssertionsTrait;
@@ -23,11 +24,17 @@ class FunctionalTestCase extends KernelTestCase
     use BrowserKitAssertionsTrait;
 
     protected ContainerInterface $container;
+
     protected Application $application;
+
     protected EntityManager $entityManager;
+
     protected QueryBuilder $queryBuilder;
+
     protected AbstractDatabaseTool $databaseTool;
+
     protected Generator $faker;
+
     protected ?MessageLoggerListener $mailerListener;
 
     public function setUp(): void
@@ -64,9 +71,9 @@ class FunctionalTestCase extends KernelTestCase
             $client = $this->container->get('test.client');
         } catch (ServiceNotFoundException) {
             if (class_exists(KernelBrowser::class)) {
-                throw new \LogicException('You cannot create the client used in functional tests if the "framework.test" config is not set to true.');
+                throw new LogicException('You cannot create the client used in functional tests if the "framework.test" config is not set to true.');
             }
-            throw new \LogicException('You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".');
+            throw new LogicException('You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".');
         }
 
         $client->setServerParameters($server);

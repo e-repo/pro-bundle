@@ -17,8 +17,7 @@ final class BooleanAttributeDenormalizer
 
     public function __construct(
         private DenormalizerInterface $denormalizer,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws ExceptionInterface
@@ -37,7 +36,7 @@ final class BooleanAttributeDenormalizer
 
     private function castBooleanFields(string $className, array $data): array
     {
-        $dto = new $className;
+        $dto = new $className();
         $reflection = new ReflectionClass($dto);
 
         foreach ($reflection->getProperties() as $property) {
@@ -73,7 +72,7 @@ final class BooleanAttributeDenormalizer
                 $violations = new ConstraintViolationList([
                     $this->createConstraintViolation(
                         message: sprintf("Ошибка определения значения для '%s'", $propertyName),
-                    )
+                    ),
                 ]);
 
                 throw new ViolationException($violations);

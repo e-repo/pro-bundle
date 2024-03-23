@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace UI\Http\Common\Response;
 
-use UI\Http\Common\Response\Violation\ViolationItem;
-
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use UI\Http\Common\Response\Violation\ViolationItem;
 
 final readonly class Violation
 {

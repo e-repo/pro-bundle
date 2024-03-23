@@ -19,8 +19,7 @@ final class UserFixture extends Fixture
     public function __construct(
         private readonly Hasher $hasher,
         private readonly UniqueEmailSpecification $uniqueEmailSpecification,
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {
@@ -62,7 +61,7 @@ final class UserFixture extends Fixture
                 'email' => 'test_1@test.ru',
                 'password' => 'secret_1',
                 'status' => 'wait',
-                'registrationSource' => 'blog'
+                'registrationSource' => 'blog',
             ],
             [
                 'id' => '125d7cd7-0b77-409a-bc5c-19b44416a5fa',
@@ -71,7 +70,7 @@ final class UserFixture extends Fixture
                 'email' => 'test_2@test.ru',
                 'password' => 'secret_2',
                 'status' => 'active',
-                'registrationSource' => 'blog'
+                'registrationSource' => 'blog',
             ],
             [
                 'id' => '76c3a2d9-49fd-4fbd-a0f4-0022d38dbaba',
@@ -80,7 +79,7 @@ final class UserFixture extends Fixture
                 'email' => 'test_3@test.ru',
                 'password' => 'secret_3',
                 'status' => 'blocked',
-                'registrationSource' => 'blog'
+                'registrationSource' => 'blog',
             ],
         ];
     }

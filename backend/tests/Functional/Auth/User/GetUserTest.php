@@ -68,9 +68,9 @@ final class GetUserTest extends FunctionalTestCase
                 [
                     'detail' => sprintf("Пользователь по идентификатору '%s' не найден", $invalidUserId),
                     'source' => '',
-                    'data' => []
-                ]
-            ]
+                    'data' => [],
+                ],
+            ],
         ];
 
         // action

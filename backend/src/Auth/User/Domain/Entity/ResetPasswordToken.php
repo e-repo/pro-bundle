@@ -3,21 +3,25 @@
 declare(strict_types=1);
 
 namespace Auth\User\Domain\Entity;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
 final class ResetPasswordToken
 {
-    #[ORM\Column(length: 50, nullable: true, options: ['comment' => 'Токен сброса пароля'])]
+    #[ORM\Column(length: 50, nullable: true, options: [
+        'comment' => 'Токен сброса пароля',
+    ])]
     private ?string $resetPasswordToken;
 
     #[ORM\Column(
         type: Types::DATETIMETZ_IMMUTABLE,
         nullable: true,
-        options: ['comment' => 'Дата действия токена сброса пароля']
+        options: [
+            'comment' => 'Дата действия токена сброса пароля',
+        ]
     )]
     private ?DateTimeImmutable $passwordTokenExpires;
 
@@ -29,7 +33,7 @@ final class ResetPasswordToken
         $this->passwordTokenExpires = $passwordTokenExpires;
     }
 
-    public function isExpired(\DateTimeImmutable $date): bool
+    public function isExpired(DateTimeImmutable $date): bool
     {
         return $this->passwordTokenExpires <= $date;
     }
@@ -39,7 +43,7 @@ final class ResetPasswordToken
         return $this->resetPasswordToken;
     }
 
-    public function getPasswordTokenExpires(): ?\DateTimeImmutable
+    public function getPasswordTokenExpires(): ?DateTimeImmutable
     {
         return $this->passwordTokenExpires;
     }

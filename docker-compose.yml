@@ -52,6 +52,7 @@ services:
             PHP_IDE_CONFIG: "serverName=bb.local"
         volumes:
             - ./backend/:/app
+            - ./.git:/app/.git
             - vol-bb-composer:/root/.composer/cache
         depends_on:
             - bb-postgres

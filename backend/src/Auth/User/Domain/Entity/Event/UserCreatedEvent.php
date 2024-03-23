@@ -20,8 +20,7 @@ final readonly class UserCreatedEvent implements EventInterface, UserCreatedEven
         private string $role,
         private string $registrationSource,
         private DateTimeImmutable $createdAt,
-    ) {
-    }
+    ) {}
 
     public function getId(): string
     {

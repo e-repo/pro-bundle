@@ -10,8 +10,7 @@ final readonly class Hasher
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function hash(PasswordHashedUserInterface $user): void
     {

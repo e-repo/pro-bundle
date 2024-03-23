@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CoreKit\Infra;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

@@ -102,7 +102,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
             ->select('count(*)')
             ->fetchOne();
 
-        return $count ? (int)$count : 0;
+        return $count ? (int) $count : 0;
     }
 
     /**

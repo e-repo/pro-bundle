@@ -8,6 +8,5 @@ final readonly class Query
 {
     public function __construct(
         public string $userId,
-    ) {
-    }
+    ) {}
 }

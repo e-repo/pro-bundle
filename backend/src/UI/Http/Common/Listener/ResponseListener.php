@@ -12,8 +12,7 @@ final readonly class ResponseListener
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ViewEvent $event): void
     {

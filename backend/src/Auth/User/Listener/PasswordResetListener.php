@@ -6,6 +6,7 @@ namespace Auth\User\Listener;
 
 use Auth\User\Domain\Entity\Event\UserPasswordResetEvent;
 use CoreKit\Application\Bus\EventListenerInterface;
+use DomainException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -22,8 +23,7 @@ final readonly class PasswordResetListener implements EventListenerInterface
         private Environment $twig,
         private string $appEmail,
         private array $registrationSources,
-    ) {
-    }
+    ) {}
 
     /**
      * @param UserPasswordResetEvent $event
@@ -48,7 +48,7 @@ final readonly class PasswordResetListener implements EventListenerInterface
         $domain = $this->registrationSources[$event->registrationSource] ?? null;
 
         if (null === $domain) {
-            throw new \DomainException('Источник регистрации не определен.');
+            throw new DomainException('Источник регистрации не определен.');
         }
 
         return (new TemplatedEmail())
@@ -56,7 +56,7 @@ final readonly class PasswordResetListener implements EventListenerInterface
             ->to($event->email)
             ->html($this->twig->render('mail/auth/reset-password.html.twig', [
                 'token' => $event->resetPasswordToken,
-                'domain' => $domain
+                'domain' => $domain,
             ]));
     }
 }

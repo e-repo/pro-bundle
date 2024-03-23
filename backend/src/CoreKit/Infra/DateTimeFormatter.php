@@ -11,8 +11,7 @@ final readonly class DateTimeFormatter
 {
     public function __construct(
         private string $timezone,
-    ) {
-    }
+    ) {}
 
     public function toMskTimezone(DateTimeImmutable $dateTime): DateTimeImmutable
     {

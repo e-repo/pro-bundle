@@ -31,9 +31,9 @@ final class SignUpTest extends FunctionalTestCase
 
         $expectedResponse = [
             'data' => [
-                'status' => 'Пользователь создан успешно.'
+                'status' => 'Пользователь создан успешно.',
             ],
-            'meta' => null
+            'meta' => null,
         ];
 
         $client = $this->createClient();
@@ -46,7 +46,7 @@ final class SignUpTest extends FunctionalTestCase
                 'firstName' => $userFirstName,
                 'email' => $userEmail,
                 'password' => 'secret',
-                'registrationSource' => $registrationSource
+                'registrationSource' => $registrationSource,
             ]
         );
 
@@ -86,7 +86,7 @@ final class SignUpTest extends FunctionalTestCase
         $this->databaseTool
             ->withPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE)
             ->loadFixtures([
-                UserFixture::class
+                UserFixture::class,
             ]);
 
         $loadedUser = UserFixture::allItems()[0];
@@ -99,10 +99,10 @@ final class SignUpTest extends FunctionalTestCase
                     'detail' => 'Пользователь с данным email уже существует.',
                     'source' => '',
                     'data' => [
-                        'email' => $loadedUser['email']
-                    ]
-                ]
-            ]
+                        'email' => $loadedUser['email'],
+                    ],
+                ],
+            ],
         ];
 
         // action

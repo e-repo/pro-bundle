@@ -49,7 +49,9 @@ final readonly class RequestArgumentResolver implements ValueResolverInterface
             ->denormalize(
                 data: $payload,
                 type: $argumentType,
-                context: ['disable_type_enforcement' => true]
+                context: [
+                    'disable_type_enforcement' => true,
+                ]
             );
     }
 

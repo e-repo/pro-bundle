@@ -13,6 +13,5 @@ final readonly class Request
         #[Assert\NotBlank(message: 'Не указан идентификатор пользователя.')]
         #[Assert\Length(min: 36, minMessage: 'Идентификатор пользователя не может быть менее 36 символов.')]
         public string $userId,
-    ) {
-    }
+    ) {}
 }

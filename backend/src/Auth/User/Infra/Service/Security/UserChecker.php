@@ -21,7 +21,5 @@ final class UserChecker implements UserCheckerInterface
         }
     }
 
-    public function checkPostAuth(UserInterface $user): void
-    {
-    }
+    public function checkPostAuth(UserInterface $user): void {}
 }

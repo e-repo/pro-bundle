@@ -14,6 +14,5 @@ final class Query
         public ?string $email,
         public ?string $role,
         public ?string $status,
-    ) {
-    }
+    ) {}
 }

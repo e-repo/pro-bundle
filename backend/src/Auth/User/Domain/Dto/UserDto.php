@@ -17,6 +17,5 @@ final readonly class UserDto
         public string $role,
         public string $status,
         public DateTimeImmutable $createdAt,
-    ) {
-    }
+    ) {}
 }

@@ -22,14 +22,14 @@ final class FixPostgreSQLDefaultSchemaListener
             ->getConnection()
             ->getSchemaManager();
 
-        if (!$schemaManager instanceof PostgreSQLSchemaManager) {
+        if (! $schemaManager instanceof PostgreSQLSchemaManager) {
             return;
         }
 
         $schema = $args->getSchema();
 
         foreach ($schemaManager->getExistingSchemaSearchPaths() as $namespace) {
-            if (!$schema->hasNamespace($namespace)) {
+            if (! $schema->hasNamespace($namespace)) {
                 $schema->createNamespace($namespace);
             }
         }

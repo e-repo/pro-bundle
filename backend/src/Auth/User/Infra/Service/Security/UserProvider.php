@@ -16,8 +16,7 @@ final readonly class UserProvider implements UserProviderInterface
 {
     public function __construct(
         private UserFetcherInterface $userFetcher
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception

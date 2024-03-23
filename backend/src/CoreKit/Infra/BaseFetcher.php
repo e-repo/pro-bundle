@@ -11,8 +11,7 @@ readonly class BaseFetcher
 {
     public function __construct(
         private Connection $connection
-    ) {
-    }
+    ) {}
 
     protected function createDBALQueryBuilder(): QueryBuilder
     {

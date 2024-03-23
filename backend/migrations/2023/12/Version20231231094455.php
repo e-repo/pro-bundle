@@ -21,7 +21,8 @@ final class Version20231231094455 extends AbstractMigration
     {
         $this->addSql('CREATE SEQUENCE refresh_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
 
-        $this->addSql('
+        $this->addSql(
+            '
             CREATE TABLE "auth"."refresh_tokens" (
                 id INT NOT NULL, 
                 refresh_token VARCHAR(128) NOT NULL, 

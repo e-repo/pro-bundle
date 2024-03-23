@@ -10,6 +10,5 @@ final readonly class ResponseMeta
         public int $offset,
         public int $limit = 100,
         public int $total = 0,
-    ) {
-    }
+    ) {}
 }

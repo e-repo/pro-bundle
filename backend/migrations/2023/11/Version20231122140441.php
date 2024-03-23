@@ -21,7 +21,8 @@ final class Version20231122140441 extends AbstractMigration
     {
         $this->addSql('CREATE SCHEMA IF NOT EXISTS auth');
 
-        $this->addSql('CREATE TABLE "auth"."user" (
+        $this->addSql(
+            'CREATE TABLE "auth"."user" (
                 id UUID NOT NULL, 
                 email VARCHAR(100) NOT NULL, 
                 email_confirm_token VARCHAR(50) DEFAULT NULL, 

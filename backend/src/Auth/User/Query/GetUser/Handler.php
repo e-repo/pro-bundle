@@ -12,8 +12,7 @@ final readonly class Handler implements QueryHandlerInterface
 {
     public function __construct(
         private UserFetcherInterface $userFetcher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Query $query): GetUserDto
     {

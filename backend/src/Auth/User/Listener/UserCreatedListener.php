@@ -23,8 +23,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
         private Environment $twig,
         private string $appEmail,
         private array $registrationSources,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws SyntaxError
@@ -72,7 +71,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
             ->html($this->twig->render('mail/auth/signup.html.twig', [
                 'userId' => $event->getId(),
                 'token' => $event->getEmailConfirmToken(),
-                'domain' => $domain
+                'domain' => $domain,
             ]));
     }
 }

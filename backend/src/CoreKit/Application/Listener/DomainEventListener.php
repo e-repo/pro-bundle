@@ -16,8 +16,7 @@ final readonly class DomainEventListener
 {
     public function __construct(
         private EventBusInterface $eventBus,
-    ) {
-    }
+    ) {}
 
     public function onFlush(OnFlushEventArgs $args): void
     {

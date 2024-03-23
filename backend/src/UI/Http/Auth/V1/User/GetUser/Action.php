@@ -65,13 +65,14 @@ final class Action extends AbstractController
         private readonly ValidatorInterface $validator,
         private readonly QueryBusInterface $queryBus,
         private readonly DateTimeFormatter $dateTimeFormatter,
-    ) {
-    }
+    ) {}
 
     #[Route(
         path: 'api/auth/v1/user/{id}',
         name: 'auth_get-user',
-        requirements: ['id' => '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'], // UUID
+        requirements: [
+            'id' => '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+        ], // UUID
         methods: ['GET']
     )]
     public function __invoke(string $id): ResponseWrapper

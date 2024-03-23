@@ -101,7 +101,7 @@ final readonly class ExceptionListener
                         detail: $message,
                         source: $this->isDebug ? $throwable->getTraceAsString() : '',
                         data: $exceptionData,
-                    )
+                    ),
                 ]
             ),
             status: $exceptionAttributes->code

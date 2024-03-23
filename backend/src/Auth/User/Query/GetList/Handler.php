@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Auth\User\Query\GetList;
 
-use Auth\User\Domain\Dto\GetUserDto;
 use Auth\User\Domain\Dto\UsersByListFilterDto;
 use Auth\User\Domain\Fetcher\ListFilter;
 use Auth\User\Domain\Fetcher\UserFetcherInterface;
@@ -14,8 +13,7 @@ final readonly class Handler implements QueryHandlerInterface
 {
     public function __construct(
         private UserFetcherInterface $userFetcher,
-    ) {
-    }
+    ) {}
 
     /**
      * @param Query $query

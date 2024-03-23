@@ -28,7 +28,7 @@ final readonly class ResponseFactory
                 context: array_merge(
                     [
                         'json_encode_options' =>
-                            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE
+                            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE,
                     ],
                     $context
                 )

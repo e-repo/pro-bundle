@@ -6,8 +6,8 @@ namespace UI\Http\Auth\V1\User\GetList;
 
 use Auth\User\Domain\Entity\Role;
 use Auth\User\Domain\Entity\Status;
-use UI\Http\Common\Request\RequestPayloadInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use UI\Http\Common\Request\RequestPayloadInterface;
 
 final class Request implements RequestPayloadInterface
 {

@@ -12,6 +12,5 @@ final class ListFilter
         public ?string $email,
         public ?string $role,
         public ?string $status,
-    ) {
-    }
+    ) {}
 }

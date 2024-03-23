@@ -9,12 +9,12 @@ use Auth\User\Domain\Dto\UsersByListFilterDto;
 use Auth\User\Query\GetList\Query;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\OpenApiDateTime;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Common\Response\ResponseMeta;
 use UI\Http\Common\Response\ResponseWrapper;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 use UI\Http\Common\Response\Violation;
 
 #[OA\Tag(name: 'Регистрация')]
@@ -100,8 +100,7 @@ final class Action extends AbstractController
 {
     public function __construct(
         private readonly QueryBusInterface $queryBus,
-    ) {
-    }
+    ) {}
 
     #[Route(
         path: 'api/auth/v1/user/list',

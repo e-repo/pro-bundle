@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Auth\User\Domain\Entity;
 
 use Auth\User\Domain\Entity\Event\UserCreatedEvent;
@@ -23,7 +25,9 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     use EventRecordTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'user_id', options: ['comment' => 'Код пользователя'])]
+    #[ORM\Column(type: 'user_id', options: [
+        'comment' => 'Код пользователя',
+    ])]
     private IdVo $id;
 
     #[ORM\Embedded(NameVo::class)]
@@ -32,23 +36,34 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     #[ORM\Column(type: 'user_email', length: 100, unique: true)]
     private EmailVo $email;
 
-    #[ORM\Column(length: 50, nullable: true, options: ['comment' => 'Токен для подтверждения email'])]
+    #[ORM\Column(length: 50, nullable: true, options: [
+        'comment' => 'Токен для подтверждения email',
+    ])]
     private ?string $emailConfirmToken = null;
 
-    #[ORM\Column(length: 50, enumType: Status::class, options: ['comment' => 'Статус пользователя'])]
+    #[ORM\Column(length: 50, enumType: Status::class, options: [
+        'comment' => 'Статус пользователя',
+    ])]
     private Status $status;
 
-    #[ORM\Column(length: 100, enumType: Role::class, options: ['comment' => 'Роль пользователя'])]
+    #[ORM\Column(length: 100, enumType: Role::class, options: [
+        'comment' => 'Роль пользователя',
+    ])]
     private Role $role;
 
-    #[ORM\Column(length: 255, options: ['comment' => 'Хэш пароля'])]
+    #[ORM\Column(length: 255, options: [
+        'comment' => 'Хэш пароля',
+    ])]
     private string $passwordHash;
 
     #[ORM\Column(
         length: 100,
         nullable: true,
         enumType: RegistrationSource::class,
-        options: ['comment' => 'Система-источник регистрации пользователя'])
+        options: [
+            'comment' => 'Система-источник регистрации пользователя',
+        ]
+    )
     ]
     private RegistrationSource $registrationSource;
 
@@ -59,11 +74,15 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         type: 'user_email',
         length: 100,
         nullable: true,
-        options: ['comment' => 'Новый email (при смене)']
+        options: [
+            'comment' => 'Новый email (при смене)',
+        ]
     )]
     private ?EmailVo $newEmail = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, options: ['comment' => 'Дата создания пользователя'])]
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, options: [
+        'comment' => 'Дата создания пользователя',
+    ])]
     private DateTimeImmutable $createdAt;
 
     public function __construct(
@@ -87,7 +106,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->createdAt = new DateTimeImmutable();
 
         if (! $uniqueEmailSpecification->isSatisfiedBy($this)) {
-            throw new EmailNotUniqueException($email);
+            throw new EmailNotUniqueException($email->value);
         }
 
         $hasher->hash($this);
@@ -104,7 +123,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return $this->name;
     }
 
-    public function getEmail(): string
+    public function getEmail(): EmailVo
     {
         return $this->email;
     }
@@ -121,7 +140,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
 
     public function getPassword(): string
     {
-        return  $this->passwordHash;
+        return $this->passwordHash;
     }
 
     public function getRegistrationSource(): RegistrationSource
@@ -178,7 +197,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
 
         $this->record(
             new UserPasswordResetEvent(
-                email: $this->email,
+                email: $this->email->value,
                 resetPasswordToken: $this->resetPasswordToken->getToken(),
                 passwordTokenExpires: $this->resetPasswordToken->getPasswordTokenExpires(),
                 registrationSource: $registrationSource

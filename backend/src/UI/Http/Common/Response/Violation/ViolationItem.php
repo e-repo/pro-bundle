@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace UI\Http\Common\Response\Violation;
+
 use OpenApi\Attributes as OA;
 
 final readonly class ViolationItem

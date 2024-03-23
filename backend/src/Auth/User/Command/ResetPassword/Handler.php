@@ -12,8 +12,7 @@ final readonly class Handler implements CommandHandlerInterface
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Command $command): void
     {

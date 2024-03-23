@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CoreKit\Domain\Entity;
 
 use Symfony\Contracts\EventDispatcher\Event;

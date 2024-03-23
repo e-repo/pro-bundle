@@ -18,8 +18,7 @@ final readonly class UserIdentity implements UserInterface, EquatableInterface, 
         public string $passwordHash,
         public string $role,
         public string $status,
-    ) {
-    }
+    ) {}
 
     public function isEqualTo(UserInterface $user): bool
     {
@@ -49,9 +48,7 @@ final readonly class UserIdentity implements UserInterface, EquatableInterface, 
         return $this->status === Status::ACTIVE->value;
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function getPassword(): ?string
     {

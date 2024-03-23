@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Auth\User\Infra\Repository;
 
 use Auth\User\Domain\Entity\EmailVo;
@@ -30,6 +32,8 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function findByEmail(string $email): ?User
     {
-        return $this->findOneBy(['email' => new EmailVo($email)]);
+        return $this->findOneBy([
+            'email' => new EmailVo($email),
+        ]);
     }
 }
