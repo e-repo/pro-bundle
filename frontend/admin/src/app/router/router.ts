@@ -1,8 +1,6 @@
-import Main from '@layout/main/main.vue';
-import Login from '@layout/login/login.vue';
-import RecoverPassword from '@layout/recover-password/recover-password.vue';
+import { AuthLayout } from '@/shared/ui/layout';
 
-import auth from './middleware/auth.ts';
+// import auth from './middleware/auth.ts';
 import guest from './middleware/guest.ts';
 import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/type';
 import middlewarePipeline from './middleware/middlewarePaipline.ts';
@@ -17,21 +15,22 @@ import {
 } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-	{
-		path: '/',
-		name: 'Main',
-		component: Main,
-		meta: {
-			middleware: [
-				auth,
-			] as Middleware[]
-		}
-	},
+	// {
+	// 	path: '/',
+	// 	name: 'Main',
+	// 	component: () => import('@layout/main/main.vue'),
+	// 	meta: {
+	// 		middleware: [
+	// 			auth,
+	// 		] as Middleware[]
+	// 	}
+	// },
 	{
 		path: '/login',
 		name: 'Login',
-		component: Login,
+		component: () => import('@/pages/auth/login'),
 		meta: {
+			layout: AuthLayout,
 			middleware: [
 				guest,
 			] as Middleware[]
@@ -40,8 +39,9 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: '/recover-password',
 		name: 'RecoverPassword',
-		component: RecoverPassword,
+		component: import('@/pages/auth/restore-password'),
 		meta: {
+			layout: AuthLayout,
 			middleware: [
 				guest,
 			] as Middleware[]
