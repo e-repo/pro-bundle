@@ -8,10 +8,10 @@ security:
 
     firewalls:
         login:
-            pattern: ^/api/login
+            pattern: ^/api/auth/login
             stateless: true
             json_login:
-                check_path: /api/login_check
+                check_path: api_login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 

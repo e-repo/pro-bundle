@@ -7,6 +7,7 @@ namespace Auth\User\Domain\Entity;
 enum RegistrationSource: string
 {
     case BLOG = 'blog';
+    case SYSTEM = 'system';
 
     public static function values(): array
     {

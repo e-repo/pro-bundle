@@ -3,7 +3,7 @@ controllers:
     type: annotation
 
 api_login_check:
-    path: /api/login_check
+    path: /api/auth/login-check
 
 api_refresh_token:
-    path: /api/token/refresh
+    path: /api/auth/token-refresh
