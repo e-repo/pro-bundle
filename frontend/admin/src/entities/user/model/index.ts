@@ -1,0 +1,77 @@
+import { defineStore } from 'pinia';
+import { UserApi } from '../index';
+
+interface AuthStoreUser {
+	isAuthenticated: boolean,
+	token: string|null,
+	refreshToken: string|null,
+}
+
+interface UserToken {
+	token: string,
+	refreshToken: string,
+}
+
+export interface AuthStore {
+	user: AuthStoreUser,
+}
+
+export const useUserModel = defineStore({
+	id: 'user',
+
+	state: () => ({
+		user: {
+			isAuthenticated: false,
+			token: null,
+			refreshToken: null
+		}
+	} as AuthStore),
+
+	actions: {
+		async singIn(username: string, password: string) {
+			const result = await UserApi.fetchToken(username, password);
+
+			this.setToken({
+				token: result.token,
+				refreshToken: result.refresh_token
+			});
+
+		},
+		async refreshToken() {
+			if (null === this.user.refreshToken) {
+				throw new TypeError('Не найден токен для обновления.');
+			}
+
+			const result = await UserApi.refreshToken(this.user.refreshToken);
+
+			this.setToken({
+				token: result.token,
+				refreshToken: result.refresh_token
+			});
+		},
+		setToken(userToken: UserToken) {
+			const localStorage = window.localStorage;
+
+			this.user.isAuthenticated = true;
+			this.user.token = userToken.token;
+			this.user.refreshToken = userToken.refreshToken;
+
+			localStorage.setItem('user', JSON.stringify({
+				token: userToken.token,
+				refreshToken: userToken.refreshToken,
+			}));
+		}
+	},
+
+	getters: {
+		getToken(): string|null {
+			return this.user.token;
+		},
+		getRefreshToken(): string|null {
+			return this.user.refreshToken;
+		},
+		isAuthenticated(): boolean {
+			return this.user.isAuthenticated;
+		}
+	}
+});

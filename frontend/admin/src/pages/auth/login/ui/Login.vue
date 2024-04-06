@@ -13,6 +13,12 @@
 						<v-card-title>
 							<h4 class="text-center">Админка</h4>
 						</v-card-title>
+						<v-alert
+							v-if="loginForm.serverError"
+							text="Не корректные логин или пароль, проверьте правильность ввода учетных данных!"
+							type="error"
+							variant="outlined"
+						></v-alert>
 					</v-card-item>
 
 					<v-divider class="mx-4 mb-2"></v-divider>
@@ -88,10 +94,15 @@
 </template>
 
 <script setup lang="ts">
-import { RuleType, emailPattern, requiredRule } from '@/shared/lib/form/validation';
-import { reactive, ref } from 'vue';
+import { FormHelper } from '@/shared/lib';
+import { reactive, ref, watch } from 'vue';
+import { useUserModel } from '@/entities/user';
+import { AxiosError } from 'axios';
+
+const userModel = useUserModel();
 
 interface LoginForm {
+	serverError: boolean;
 	isValid: boolean;
 	email: string | null;
 	password: string | null;
@@ -99,41 +110,57 @@ interface LoginForm {
 }
 
 const loginForm = reactive<LoginForm>({
+	serverError: false,
 	isValid: false,
 	email: null,
 	password: null,
 	loading: false,
 })
 
-const onSubmit = (): void => {
+const onSubmit = async (): Promise<void> => {
 	if (! loginForm.isValid) {
 		return;
 	}
 
 	loginForm.loading = true;
 
-	console.log(loginForm);
+	try {
+		await userModel.singIn(loginForm.email as string, loginForm.password as string);
+	} catch (error: any) {
+		loginForm.loading = false;
+		loginForm.isValid = false;
 
-	setTimeout(() => (loginForm.loading = false), 2000);
+		if (error instanceof AxiosError) {
+			loginForm.serverError = true;
+
+			return;
+		}
+
+		alert(error.message);
+	}
 };
 
 const isPassShow = ref<boolean>(true);
 
 const emailRules = {
-	required: requiredRule,
-	email: (value: string): RuleType => emailPattern.test(value) || 'Некорректный \'Email\'',
+	required: FormHelper.requiredRule,
+	email: (value: string): FormHelper.RuleType => FormHelper.emailPattern.test(value) || 'Некорректный \'Email\'',
 };
 
 const passRules = {
-	required: requiredRule,
-	counter: (value: string): RuleType => {
-		if (value.length <= 8) {
-			return 'Длинна пароля не менее 8-ми символов';
+	required: FormHelper.requiredRule,
+	counter: (value: string): FormHelper.RuleType => {
+		if (value.length < 6) {
+			return 'Длинна пароля не менее 6-ти символов';
 		}
 
 		return value.length <= 20 || 'Максимальное число символов 20';
 	}
 };
+
+watch([() => loginForm.email, () => loginForm.password],(): void => {
+	loginForm.serverError = false
+})
 </script>
 
 <style scoped></style>

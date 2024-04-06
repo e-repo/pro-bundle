@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { RuleType, requiredRule } from '@/shared/lib/form/validation';
+import { FormHelper } from '@/shared/lib';
 import { reactive, ref } from 'vue';
 
 interface RestoreForm {
@@ -113,8 +113,8 @@ const isPassShow = ref<boolean>(true);
 const isNewPassShow = ref<boolean>(true);
 
 const passRules = {
-	required: requiredRule,
-	counter: (value: string): RuleType => {
+	required: FormHelper.requiredRule,
+	counter: (value: string): FormHelper.RuleType => {
 		if (value.length <= 8) {
 			return 'Длинна пароля не менее 8-ми символов';
 		}
@@ -124,15 +124,15 @@ const passRules = {
 };
 
 const newPassRules = {
-	required: requiredRule,
-	counter: (value: string): RuleType => {
+	required: FormHelper.requiredRule,
+	counter: (value: string): FormHelper.RuleType => {
 		if (value.length <= 8) {
 			return 'Длинна пароля не менее 8-ми символов';
 		}
 
 		return value.length <= 20 || 'Максимальное число символов 20';
 	},
-	equal: (): RuleType =>
+	equal: (): FormHelper.RuleType =>
 		restoreForm.password === restoreForm.newPassword || 'Пароли не совпадают.',
 };
 </script>
