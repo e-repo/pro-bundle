@@ -17,6 +17,7 @@
     "gesdinet/jwt-refresh-token-bundle": "^1.2",
     "lexik/jwt-authentication-bundle": "^2.20",
     "nelmio/api-doc-bundle": "^4.12",
+    "nelmio/cors-bundle": "^2.4",
     "ramsey/uuid": "*",
     "scienta/doctrine-json-functions": "~4.3",
     "symfony/asset": "6.3.*",

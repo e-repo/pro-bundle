@@ -3,6 +3,9 @@
         "verbosity": "verbose",
         "git-directory": "./../.git"
     },
+    "run": {
+        "git": "/app/.git"
+    },
     "pre-commit": {
         "enabled": true,
         "actions": [
