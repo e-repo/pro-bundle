@@ -98,8 +98,11 @@ import { FormHelper } from '@/shared/lib';
 import { reactive, ref, watch } from 'vue';
 import { useUserModel } from '@/entities/user';
 import { AxiosError } from 'axios';
+import { useRouter } from 'vue-router';
 
 const userModel = useUserModel();
+const router = useRouter();
+
 
 interface LoginForm {
 	serverError: boolean;
@@ -126,6 +129,8 @@ const onSubmit = async (): Promise<void> => {
 
 	try {
 		await userModel.singIn(loginForm.email as string, loginForm.password as string);
+
+		await router.push({name: 'Home'});
 	} catch (error: any) {
 		loginForm.loading = false;
 		loginForm.isValid = false;
@@ -135,8 +140,6 @@ const onSubmit = async (): Promise<void> => {
 
 			return;
 		}
-
-		alert(error.message);
 	}
 };
 

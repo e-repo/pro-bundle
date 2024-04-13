@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareContext, NextMiddlewareCallable } from './type';
+import { Middleware, MiddlewareContext, NextMiddlewareCallable } from './types';
 
-export default function middlewarePipeline(
+export default function useMiddlewarePipeline(
 	context: MiddlewareContext,
 	middlewares: Middleware[],
 	index: number
@@ -12,7 +12,7 @@ export default function middlewarePipeline(
 	}
 
 	return () => {
-		const nextPipeline = middlewarePipeline(context, middlewares, index + 1);
+		const nextPipeline = useMiddlewarePipeline(context, middlewares, index + 1);
 
 		nextMiddleware({ ...context, nextMiddleware: nextPipeline });
 	};

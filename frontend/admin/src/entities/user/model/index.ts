@@ -35,7 +35,6 @@ export const useUserModel = defineStore({
 				token: result.token,
 				refreshToken: result.refresh_token
 			});
-
 		},
 		async refreshToken() {
 			if (null === this.user.refreshToken) {
@@ -50,16 +49,9 @@ export const useUserModel = defineStore({
 			});
 		},
 		setToken(userToken: UserToken) {
-			const localStorage = window.localStorage;
-
 			this.user.isAuthenticated = true;
 			this.user.token = userToken.token;
 			this.user.refreshToken = userToken.refreshToken;
-
-			localStorage.setItem('user', JSON.stringify({
-				token: userToken.token,
-				refreshToken: userToken.refreshToken,
-			}));
 		}
 	},
 
@@ -73,5 +65,7 @@ export const useUserModel = defineStore({
 		isAuthenticated(): boolean {
 			return this.user.isAuthenticated;
 		}
-	}
+	},
+
+	persist: true
 });

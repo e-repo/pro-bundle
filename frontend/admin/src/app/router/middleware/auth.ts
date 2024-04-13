@@ -1,11 +1,12 @@
-import { MiddlewarePayload } from './type';
+import { MiddlewarePayload } from './types';
 import { RouteLocationRaw } from 'vue-router';
+import { useUserModel } from '@/entities/user';
 
-export default function auth(payload: MiddlewarePayload): RouteLocationRaw | void {
+export default function useAuth(payload: MiddlewarePayload): RouteLocationRaw | void {
+	const userModel = useUserModel();
 	const nextMiddleware = payload.nextMiddleware;
-	const isAuth: boolean = false;
 
-	if (! isAuth) {
+	if (! userModel.isAuthenticated) {
 		return {
 			name: 'Login'
 		};

@@ -1,9 +1,6 @@
 import { AuthLayout } from '@/shared/ui/layout';
-
-// import auth from './middleware/auth.ts';
-import guest from './middleware/guest.ts';
-import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/type';
-import middlewarePipeline from './middleware/middlewarePaipline.ts';
+import { useAuth, useGuest, useMiddlewarePipeline } from './middleware';
+import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/types';
 
 import {
 	createRouter,
@@ -15,16 +12,16 @@ import {
 } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-	// {
-	// 	path: '/',
-	// 	name: 'Main',
-	// 	component: () => import('@layout/main/main.vue'),
-	// 	meta: {
-	// 		middleware: [
-	// 			auth,
-	// 		] as Middleware[]
-	// 	}
-	// },
+	{
+		path: '/',
+		name: 'Home',
+		component: () => import('@/pages/admin/home'),
+		meta: {
+			middleware: [
+				useAuth,
+			] as Middleware[]
+		}
+	},
 	{
 		path: '/login',
 		name: 'Login',
@@ -32,7 +29,7 @@ const routes: RouteRecordRaw[] = [
 		meta: {
 			layout: AuthLayout,
 			middleware: [
-				guest,
+				useGuest,
 			] as Middleware[]
 		}
 	},
@@ -43,7 +40,7 @@ const routes: RouteRecordRaw[] = [
 		meta: {
 			layout: AuthLayout,
 			middleware: [
-				guest,
+				useGuest,
 			] as Middleware[]
 		}
 	},
@@ -68,11 +65,12 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized): 
 
 	const payload: MiddlewarePayload = {
 		...context,
-		nextMiddleware: middlewarePipeline(context, middlewares, 1)
+		nextMiddleware: useMiddlewarePipeline(context, middlewares, 1)
 	};
 
 	return middlewares[0](payload);
 });
+
 
 export default router;
 

@@ -1,5 +1,5 @@
 <template>
-	<v-layout class="rounded rounded-md" ref="app">
+	<v-layout ref="app">
 		<slot name="header"></slot>
 		<slot name="navigation"></slot>
 
