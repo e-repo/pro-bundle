@@ -1,6 +1,7 @@
 import { AuthLayout } from '@/shared/ui/layout';
 import { useAuth, useGuest, useMiddlewarePipeline } from './middleware';
 import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/types';
+import NotFound from '@/pages/auth/not-found';
 
 import {
 	createRouter,
@@ -42,6 +43,14 @@ const routes: RouteRecordRaw[] = [
 			middleware: [
 				useGuest,
 			] as Middleware[]
+		}
+	},
+	{
+		path: '/:catchAll(.*)',
+		name: 'NotFound',
+		component: NotFound,
+		meta: {
+			layout: AuthLayout,
 		}
 	},
 ];
