@@ -36,6 +36,11 @@ export const useUserModel = defineStore({
 				refreshToken: result.refresh_token
 			});
 		},
+		logout() {
+			this.user.isAuthenticated = false;
+			this.user.token = null;
+			this.user.refreshToken = null;
+		},
 		async refreshToken() {
 			if (null === this.user.refreshToken) {
 				throw new TypeError('Не найден токен для обновления.');
