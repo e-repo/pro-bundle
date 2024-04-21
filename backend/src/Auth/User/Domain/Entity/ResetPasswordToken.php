@@ -7,44 +7,50 @@ namespace Auth\User\Domain\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Embeddable]
 final class ResetPasswordToken
 {
-    #[ORM\Column(length: 50, nullable: true, options: [
+    #[ORM\Column(name: 'reset_password_token', length: 50, nullable: true, options: [
         'comment' => 'Токен сброса пароля',
     ])]
-    private ?string $resetPasswordToken;
+    private ?string $token;
 
     #[ORM\Column(
+        name: 'password_token_expires',
         type: Types::DATETIMETZ_IMMUTABLE,
         nullable: true,
         options: [
             'comment' => 'Дата действия токена сброса пароля',
         ]
     )]
-    private ?DateTimeImmutable $passwordTokenExpires;
+    private ?DateTimeImmutable $expires;
 
     public function __construct(
         ?string $resetPasswordToken = null,
         ?DateTimeImmutable $passwordTokenExpires = null,
     ) {
-        $this->resetPasswordToken = $resetPasswordToken;
-        $this->passwordTokenExpires = $passwordTokenExpires;
+        $this->token = $resetPasswordToken;
+        $this->expires = $passwordTokenExpires;
     }
 
     public function isExpired(DateTimeImmutable $date): bool
     {
-        return $this->passwordTokenExpires <= $date;
+        if (null === $this->expires) {
+            throw new DomainException('Ошибка определения срок действия токена');
+        }
+
+        return $this->expires <= $date;
     }
 
     public function getToken(): ?string
     {
-        return $this->resetPasswordToken;
+        return $this->token;
     }
 
-    public function getPasswordTokenExpires(): ?DateTimeImmutable
+    public function getExpires(): ?DateTimeImmutable
     {
-        return $this->passwordTokenExpires;
+        return $this->expires;
     }
 }

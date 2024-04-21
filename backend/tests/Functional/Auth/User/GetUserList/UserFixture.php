@@ -2,55 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\GetUserListTest;
+namespace Test\Functional\Auth\User\GetUserList;
 
-use Auth\User\Domain\Entity\EmailVo;
-use Auth\User\Domain\Entity\IdVo;
-use Auth\User\Domain\Entity\NameVo;
-use Auth\User\Domain\Entity\Specification\UniqueEmailSpecification;
-use Auth\User\Domain\Entity\Status;
-use Auth\User\Domain\Entity\User;
-use Auth\User\Domain\Service\PasswordHasher\Hasher;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
+use Test\Functional\Auth\User\BaseUserFixture;
 
-final class UserFixture extends Fixture
+final class UserFixture extends BaseUserFixture
 {
-    public function __construct(
-        private readonly Hasher $hasher,
-        private readonly UniqueEmailSpecification $uniqueEmailSpecification,
-    ) {}
-
-    public function load(ObjectManager $manager): void
-    {
-        foreach (self::allItems() as $item) {
-            $user = new User(
-                id: new IdVo($item['id']),
-                name: new NameVo(
-                    first: $item['firstName'],
-                    last: $item['lastName']
-                ),
-                email: new EmailVo($item['email']),
-                password: $item['password'],
-                registrationSource: $item['registrationSource'],
-                uniqueEmailSpecification: $this->uniqueEmailSpecification,
-                hasher: $this->hasher,
-            );
-
-            if ($item['status'] === Status::ACTIVE->value) {
-                $user->confirmUserEmail($user->getEmailConfirmToken());
-            }
-
-            if ($item['status'] === Status::BLOCKED->value) {
-                $user->block();
-            }
-
-            $manager->persist($user);
-        }
-
-        $manager->flush();
-    }
-
     public static function allItems(): array
     {
         return [

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\Common\Fixture;
+namespace Test\Functional\Auth\User;
 
 use Auth\User\Domain\Entity\EmailVo;
 use Auth\User\Domain\Entity\IdVo;
@@ -13,9 +13,14 @@ use Auth\User\Domain\Entity\User;
 use Auth\User\Domain\Service\PasswordHasher\Hasher;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Test\Functional\Common\Fixture\BaseFixtureTrait;
 
-final class UserFixture extends Fixture
+class BaseUserFixture extends Fixture
 {
+    use BaseFixtureTrait;
+
+    public const NAME_PREFIX = 'user';
+
     public function __construct(
         private readonly Hasher $hasher,
         private readonly UniqueEmailSpecification $uniqueEmailSpecification,
@@ -23,7 +28,9 @@ final class UserFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::allItems() as $item) {
+        foreach (static::allItems() as $key => $item) {
+            ++$key;
+
             $user = new User(
                 id: new IdVo($item['id']),
                 name: new NameVo(
@@ -46,41 +53,10 @@ final class UserFixture extends Fixture
             }
 
             $manager->persist($user);
+
+            $this->addReference($this->getReferenceName(self::NAME_PREFIX, $key), $user);
         }
 
         $manager->flush();
-    }
-
-    public static function allItems(): array
-    {
-        return [
-            [
-                'id' => 'f472d1a5-ba78-4039-94e3-ae0161256eaf',
-                'firstName' => 'TestFirstName_1',
-                'lastName' => 'TestLastName_1',
-                'email' => 'test_1@test.ru',
-                'password' => 'secret_1',
-                'status' => 'wait',
-                'registrationSource' => 'blog',
-            ],
-            [
-                'id' => '125d7cd7-0b77-409a-bc5c-19b44416a5fa',
-                'firstName' => 'TestFirstName_2',
-                'lastName' => 'TestLastName_2',
-                'email' => 'test_2@test.ru',
-                'password' => 'secret_2',
-                'status' => 'active',
-                'registrationSource' => 'blog',
-            ],
-            [
-                'id' => '76c3a2d9-49fd-4fbd-a0f4-0022d38dbaba',
-                'firstName' => 'TestFirstName_3',
-                'lastName' => 'TestLastName_3',
-                'email' => 'test_3@test.ru',
-                'password' => 'secret_3',
-                'status' => 'blocked',
-                'registrationSource' => 'blog',
-            ],
-        ];
     }
 }

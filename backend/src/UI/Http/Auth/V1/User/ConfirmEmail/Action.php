@@ -10,7 +10,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Common\Response\ResponseWrapper;
 use UI\Http\Common\Response\Violation;
@@ -57,7 +56,7 @@ final class Action extends AbstractController
         name: 'auth_confirm-email',
         methods: ['POST']
     )]
-    public function __invoke(Request $request): ApiResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $this->commandBus->dispatch(
             new Command(

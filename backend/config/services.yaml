@@ -2,9 +2,17 @@ parameters:
     app.email: '%env(APP_EMAIL)%'
     app.timezone: 'Europe/Moscow'
 
+
+    # Ссылка для сброса пароля ведет к инициатору (источнику) этого действия
+    # URI для подтверждения сброса пароля соответствует следующему шаблону:
+    # https://{domain}/confirm-reset-password?token={token} (reset-password.html.twig)
+    #
     # AUTH REGISTRATION SOURCES
-    app.registration_sources:
-        { blog: '%env(BLOG_REGISTRATION_SOURCES)%', shop: '%env(SHOP_REGISTRATION_SOURCES)%' }
+    app.registration_sources: {
+        blog: '%env(BLOG_REG_SOURCE)%',
+        shop: '%env(SHOP_REG_SOURCE)%',
+        admin_panel: '%env(ADMIN_PANEL_REG_SOURCE)%',
+    }
 
 services:
     _defaults:

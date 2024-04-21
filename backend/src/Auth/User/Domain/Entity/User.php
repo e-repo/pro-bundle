@@ -178,7 +178,32 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->emailConfirmToken = null;
     }
 
-    public function resetPassword(string $registrationSource): void
+    public function confirmResetPassword(
+        string $token,
+        string $password,
+        Hasher $hasher,
+    ): void {
+        if ($token !== $this->resetPasswordToken->getToken()) {
+            throw new DomainException('Передан не верный токен для сброса пароля.');
+        }
+
+        if (! $this->isActive()) {
+            throw new DomainException('Невозможно сбросить пароль т.к пользователь не является активным');
+        }
+
+        $currentDate = new DateTimeImmutable();
+
+        if ($this->resetPasswordToken->isExpired($currentDate)) {
+            throw new DomainException('Токен для сброса пароля уже истек. Действует в течении суток');
+        }
+
+        $this->resetPasswordToken = new ResetPasswordToken();
+
+        $this->passwordHash = $password;
+        $hasher->hash($this);
+    }
+
+    public function requestResetPassword(string $registrationSource): void
     {
         if (! $this->isActive()) {
             throw new DomainException('Невозможно сбросить пароль т.к пользователь не является активным');
@@ -186,7 +211,10 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
 
         $currentDate = new DateTimeImmutable();
 
-        if (! $this->resetPasswordToken->isExpired($currentDate)) {
+        if (
+            null !== $this->resetPasswordToken->getExpires() &&
+            ! $this->resetPasswordToken->isExpired($currentDate)
+        ) {
             throw new DomainException('Запрос на сброс пароля уже был отправлен. Действует в течении суток');
         }
 
@@ -199,7 +227,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             new UserPasswordResetEvent(
                 email: $this->email->value,
                 resetPasswordToken: $this->resetPasswordToken->getToken(),
-                passwordTokenExpires: $this->resetPasswordToken->getPasswordTokenExpires(),
+                passwordTokenExpires: $this->resetPasswordToken->getExpires(),
                 registrationSource: $registrationSource
             )
         );

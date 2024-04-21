@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\User\SignUp;
+namespace UI\Http\Auth\V1\User\ConfirmResetPassword;
 
-use Auth\User\Command\SignUp\Command;
+use Auth\User\Command\ConfirmResetPassword\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,31 +16,31 @@ use UI\Http\Common\Response\Violation;
 
 #[OA\Tag(name: 'Регистрация')]
 #[OA\Post(
-    summary: 'Создание пользователя',
+    summary: 'Сброс пароля',
     requestBody: new OA\RequestBody(
-        content: new OA\JsonContent(ref: new Model(type: Payload::class))
+        content: new OA\JsonContent(ref: new Model(type: Request::class))
     ),
     responses: [
         new OA\Response(
             response: 200,
-            description: 'Пользователь успешно создан',
+            description: 'Запрос на сброс пароля успешно зарегистрирован',
             content: new OA\JsonContent(
                 ref: new Model(type: ResponseWrapper::class),
                 example: new ResponseWrapper(
                     data: new Response(
-                        status: 'Пользователь создан успешно.'
+                        status: 'Пароль успешно обновлен.'
                     )
                 )
             )
         ),
         new OA\Response(
             response: 400,
-            description: 'Некорректные данные запроса.',
+            description: 'Некорректные данные запроса',
             content: new Model(type: Violation::class),
         ),
         new OA\Response(
             response: 422,
-            description: 'Ошибка бизнес-логики.',
+            description: 'Ошибка бизнес-логики',
             content: new Model(type: Violation::class),
         ),
     ]
@@ -52,24 +52,22 @@ final class Action extends AbstractController
     ) {}
 
     #[Route(
-        path: 'api/auth/v1/user/sign-up',
-        name: 'auth_sign-up',
+        path: 'api/auth/v1/user/confirm-reset-password',
+        name: 'auth_confirm-reset-password',
         methods: ['POST']
     )]
-    public function __invoke(Payload $payload): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $command = new Command(
-            firstName: $payload->firstName,
-            email: $payload->email,
-            password: $payload->password,
-            registrationSource: $payload->registrationSource
+        $this->commandBus->dispatch(
+            new Command(
+                token: $request->token,
+                password: $request->password,
+            )
         );
-
-        $this->commandBus->dispatch($command);
 
         return new JsonResponse(
             new ResponseWrapper(
-                data: new Response('Пользователь создан успешно.')
+                data: new Response('Пароль успешно обновлен.')
             )
         );
     }

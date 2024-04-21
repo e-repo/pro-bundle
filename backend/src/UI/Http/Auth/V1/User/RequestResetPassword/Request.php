@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\User\ResetPassword;
+namespace UI\Http\Auth\V1\User\RequestResetPassword;
 
 use Auth\User\Domain\Entity\RegistrationSource;
 use OpenApi\Attributes as OA;

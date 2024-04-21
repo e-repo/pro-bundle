@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User;
+namespace Test\Functional\Auth\User\GetUser;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Test\Common\FunctionalTestCase;
-use Test\Functional\Auth\Common\Fixture\UserFixture;
 use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class GetUserTest extends FunctionalTestCase

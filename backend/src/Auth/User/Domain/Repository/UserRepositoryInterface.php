@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function add(User $user): void;
 
     public function findByEmail(string $email): ?User;
+
+    public function findByResetPasswordToken(string $token): ?User;
 }

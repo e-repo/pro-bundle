@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User;
+namespace Test\Functional\Auth\User\ConfirmEmail;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
@@ -10,7 +10,6 @@ use JsonException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\FunctionalTestCase;
-use Test\Functional\Auth\Common\Fixture\UserFixture;
 use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class ConfirmEmailTest extends FunctionalTestCase

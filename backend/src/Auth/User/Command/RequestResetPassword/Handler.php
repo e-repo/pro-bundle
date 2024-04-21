@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\User\Command\ResetPassword;
+namespace Auth\User\Command\RequestResetPassword;
 
 use Auth\User\Domain\Repository\UserRepositoryInterface;
 use CoreKit\Application\Bus\CommandHandlerInterface;
@@ -22,6 +22,6 @@ final readonly class Handler implements CommandHandlerInterface
             throw new DomainException('Пользователь по указанному email не найден');
         }
 
-        $user->resetPassword($command->registrationSource);
+        $user->requestResetPassword($command->registrationSource);
     }
 }

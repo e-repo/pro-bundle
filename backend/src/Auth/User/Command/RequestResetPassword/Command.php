@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\User\Command\ResetPassword;
+namespace Auth\User\Command\RequestResetPassword;
 
 final readonly class Command
 {

@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace UI\Http\Auth\V1\User\ResetPassword;
+namespace UI\Http\Auth\V1\User\RequestResetPassword;
 
-use Auth\User\Command\ResetPassword\Command;
+use Auth\User\Command\RequestResetPassword\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response as ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use UI\Http\Common\Response\ResponseWrapper;
 use UI\Http\Common\Response\Violation;
@@ -53,11 +52,11 @@ final class Action extends AbstractController
     ) {}
 
     #[Route(
-        path: 'api/auth/v1/user/reset-password',
-        name: 'auth_reset-password',
+        path: 'api/auth/v1/user/request-reset-password',
+        name: 'auth_request-reset-password',
         methods: ['POST']
     )]
-    public function __invoke(Request $request): ApiResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $this->commandBus->dispatch(
             new Command(

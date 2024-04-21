@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User;
+namespace Test\Functional\Auth\User\RequestResetPassword;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
 use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\FunctionalTestCase;
-use Test\Functional\Auth\Common\Fixture\UserFixture;
 use UI\Http\Common\DataFromJsonResponseTrait;
 
-final class ResetPasswordTest extends FunctionalTestCase
+final class RequestResetPasswordTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
 
-    private const ENDPOINT_URL = '/api/auth/v1/user/reset-password';
+    private const ENDPOINT_URL = '/api/auth/v1/user/request-reset-password';
 
     public function setUp(): void
     {
@@ -79,7 +78,7 @@ final class ResetPasswordTest extends FunctionalTestCase
         self::assertEmailCount(1);
 
         $mail = self::getMailerMessage();
-        $resetLink = sprintf('/https?:[\/]{2}[a-z.]+\/reset-password\?token=%s/', $savedUser['reset_password_token']);
+        $resetLink = sprintf('/https?:[\/]{2}[a-z.]+\/confirm-reset-password\?token=%s/', $savedUser['reset_password_token']);
 
         self::assertMatchesRegularExpression($resetLink, $mail->getHtmlBody());
     }
