@@ -13,6 +13,12 @@
 						<v-card-title>
 							<h4 class="text-center">Изменение пароля</h4>
 						</v-card-title>
+						<v-alert
+							v-if="alert.isShow"
+							:text="alert.message"
+							:type="alert.type"
+							variant="outlined"
+						></v-alert>
 					</v-card-item>
 
 					<v-divider class="mx-4 mb-2"></v-divider>
@@ -36,7 +42,7 @@
 							></v-text-field>
 
 							<v-text-field
-								v-model="restoreForm.newPassword"
+								v-model="restoreForm.repeatPassword"
 								:rules="[newPassRules.required, newPassRules.counter, newPassRules.equal]"
 								:type="isNewPassShow ? 'password' : 'text'"
 								label="Новый пароль"
@@ -82,31 +88,66 @@
 <script setup lang="ts">
 import { FormHelper } from '@/shared/lib';
 import { reactive, ref } from 'vue';
+import { useUserModel } from '@/entities/user';
+import { Alert, useProcessErrorResponse } from '@/shared/ui/alert';
+import { useRoute } from 'vue-router';
+import { AxiosError } from 'axios';
+
+const userModel = useUserModel();
+const route = useRoute();
 
 interface RestoreForm {
 	isValid: boolean;
 	password: string | null;
-	newPassword: string | null;
+	repeatPassword: string | null;
 	loading: boolean;
 }
 
 const restoreForm = reactive<RestoreForm>({
 	isValid: false,
 	password: null,
-	newPassword: null,
+	repeatPassword: null,
 	loading: false,
 })
 
-const onSubmit = (): void => {
+const alert = reactive<Alert>({
+	isShow: false,
+	type: undefined,
+	message: '',
+});
+
+const onSubmit = async (): Promise<void> => {
 	if (! restoreForm.isValid) {
+		return;
+	}
+
+	if (! route.query.token) {
 		return;
 	}
 
 	restoreForm.loading = true;
 
-	console.log(restoreForm);
+	try {
+		await userModel.confirmResetPassword(
+			route.query.token as string,
+			restoreForm.password as string,
+		);
 
-	setTimeout(() => (restoreForm.loading = false), 2000);
+		alert.isShow = true;
+		alert.type = 'success';
+		alert.message = 'Пароль успешно изменен.'
+
+		restoreForm.loading = false;
+	} catch (error: any) {
+		restoreForm.loading = false;
+		restoreForm.isValid = false;
+
+		if (error instanceof AxiosError) {
+			alert.message = 'Ошибка сброса пароля, проверьте правильность ввода email или обратитесь к администратору';
+
+			useProcessErrorResponse(error, alert);
+		}
+	}
 };
 
 const isPassShow = ref<boolean>(true);
@@ -115,8 +156,8 @@ const isNewPassShow = ref<boolean>(true);
 const passRules = {
 	required: FormHelper.requiredRule,
 	counter: (value: string): FormHelper.RuleType => {
-		if (value.length <= 8) {
-			return 'Длинна пароля не менее 8-ми символов';
+		if (value.length <= 6) {
+			return 'Длинна пароля не менее 6-ми символов';
 		}
 
 		return value.length <= 20 || 'Максимальное число символов 20';
@@ -126,14 +167,14 @@ const passRules = {
 const newPassRules = {
 	required: FormHelper.requiredRule,
 	counter: (value: string): FormHelper.RuleType => {
-		if (value.length <= 8) {
-			return 'Длинна пароля не менее 8-ми символов';
+		if (value.length <= 6) {
+			return 'Длинна пароля не менее 6-ми символов';
 		}
 
 		return value.length <= 20 || 'Максимальное число символов 20';
 	},
 	equal: (): FormHelper.RuleType =>
-		restoreForm.password === restoreForm.newPassword || 'Пароли не совпадают.',
+		restoreForm.password === restoreForm.repeatPassword || 'Пароли не совпадают.',
 };
 </script>
 
