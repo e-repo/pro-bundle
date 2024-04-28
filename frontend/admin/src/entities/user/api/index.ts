@@ -16,3 +16,21 @@ export const refreshToken = async (refreshToken: string) => {
 		})
 	).data;
 };
+
+export const requestResetPassword = async (email: string, registrationSource: string) => {
+	return (
+		await http.post('/auth/v1/user/request-reset-password', {
+			email,
+			registrationSource
+		})
+	).data;
+};
+
+export const confirmResetPassword = async (token: string, password: string)=> {
+	return (
+		await http.post('/auth/v1/user/confirm-reset-password', {
+			token,
+			password,
+		})
+	).data;
+};

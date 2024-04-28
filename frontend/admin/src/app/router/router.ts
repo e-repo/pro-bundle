@@ -1,7 +1,6 @@
 import { AuthLayout } from '@/shared/ui/layout';
 import { useAuth, useGuest, useMiddlewarePipeline } from './middleware';
 import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/types';
-import NotFound from '@/pages/auth/not-found';
 
 import {
 	createRouter,
@@ -35,9 +34,20 @@ const routes: RouteRecordRaw[] = [
 		}
 	},
 	{
-		path: '/recover-password',
-		name: 'RecoverPassword',
-		component: import('@/pages/auth/restore-password'),
+		path: '/confirm-reset-password',
+		name: 'ConfirmPassword',
+		component: () => import('@/pages/auth/confirm-password'),
+		meta: {
+			layout: AuthLayout,
+			middleware: [
+				useGuest,
+			] as Middleware[]
+		}
+	},
+	{
+		path: '/request-reset-password',
+		name: 'RequestResetPassword',
+		component: () => import('@/pages/auth/request-reset-password'),
 		meta: {
 			layout: AuthLayout,
 			middleware: [
@@ -48,7 +58,7 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: '/:catchAll(.*)',
 		name: 'NotFound',
-		component: NotFound,
+		component: () => import('@/pages/auth/not-found'),
 		meta: {
 			layout: AuthLayout,
 		}

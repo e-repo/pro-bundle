@@ -36,6 +36,12 @@ export const useUserModel = defineStore({
 				refreshToken: result.refresh_token
 			});
 		},
+		async requestResetPassword(email: string, registrationSource: string) {
+			await UserApi.requestResetPassword(email, registrationSource);
+		},
+		async confirmResetPassword(token: string, newPassword: string) {
+			await UserApi.confirmResetPassword(token, newPassword);
+		},
 		logout() {
 			this.user.isAuthenticated = false;
 			this.user.token = null;

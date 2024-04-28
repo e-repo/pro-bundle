@@ -82,7 +82,7 @@
 							Вход через VK
 						</v-btn>
 						<p class="mt-2">
-							<router-link to="/recover-password" class="text-info">Забыл пароль?</router-link>
+							<router-link to="/request-reset-password" class="text-info">Забыл пароль?</router-link>
 						</p>
 					</v-card-actions>
 				</v-card>
