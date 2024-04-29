@@ -14,7 +14,7 @@ final class Action extends AbstractController
 {
     #[Route(
         path: '/api/service/v1/ping',
-        name: 'auth_service_ping',
+        name: 'service_ping',
         methods: ['GET']
     )]
     public function __invoke(): Response

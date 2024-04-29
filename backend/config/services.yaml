@@ -75,6 +75,10 @@ services:
     UI\Http\Common\Exception\Resolver:
         arguments: [ '%exceptions%' ]
 
+    Service\Menu\Query\GetMenu\Handler:
+        arguments:
+            $menuList: '%menu_list%'
+
     UI\Http\Common\Request\RequestArgumentResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }

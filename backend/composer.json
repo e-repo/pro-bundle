@@ -51,7 +51,8 @@
     "psr-4": {
       "UI\\": "src/UI",
       "Auth\\": "src/Auth",
-      "CoreKit\\": "src/CoreKit"
+      "CoreKit\\": "src/CoreKit",
+      "Service\\": "src/Service"
     }
   },
   "autoload-dev": {
