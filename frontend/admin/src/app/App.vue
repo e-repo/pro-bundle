@@ -5,9 +5,9 @@
 				<Header />
 			</template>
 
-			<!--    <template v-slot:navigation>-->
-			<!--        <Navigation />-->
-			<!--    </template>-->
+			<template v-slot:navigation>
+				<Navigation />
+			</template>
 
 			<template v-slot:default>
 				<router-view />
@@ -26,6 +26,7 @@ import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import { DefaultLayout } from '@/shared/ui/layout';
 import { Header } from '@/widgets/header';
+import { Navigation } from '@/widgets/navigation';
 
 
 const route = useRoute();

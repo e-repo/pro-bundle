@@ -2,7 +2,9 @@
 
 	<v-app-bar>
 		<template v-slot:prepend>
-			<v-app-bar-nav-icon></v-app-bar-nav-icon>
+			<v-app-bar-nav-icon
+				@click="toggleNavigation"
+			></v-app-bar-nav-icon>
 		</template>
 		<v-app-bar-title>Пучок</v-app-bar-title>
 		<template v-slot:append>
@@ -14,6 +16,7 @@
 						icon="mdi-account"
 						variant="outlined"
 						v-bind="props"
+						class="text-grey-darken-1"
 					></v-btn>
 				</template>
 				<v-card>
@@ -67,8 +70,10 @@
 import { ref } from 'vue';
 import { useUserModel } from '@/entities/user';
 import { useRouter } from 'vue-router';
+import { useNavigationModel } from '@/entities/navigation';
 
 const userModel = useUserModel();
+const navigationModel = useNavigationModel();
 const router = useRouter();
 
 const items = ref([
@@ -81,6 +86,10 @@ const logout = () => {
 	userModel.logout();
 
 	router.push({name: 'Login'});
+}
+
+const toggleNavigation = (): void => {
+	navigationModel.rail = ! navigationModel.rail;
 }
 
 </script>

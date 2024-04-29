@@ -16,6 +16,8 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi';
 const pinia = createPinia();
 
 const vuetify = createVuetify({
+	theme: {
+	},
 	icons: {
 		defaultSet: 'mdi',
 		aliases,
