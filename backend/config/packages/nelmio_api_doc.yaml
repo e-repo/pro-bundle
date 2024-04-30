@@ -5,6 +5,10 @@ nelmio_api_doc:
             description: Документация к API интернет магазина защиты растений
             version: 1.0.0
         components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
             parameters:
                 offsetParam:
                     name: 'offset'
@@ -25,6 +29,8 @@ nelmio_api_doc:
                         minimum: 1
                         maximum: 100
                         default: 100
+        security:
+            -   Bearer: [ ]
 
         paths:
             /api/doc.json:
