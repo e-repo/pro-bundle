@@ -13,9 +13,9 @@
 				<router-view />
 			</template>
 
-			<!--    <template v-slot:footer>-->
-			<!--        <Footer />-->
-			<!--    </template>-->
+			<template v-slot:footer>
+				<Footer />
+			</template>
 		</component>
 	</v-app>
 </template>
@@ -27,6 +27,7 @@ import { computed } from 'vue';
 import { DefaultLayout } from '@/shared/ui/layout';
 import { Header } from '@/widgets/header';
 import { Navigation } from '@/widgets/navigation';
+import { Footer } from '@/widgets/footer';
 
 
 const route = useRoute();

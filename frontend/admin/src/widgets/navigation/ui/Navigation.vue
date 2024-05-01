@@ -20,7 +20,7 @@
 				:key="i"
 				:prepend-icon="`mdi-${item.icon}`"
 				:title="item.title"
-				:value="NavigationMap.getValue(item.id)"
+				:value="NavigationMap.getParam(item.id).value"
 			></v-list-item>
 
 			<v-list-subheader
@@ -36,7 +36,7 @@
 				:key="i"
 				:prepend-icon="`mdi-${item.icon}`"
 				:title="item.title"
-				:value="NavigationMap.getValue(item.id)"
+				:value="NavigationMap.getParam(item.id).value"
 			></v-list-item>
 		</v-list>
 	</v-navigation-drawer>

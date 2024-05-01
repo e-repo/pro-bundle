@@ -16,6 +16,6 @@ const navMap: NavigationMap = {
 	'blog_categories': {value: 'blog-categories', href: '#'},
 };
 
-export const getValue = (id: string) => {
+export const getParam = (id: string): NavigationParam => {
 	return navMap[id as NavigationKey];
 };
