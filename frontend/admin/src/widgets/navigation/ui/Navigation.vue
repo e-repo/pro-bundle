@@ -5,32 +5,39 @@
 		:rail="navigationModel.rail"
 		permanent
 	>
-		<v-list-item class="mt-10" prepend-icon="mdi-cog-outline">
-			<template v-slot:title>
-				<b class="text-decoration-underline">Система:</b>
-			</template>
-		</v-list-item>
-
-		<v-divider></v-divider>
 
 		<v-list density="compact">
-			<v-list-item prepend-icon="mdi-home-silo-outline" title="Главная" value="home"></v-list-item>
-			<v-list-item prepend-icon="mdi-account-group-outline" title="Пользователи" value="users"></v-list-item>
-		</v-list>
+			<v-list-subheader
+				class="mt-8 text-decoration-underline"
+			>
+				<v-icon icon="mdi-cog-outline" class="mr-1"/>Система:
+			</v-list-subheader>
 
+			<v-divider></v-divider>
 
+			<v-list-item
+				v-for="(item, i) in serviceMenuItems"
+				:key="i"
+				:prepend-icon="`mdi-${item.icon}`"
+				:title="item.title"
+				:value="NavigationMap.getValue(item.id)"
+			></v-list-item>
 
-		<v-list-item class="mt-8" prepend-icon="mdi-text-recognition">
-			<template v-slot:title>
-				<b class="text-decoration-underline">Блог:</b>
-			</template>
-		</v-list-item>
+			<v-list-subheader
+				class="mt-8 text-decoration-underline"
+			>
+				<v-icon icon="mdi-text-recognition" class="mr-1"/>Блог:
+			</v-list-subheader>
 
-		<v-divider></v-divider>
+			<v-divider></v-divider>
 
-		<v-list density="compact" >
-			<v-list-item prepend-icon="mdi-post-outline" title="Статьи" value="posts"></v-list-item>
-			<v-list-item prepend-icon="mdi-shape-outline" title="Категории" value="categories"></v-list-item>
+			<v-list-item
+				v-for="(item, i) in blogMenuItems"
+				:key="i"
+				:prepend-icon="`mdi-${item.icon}`"
+				:title="item.title"
+				:value="NavigationMap.getValue(item.id)"
+			></v-list-item>
 		</v-list>
 	</v-navigation-drawer>
 
@@ -38,8 +45,27 @@
 
 <script setup lang="ts">
 import { useNavigationModel } from '@/entities/navigation';
+import { onMounted, ref } from 'vue';
+import { useRefreshTokenListener } from '@/entities/user';
+import { NavigationMap } from '@/shared/lib';
+
+interface MenuItem {
+	id: string;
+	title: string;
+	icon: string;
+}
+
+useRefreshTokenListener();
 
 const navigationModel = useNavigationModel();
+
+let serviceMenuItems = ref<MenuItem[]>([]);
+let blogMenuItems = ref<MenuItem[]>([]);
+
+onMounted(async () => {
+	serviceMenuItems.value = (await navigationModel.getServiceMenuItems()).data;
+	blogMenuItems.value = (await navigationModel.getBlogMenuItems()).data;
+});
 
 </script>
 

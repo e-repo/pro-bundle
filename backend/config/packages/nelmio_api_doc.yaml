@@ -70,7 +70,7 @@ nelmio_api_doc:
                                             token:
                                                 type: string
                                                 description: JWT токен пользователя.
-                                            refresh_token:
+                                            refreshToken:
                                                 type: string
                                                 description: JWT токен для обновления.
 
@@ -84,7 +84,7 @@ nelmio_api_doc:
                                 schema:
                                     type: object
                                     properties:
-                                        refresh_token:
+                                        refreshToken:
                                             type: string
                                             description: Токен для обновления.
                     responses:
@@ -98,7 +98,7 @@ nelmio_api_doc:
                                             token:
                                                 type: string
                                                 description: JWT токен пользователя.
-                                            refresh_token:
+                                            refreshToken:
                                                 type: string
                                                 description: JWT токен для обновления.
 

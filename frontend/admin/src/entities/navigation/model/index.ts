@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { NavigationApi } from '../index';
 
 interface Drawer {
 	drawer: boolean;
@@ -19,6 +20,12 @@ export const useNavigationModel = defineStore({
 		},
 		open(): void {
 			this.rail = false;
+		},
+		async getServiceMenuItems() {
+			return await NavigationApi.fetchServiceMenuItems();
+		},
+		async getBlogMenuItems() {
+			return await NavigationApi.fetchBlogMenuItems();
 		}
 	},
 

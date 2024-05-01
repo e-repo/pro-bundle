@@ -33,7 +33,7 @@ export const useUserModel = defineStore({
 
 			this.setToken({
 				token: result.token,
-				refreshToken: result.refresh_token
+				refreshToken: result.refreshToken
 			});
 		},
 		async requestResetPassword(email: string, registrationSource: string) {
@@ -56,7 +56,7 @@ export const useUserModel = defineStore({
 
 			this.setToken({
 				token: result.token,
-				refreshToken: result.refresh_token
+				refreshToken: result.refreshToken
 			});
 		},
 		setToken(userToken: UserToken) {
@@ -80,3 +80,5 @@ export const useUserModel = defineStore({
 
 	persist: true
 });
+
+

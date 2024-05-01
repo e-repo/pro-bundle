@@ -12,7 +12,7 @@ export const fetchToken = async (username: string, password: string) => {
 export const refreshToken = async (refreshToken: string) => {
 	return (
 		await http.post('/auth/token-refresh', {
-			refresh_token: refreshToken
+			refreshToken
 		})
 	).data;
 };
