@@ -20,6 +20,7 @@
 				:key="i"
 				:prepend-icon="`mdi-${item.icon}`"
 				:title="item.title"
+				:to="NavigationMap.getParam(item.id).to"
 				:value="NavigationMap.getParam(item.id).value"
 			></v-list-item>
 
@@ -36,6 +37,7 @@
 				:key="i"
 				:prepend-icon="`mdi-${item.icon}`"
 				:title="item.title"
+				:to="NavigationMap.getParam(item.id).to"
 				:value="NavigationMap.getParam(item.id).value"
 			></v-list-item>
 		</v-list>

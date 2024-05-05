@@ -1,6 +1,6 @@
 interface NavigationParam {
 	value: string,
-	href: string | null
+	to: string | undefined
 }
 
 type NavigationKey = 'service_home' | 'service_users' | 'blog_posts' | 'blog_categories';
@@ -10,10 +10,10 @@ type NavigationMap = {
 }
 
 const navMap: NavigationMap = {
-	'service_home': {value: 'service-home', href: '#'},
-	'service_users': {value: 'service-users', href: '#'},
-	'blog_posts': {value: 'blog-posts', href: '#'},
-	'blog_categories': {value: 'blog-categories', href: '#'},
+	'service_home': {value: 'service-home', to: '/'},
+	'service_users': {value: 'service-users', to: '/auth/users'},
+	'blog_posts': {value: 'blog-posts', to: '/blog/posts'},
+	'blog_categories': {value: 'blog-categories', to: '/blog/categories'},
 };
 
 export const getParam = (id: string): NavigationParam => {

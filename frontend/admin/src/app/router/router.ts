@@ -15,7 +15,17 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('@/pages/admin/home'),
+		component: () => import('@/pages/home'),
+		meta: {
+			middleware: [
+				useAuth,
+			] as Middleware[]
+		}
+	},
+	{
+		path: '/auth/users',
+		name: 'Users',
+		component: () => import('@/pages/auth/users'),
 		meta: {
 			middleware: [
 				useAuth,

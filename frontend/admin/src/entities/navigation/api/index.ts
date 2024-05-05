@@ -16,8 +16,6 @@ export const fetchServiceMenuItems = async () => {
 		).data;
 	} catch (error: unknown) {
 		tryRefreshToken(error);
-
-		throw error;
 	}
 };
 
@@ -32,7 +30,5 @@ export const fetchBlogMenuItems = async () => {
 		).data;
 	} catch (error: unknown) {
 		tryRefreshToken(error);
-
-		throw error;
 	}
 };

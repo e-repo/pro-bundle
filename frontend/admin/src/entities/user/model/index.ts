@@ -16,6 +16,19 @@ export interface AuthStore {
 	user: AuthStoreUser,
 }
 
+export interface UserFromToken
+{
+	id: string;
+	firstName: string;
+	email: string;
+	roles: string[];
+}
+
+interface TokenPayload {
+	user: UserFromToken;
+	username: string;
+}
+
 export const useUserModel = defineStore({
 	id: 'user',
 
@@ -43,9 +56,7 @@ export const useUserModel = defineStore({
 			await UserApi.confirmResetPassword(token, newPassword);
 		},
 		logout() {
-			this.user.isAuthenticated = false;
-			this.user.token = null;
-			this.user.refreshToken = null;
+			this.$reset();
 		},
 		async refreshToken() {
 			if (null === this.user.refreshToken) {
@@ -67,14 +78,32 @@ export const useUserModel = defineStore({
 	},
 
 	getters: {
-		getToken(): string|null {
+		token(): string|null {
 			return this.user.token;
-		},
-		getRefreshToken(): string|null {
-			return this.user.refreshToken;
 		},
 		isAuthenticated(): boolean {
 			return this.user.isAuthenticated;
+		},
+		tokenPayload(): TokenPayload | null {
+			if (null === this.user.token) {
+				return null;
+			}
+
+			return JSON.parse(
+				atob(
+					this.user.token.split('.')[1]
+				)
+			);
+		},
+		userFromToken(): UserFromToken {
+			const tokenPayload = this.tokenPayload;
+
+			if (null === tokenPayload) {
+				throw Error('Токен не найден.');
+			}
+
+			tokenPayload.user.firstName = decodeURI(tokenPayload.user.firstName);
+			return tokenPayload.user;
 		}
 	},
 

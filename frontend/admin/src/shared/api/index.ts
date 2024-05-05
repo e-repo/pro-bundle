@@ -3,12 +3,6 @@ import { Emitter } from '@/shared/lib';
 
 export const REFRESH_TOKEN_EVENT_NAME = 'refresh-token';
 
-
-interface Token {
-	isAuthenticated: boolean,
-	token: string
-}
-
 export const http = axios.create({
 	baseURL: import.meta.env.VITE_BASE_URL,
 	headers: {
@@ -17,13 +11,22 @@ export const http = axios.create({
 });
 
 export const useHttpBearerToken = () => {
-	const userToken: Token = JSON.parse(localStorage.getItem('user') || '')?.user;
+	const localStorageToken = localStorage.getItem('user');
+	let token: string | null = null;
+
+	if (null !== localStorageToken) {
+		token = JSON.parse(localStorageToken)?.user.token;
+	}
+
+	if (null === token) {
+		Emitter.emit(REFRESH_TOKEN_EVENT_NAME);
+	}
 
 	return axios.create({
 		baseURL: import.meta.env.VITE_BASE_URL,
 		headers: {
 			'Content-type': 'application/json',
-			'Authorization': `Bearer ${userToken.token}`
+			'Authorization': `Bearer ${token}`
 		}
 	});
 };
@@ -35,10 +38,7 @@ export const tryRefreshToken = (error: unknown): boolean => {
 
 	const responseData = error.response?.data;
 
-	if (
-		responseData.code === 401 &&
-		responseData.message === 'Expired JWT Token'
-	) {
+	if (responseData.code === 401) {
 		Emitter.emit(REFRESH_TOKEN_EVENT_NAME);
 	}
 

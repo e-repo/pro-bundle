@@ -23,8 +23,8 @@
 					<v-list>
 						<v-list-item
 							prepend-icon="mdi-account-eye-outline"
-							subtitle="admin@test.ru"
-							title="Админ Админов"
+							:subtitle="userModel.userFromToken.email"
+							:title="userModel.userFromToken.firstName"
 						>
 						</v-list-item>
 					</v-list>

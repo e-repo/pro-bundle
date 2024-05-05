@@ -130,7 +130,9 @@ const onSubmit = async (): Promise<void> => {
 	try {
 		await userModel.singIn(loginForm.email as string, loginForm.password as string);
 
-		await router.push({name: 'Home'});
+		await router.push({
+			name: 'Home'
+		});
 	} catch (error: any) {
 		loginForm.loading = false;
 		loginForm.isValid = false;
