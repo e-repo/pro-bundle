@@ -51,8 +51,14 @@
 
 <script setup lang="ts">
 import { useUserModel } from '@/entities/user';
+import { EmitterService } from '@/shared/lib';
+import { onMounted } from 'vue';
 
 const userModel = useUserModel();
+
+onMounted(() => {
+	EmitterService.dispatchComponentOnMountedEvent()
+});
 
 </script>
 

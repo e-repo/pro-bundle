@@ -1,6 +1,6 @@
 <template>
 
-	<v-app-bar>
+	<v-app-bar v-if="props.isDefaultSlotShow">
 		<template v-slot:prepend>
 			<v-app-bar-nav-icon
 				@click="toggleNavigation"
@@ -81,6 +81,10 @@ const items = ref([
 	{ text: 'Недавнее', icon: 'mdi-history' },
 	{ text: 'Загрузки', icon: 'mdi-upload' },
 ]);
+
+const props = defineProps({
+	isDefaultSlotShow: null
+});
 
 const logout = () => {
 	userModel.logout();

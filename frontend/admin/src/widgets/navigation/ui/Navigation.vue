@@ -1,6 +1,7 @@
 <template>
 
 	<v-navigation-drawer
+		v-if="props.isDefaultSlotShow"
 		v-model="navigationModel.drawer"
 		:rail="navigationModel.rail"
 		permanent
@@ -63,6 +64,10 @@ const navigationModel = useNavigationModel();
 
 let serviceMenuItems = ref<MenuItem[]>([]);
 let blogMenuItems = ref<MenuItem[]>([]);
+
+const props = defineProps({
+	isDefaultSlotShow: null
+});
 
 onMounted(async () => {
 	serviceMenuItems.value = (await navigationModel.getServiceMenuItems()).data;

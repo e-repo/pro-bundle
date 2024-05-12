@@ -96,7 +96,7 @@ const resetPasswordForm = reactive<RequestResetPasswordForm>({
 })
 
 const alert = reactive<Alert>({
-	isShow: false,
+	isDefaultSlotShow: false,
 	type: undefined,
 	message: '',
 });

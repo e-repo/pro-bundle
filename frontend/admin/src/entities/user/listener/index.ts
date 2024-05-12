@@ -1,9 +1,9 @@
 import { useUserModel } from '@/entities/user';
-import { REFRESH_TOKEN_EVENT_NAME } from '@/shared/api';
-import { Emitter }  from '@/shared/lib';
+import { TOKEN_NOT_FOUND_EVENT } from '@/shared/api';
+import { EmitterService }  from '@/shared/lib';
 
 export const useRefreshTokenListener = () => {
-	Emitter.on(REFRESH_TOKEN_EVENT_NAME, async () => {
+	EmitterService.emitter.on(TOKEN_NOT_FOUND_EVENT, async () => {
 		const userModel = useUserModel();
 
 		await userModel.refreshToken();

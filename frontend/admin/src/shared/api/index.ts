@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
-import { Emitter } from '@/shared/lib';
+import { EmitterService } from '@/shared/lib';
 
-export const REFRESH_TOKEN_EVENT_NAME = 'refresh-token';
+export const TOKEN_NOT_FOUND_EVENT = 'token-not-found';
 
 export const http = axios.create({
 	baseURL: import.meta.env.VITE_BASE_URL,
@@ -10,6 +10,9 @@ export const http = axios.create({
 	}
 });
 
+/**
+ * trow REFRESH_TOKEN_EVENT_NAME
+ */
 export const useHttpBearerToken = () => {
 	const localStorageToken = localStorage.getItem('user');
 	let token: string | null = null;
@@ -18,8 +21,12 @@ export const useHttpBearerToken = () => {
 		token = JSON.parse(localStorageToken)?.user.token;
 	}
 
+	/**
+	 * Для данного события создан хук useRefreshTokenListener()
+	 * как обработчик данного события в клиентском коде
+	 */
 	if (null === token) {
-		Emitter.emit(REFRESH_TOKEN_EVENT_NAME);
+		EmitterService.emitter.emit(TOKEN_NOT_FOUND_EVENT);
 	}
 
 	return axios.create({
@@ -39,7 +46,7 @@ export const tryRefreshToken = (error: unknown): boolean => {
 	const responseData = error.response?.data;
 
 	if (responseData.code === 401) {
-		Emitter.emit(REFRESH_TOKEN_EVENT_NAME);
+		EmitterService.emitter.emit(TOKEN_NOT_FOUND_EVENT);
 	}
 
 	return true;

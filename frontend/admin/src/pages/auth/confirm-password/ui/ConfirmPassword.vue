@@ -111,7 +111,7 @@ const restoreForm = reactive<RestoreForm>({
 })
 
 const alert = reactive<Alert>({
-	isShow: false,
+	isDefaultSlotShow: false,
 	type: undefined,
 	message: '',
 });
