@@ -12,10 +12,15 @@ import * as directives from 'vuetify/directives';
 
 import '@mdi/font/css/materialdesignicons.css';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import { ru } from 'vuetify/locale';
 
 const pinia = createPinia();
 
 const vuetify = createVuetify({
+	locale: {
+		locale: 'ru',
+		messages: { ru }
+	},
 	theme: {
 	},
 	icons: {

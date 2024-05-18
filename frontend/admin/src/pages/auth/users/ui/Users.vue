@@ -16,7 +16,8 @@
 		<v-row>
 			<v-col>
 				<v-data-table-server
-					v-model:items-per-page="tableOptions.itemsPerPage"
+					:items-per-page="tableOptions.itemsPerPage"
+					:items-per-page-options="[tableOptions.itemsPerPage]"
 					:headers="tableOptions.headers"
 					:items="tableOptions.serverItems"
 					:items-length="tableOptions.totalItems"
