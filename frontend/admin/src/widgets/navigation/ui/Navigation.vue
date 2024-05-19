@@ -51,12 +51,7 @@ import { useNavigationModel } from '@/entities/navigation';
 import { onMounted, ref } from 'vue';
 import { useRefreshTokenListener } from '@/entities/user';
 import { NavigationMap } from '@/shared/lib';
-
-interface MenuItem {
-	id: string;
-	title: string;
-	icon: string;
-}
+import { NavigationFetcher, MenuItem } from '@/features/navigation';
 
 useRefreshTokenListener();
 
@@ -70,8 +65,8 @@ const props = defineProps({
 });
 
 onMounted(async () => {
-	serviceMenuItems.value = (await navigationModel.getServiceMenuItems()).data;
-	blogMenuItems.value = (await navigationModel.getBlogMenuItems()).data;
+	serviceMenuItems.value = (await NavigationFetcher.getServiceMenuItems()).data;
+	blogMenuItems.value = (await NavigationFetcher.getBlogMenuItems()).data;
 });
 
 </script>
