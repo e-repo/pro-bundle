@@ -6,8 +6,8 @@ namespace Test\Functional\Service\Menu\GetMenu;
 
 use JsonException;
 use Symfony\Component\HttpFoundation\Response;
+use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
-use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class GetMenuTest extends FunctionalTestCase
 {

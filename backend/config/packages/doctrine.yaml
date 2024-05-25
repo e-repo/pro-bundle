@@ -4,8 +4,8 @@ doctrine:
         use_savepoints: true
 
         types:
-            user_id: Auth\User\Domain\Entity\Type\IdType
-            user_email: Auth\User\Domain\Entity\Type\EmailType
+            user_id: Auth\Domain\User\Entity\Type\IdType
+            user_email: Auth\Domain\User\Entity\Type\EmailType
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:

@@ -7,8 +7,8 @@ namespace Test\Functional\Auth\User\ConfirmResetPassword;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
 use JsonException;
+use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
-use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class ConfirmResetPasswordTest extends FunctionalTestCase
 {

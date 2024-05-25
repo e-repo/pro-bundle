@@ -4,7 +4,7 @@ security:
 
     providers:
         auth_module_provider:
-            id: Auth\User\Infra\Service\Security\UserProvider
+            id: Auth\Infra\User\Service\Security\UserProvider
 
     firewalls:
         login:
@@ -18,7 +18,7 @@ security:
         api:
             pattern: ^/api
             stateless: true
-            user_checker: Auth\User\Infra\Service\Security\UserChecker
+            user_checker: Auth\Infra\User\Service\Security\UserChecker
             jwt: ~
             refresh_jwt:
                 check_path: api_refresh_token

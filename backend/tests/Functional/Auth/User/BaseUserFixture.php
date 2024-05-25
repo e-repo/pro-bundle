@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Test\Functional\Auth\User;
 
-use Auth\User\Domain\Entity\EmailVo;
-use Auth\User\Domain\Entity\IdVo;
-use Auth\User\Domain\Entity\NameVo;
-use Auth\User\Domain\Entity\Specification\UniqueEmailSpecification;
-use Auth\User\Domain\Entity\Status;
-use Auth\User\Domain\Entity\User;
-use Auth\User\Domain\Service\PasswordHasher\Hasher;
+use Auth\Domain\User\Entity\EmailVo;
+use Auth\Domain\User\Entity\IdVo;
+use Auth\Domain\User\Entity\NameVo;
+use Auth\Domain\User\Entity\Specification\UniqueEmailSpecification;
+use Auth\Domain\User\Entity\Status;
+use Auth\Domain\User\Entity\User;
+use Auth\Domain\User\Service\PasswordHasher\Hasher;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Functional\Common\Fixture\BaseFixtureTrait;

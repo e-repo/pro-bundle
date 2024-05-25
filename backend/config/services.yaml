@@ -37,11 +37,19 @@ services:
             tags:
                 - { name: messenger.message_handler, bus: event.bus }
 
+    # Modules
     Auth\:
         resource: '../src/Auth'
         exclude:
             - '../src/Auth/{Kernel.php,*Dto.php}'
             - '../src/Auth/{Entity,Enum,Event}'
+
+    Service\:
+        resource: '../src/Service'
+        exclude:
+            - '../src/Auth/{Kernel.php,*Dto.php}'
+            - '../src/Auth/{Entity,Enum,Event}'
+            - '../src/CoreKit/UI/**/{*Command.php,*Query.php,*Response.php,*Request.php}'
 
     CoreKit\:
         resource: '../src/CoreKit'
@@ -49,16 +57,11 @@ services:
             - '../src/CoreKit/{Kernel.php,*Dto.php}'
             - '../src/CoreKit/{Entity,Enum,Event}'
 
-    UI\:
-        resource: '../src/UI'
-        exclude:
-            - '../src/UI/**/{*Command.php,*Query.php,*Response.php,*Request.php}'
-
     # Subscriber and Listeners
-    UI\Http\Common\Listener\ExceptionListener:
+    CoreKit\UI\Http\Listener\ExceptionListener:
         tags: [ { name: 'kernel.event_listener', event: kernel.exception, priority: 10 } ]
 
-    UI\Http\Common\Listener\ResponseListener:
+    CoreKit\UI\Http\Listener\ResponseListener:
         tags: [ { name: 'kernel.event_listener' } ]
 
     CoreKit\Application\Listener\DomainEventListener:
@@ -66,20 +69,20 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
 
     acme_api.event.jwt_created_listener:
-        class: Auth\User\Listener\JWTCreatedListener
+        class: Auth\Application\User\Listener\JWTCreatedListener
         arguments: [ '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
     # Another services
-    UI\Http\Common\Exception\Resolver:
+    CoreKit\UI\Http\Exception\Resolver:
         arguments: [ '%exceptions%' ]
 
-    Service\Menu\Query\GetMenu\Handler:
+    Service\Application\Menu\Query\GetMenu\Handler:
         arguments:
             $menuList: '%menu_list%'
 
-    UI\Http\Common\Request\RequestArgumentResolver:
+    CoreKit\UI\Http\Request\RequestArgumentResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }
 

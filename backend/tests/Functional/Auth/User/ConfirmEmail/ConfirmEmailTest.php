@@ -9,8 +9,8 @@ use Doctrine\DBAL\Exception;
 use JsonException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
+use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
-use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class ConfirmEmailTest extends FunctionalTestCase
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Test\Functional;
 
+use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
-use UI\Http\Common\DataFromJsonResponseTrait;
 
 final class OpenApiDocumentationTest extends FunctionalTestCase
 {
