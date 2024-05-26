@@ -79,6 +79,45 @@ final class SignUpTest extends FunctionalTestCase
     /**
      * @throws JsonException
      */
+    public function testSuccessSignUpWithSystemSource(): void
+    {
+        // arrange
+        $userEmail = 'test@test.ru';
+        $userFirstName = 'Test';
+        $registrationSource = 'system';
+
+        $expectedResponse = [
+            'data' => [
+                'status' => 'Пользователь создан успешно.',
+            ],
+            'meta' => null,
+        ];
+
+        $client = $this->createClient();
+
+        // action
+        $client->jsonRequest(
+            method: 'POST',
+            uri: self::ENDPOINT_URL,
+            parameters: [
+                'firstName' => $userFirstName,
+                'email' => $userEmail,
+                'password' => 'secret',
+                'registrationSource' => $registrationSource,
+            ]
+        );
+
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        // assert
+        self::assertResponseIsSuccessful();
+        self::assertEquals($expectedResponse, $response);
+        self::assertEmailCount(0);
+    }
+
+    /**
+     * @throws JsonException
+     */
     public function testFailedEmailAlreadyExist(): void
     {
         // arrange

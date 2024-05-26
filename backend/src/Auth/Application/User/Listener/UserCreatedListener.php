@@ -18,6 +18,10 @@ use Twig\Error\SyntaxError;
 
 final readonly class UserCreatedListener implements EventListenerInterface
 {
+    private const SOURCES_WITHOUT_NOTIFICATIONS = [
+        'system',
+    ];
+
     public function __construct(
         private MailerInterface $mailer,
         private Environment $twig,
@@ -48,6 +52,10 @@ final readonly class UserCreatedListener implements EventListenerInterface
             return;
         }
 
+        if (in_array($event->getRegistrationSource(), self::SOURCES_WITHOUT_NOTIFICATIONS, true)) {
+            return;
+        }
+
         $mail = $this->makeConfirmMessage($event);
         $this->mailer->send($mail);
     }
@@ -62,7 +70,9 @@ final readonly class UserCreatedListener implements EventListenerInterface
         $domain = $this->registrationSources[$event->getRegistrationSource()] ?? null;
 
         if (null === $domain) {
-            throw new DomainException('Источник регистрации не определен.');
+            throw new DomainException(
+                sprintf('Источник регистрации для \'%s\' не определен.', $event->getRegistrationSource())
+            );
         }
 
         return (new TemplatedEmail())
