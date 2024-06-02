@@ -47,3 +47,12 @@ export const confirmResetPassword = async (token: string, password: string)=> {
 		})
 	).data;
 };
+
+export const confirmEmail = async (userId: string, token: string)=> {
+	return (
+		await http.post('/auth/v1/user/confirm-email', {
+			userId,
+			token,
+		})
+	).data;
+};

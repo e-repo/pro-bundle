@@ -55,6 +55,17 @@ const routes: RouteRecordRaw[] = [
 		}
 	},
 	{
+		path: '/confirm-email',
+		name: 'ConfirmEmail',
+		component: () => import('@/pages/auth/confirm-email'),
+		meta: {
+			layout: AuthLayout,
+			middleware: [
+				useGuest,
+			] as Middleware[]
+		}
+	},
+	{
 		path: '/request-reset-password',
 		name: 'RequestResetPassword',
 		component: () => import('@/pages/auth/request-reset-password'),

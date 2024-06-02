@@ -58,6 +58,9 @@ export const useUserModel = defineStore({
 		async confirmResetPassword(token: string, newPassword: string) {
 			await UserApi.confirmResetPassword(token, newPassword);
 		},
+		async confirmEmail(userId: string, token: string) {
+			await UserApi.confirmEmail(userId, token);
+		},
 		logout() {
 			this.$reset();
 		},

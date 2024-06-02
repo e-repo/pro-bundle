@@ -177,16 +177,17 @@ useRefreshTokenListener();
 
 const userModel = useUserModel();
 
-// type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
+type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
+
+interface LoadParam
+{
+	page: number,
+	itemsPerPage: number,
+	sortBy: SortItem[]
+}
 
 let userList = ref<UserProfile[]>([])
-//
-// interface LoadParam
-// {
-// 	page: number,
-// 	itemsPerPage: number,
-// 	sortBy: SortItem[]
-// }
+let currentLoadUsersOptions: LoadParam | null = null;
 
 const isPassShow = ref<boolean>(true);
 
@@ -207,7 +208,7 @@ const createUserForm = reactive<CreateUserForm>({
 	firstName: null,
 	email: null,
 	password: null,
-	registrationSource: 'system',
+	registrationSource: 'admin_panel',
 	loading: false,
 	isShow: false
 })
@@ -257,7 +258,7 @@ const submitCreateUser = async (): Promise<void> => {
 		createUserForm.loading = false;
 		createUserForm.isShow = false;
 
-		await loadItems();
+		await loadItems(currentLoadUsersOptions);
 	} catch (error: any) {
 		createUserForm.loading = false;
 		createUserForm.isValid = false;
@@ -289,12 +290,17 @@ const tableOptions = reactive({
 	search: '',
 });
 
-const loadItems = async () => {
+const loadItems = async (options: LoadParam | null) => {
+	if (null === options) {
+		return;
+	}
+
+	currentLoadUsersOptions = options;
 	tableOptions.loading = true;
 
 	const result = await UserFetcher.getUserList({
-		offset: 0,
-		limit: tableOptions.itemsPerPage,
+		offset: (options.page - 1) * options.itemsPerPage,
+		limit: options.itemsPerPage,
 	}) as List
 
 	tableOptions.serverItems = <UserProfile[]>result.data;
