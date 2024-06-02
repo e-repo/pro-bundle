@@ -1,4 +1,7 @@
-import { http } from '@/shared/api';
+import { http, tryRefreshToken, useHttpBearerToken } from '@/shared/api';
+import { CreateUser } from '@/entities/user';
+
+const httpBearerToken = useHttpBearerToken();
 
 export const fetchToken = async (username: string, password: string) => {
 	return (
@@ -24,6 +27,16 @@ export const requestResetPassword = async (email: string, registrationSource: st
 			registrationSource
 		})
 	).data;
+};
+
+export const requestCreateUser = async (user: CreateUser) => {
+	try {
+		return (
+			await httpBearerToken.post('/auth/v1/user/sign-up', user)
+		).data;
+	} catch (error: unknown) {
+		tryRefreshToken(error);
+	}
 };
 
 export const confirmResetPassword = async (token: string, password: string)=> {

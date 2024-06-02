@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { UserApi } from '../index';
+import { CreateUser, UserApi } from '../index';
 
 interface AuthStoreUser {
 	isAuthenticated: boolean,
@@ -48,6 +48,9 @@ export const useUserModel = defineStore({
 				token: result.token,
 				refreshToken: result.refreshToken
 			});
+		},
+		async signUp(user: CreateUser) {
+			await UserApi.requestCreateUser(user);
 		},
 		async requestResetPassword(email: string, registrationSource: string) {
 			await UserApi.requestResetPassword(email, registrationSource);

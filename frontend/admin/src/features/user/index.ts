@@ -3,4 +3,4 @@ export {
 	type UserProfile,
 } from './fetcher/types';
 
-export { UserFetcher } from './fetcher'
+export { UserFetcher } from './fetcher';

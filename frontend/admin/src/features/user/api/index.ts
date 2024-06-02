@@ -16,4 +16,4 @@ export const fetchUserList = async (filter: UserListFilter)=> {
 	} catch (error: unknown) {
 		tryRefreshToken(error);
 	}
-}
+};

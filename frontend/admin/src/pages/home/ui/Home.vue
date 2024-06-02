@@ -4,7 +4,7 @@
 		<v-row>
 			<v-col cols="12">
 				<h1 class="text-center">Привет {{ userModel.userFromToken.firstName }}.</h1>
-				<h3 class="text-decoration-underline">Данный проект это:</h3>
+				<h3 class="text-decoration-underline">Админка это:</h3>
 			</v-col>
 		</v-row>
 		<v-row>
