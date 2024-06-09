@@ -103,7 +103,7 @@ final class Action extends AbstractController
     ) {}
 
     #[Route(
-        path: 'api/auth/v1/user/list',
+        path: 'api/auth/v1/users',
         name: 'auth_get-user-list',
         methods: ['GET']
     )]

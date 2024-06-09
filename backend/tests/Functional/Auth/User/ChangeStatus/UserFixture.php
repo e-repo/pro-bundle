@@ -38,7 +38,7 @@ final class UserFixture extends BaseUserFixture
                 'lastName' => 'TestLastName_3',
                 'email' => 'test_3@test.ru',
                 'password' => 'secret_3',
-                'status' => Status::BLOCKED->value,
+                'status' => Status::ACTIVE->value,
                 'registrationSource' => 'blog',
             ],
         ];

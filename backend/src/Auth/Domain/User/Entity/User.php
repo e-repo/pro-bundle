@@ -100,11 +100,13 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->email = $email;
         $this->passwordHash = $password;
         $this->registrationSource = RegistrationSource::tryFrom($registrationSource);
+
         $this->status = Status::WAIT;
         $this->role = Role::USER;
         $this->resetPasswordToken = new ResetPasswordToken();
-        $this->emailConfirmToken = Uuid::uuid4()->toString();
         $this->createdAt = new DateTimeImmutable();
+
+        $this->setEmailConfirmToken();
 
         if (! $uniqueEmailSpecification->isSatisfiedBy($this)) {
             throw new EmailNotUniqueException($email->value);
@@ -165,17 +167,19 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             throw new DomainException('Передан не верный токен для подтверждения email.');
         }
 
-        $this->changeStatus(Status::ACTIVE);
-
-        $this->resetEmailConfirmToken();
+        $this->changeStatus(Status::ACTIVE, $this->email->value);
     }
 
-    public function changeStatus(Status $status): void
+    public function changeStatus(Status $status, ?string $changedBy): void
     {
         $this->status = $status;
 
-        $this->record($this->makeUserStatusChangedEvent());
-        $this->resetEmailConfirmToken();
+        match ($status) {
+            Status::WAIT => $this->setEmailConfirmToken(),
+            default => $this->resetEmailConfirmToken(),
+        };
+
+        $this->record($this->makeUserStatusChangedEvent($changedBy));
     }
 
     public function changeRole(Role $role): void
@@ -253,7 +257,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         );
     }
 
-    private function makeUserStatusChangedEvent(): UserStatusChangedEvent
+    private function makeUserStatusChangedEvent(?string $changedBy): UserStatusChangedEvent
     {
         return new UserStatusChangedEvent(
             id: $this->id->value,
@@ -261,6 +265,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             email: $this->email->value,
             status: $this->status->value,
             role: $this->role->value,
+            changedBy: $changedBy,
         );
     }
 
@@ -272,5 +277,10 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     private function resetEmailConfirmToken(): void
     {
         $this->emailConfirmToken = null;
+    }
+
+    private function setEmailConfirmToken(): void
+    {
+        $this->emailConfirmToken = Uuid::uuid4()->toString();
     }
 }

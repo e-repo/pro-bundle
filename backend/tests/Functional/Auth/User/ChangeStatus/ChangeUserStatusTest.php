@@ -9,6 +9,7 @@ use Auth\Domain\User\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use JsonException;
+use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
 use Test\Functional\Common\User\UserBuilder;
@@ -115,6 +116,104 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         self::assertResponseIsSuccessful();
         self::assertEquals($expectedResponse, $response);
         self::assertEquals($loadedUser->getStatus()->value, Status::BLOCKED->value);
+    }
+
+    public function testFailedInvalidStatus(): void
+    {
+        // arrange
+        $client = $this->createClient();
+
+        $loadedUser = $this->referenceRepository->getReference(
+            name: UserFixture::getPrefix(1),
+            class: User::class
+        );
+
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
+
+        // action
+        $client->jsonRequest(
+            method: 'PATCH',
+            uri: $this->makeUrl($loadedUser->getId()->value),
+            parameters: [
+                'status' => 'invalid_status',
+            ]
+        );
+
+        // assert
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFailedUserNotFound(): void
+    {
+        // arrange
+        $client = $this->createClient();
+        $invalidUserId = $this->faker->uuid();
+
+        $expectedErrorMessage = sprintf('Пользователь по идентификатору \'%s\' не найден.', $invalidUserId);
+
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
+
+        // action
+        $client->jsonRequest(
+            method: 'PATCH',
+            uri: $this->makeUrl($invalidUserId),
+            parameters: [
+                'status' => 'active',
+            ]
+        );
+
+        // assert
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $error = reset($response['errors']);
+        self::assertEquals($expectedErrorMessage, $error['detail']);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFailedAccessDenied(): void
+    {
+        // arrange
+        $client = $this->createClient();
+
+        /** @var User $loadedUser */
+        $loadedUser = $this->referenceRepository->getReference(
+            name: UserFixture::getPrefix(1),
+            class: User::class
+        );
+
+        $expectedErrorMessage = 'Доступ запрещен.';
+
+        $client->loginUser(
+            UserBuilder::createUser()->build()
+        );
+
+        // action
+        $client->jsonRequest(
+            method: 'PATCH',
+            uri: $this->makeUrl($loadedUser->getId()->value),
+            parameters: [
+                'status' => 'blocked',
+            ]
+        );
+
+        // assert
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $error = reset($response['errors']);
+        self::assertEquals($expectedErrorMessage, $error['detail']);
     }
 
     private function makeUrl(string $id): string

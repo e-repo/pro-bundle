@@ -41,11 +41,13 @@ security:
         - { path: ^/api/auth/v1/user/request-reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/user/confirm-reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/user/confirm-email, roles: PUBLIC_ACCESS }
+
         # ADMIN ACCESS
         - { path: ^/api/auth/v1/user, roles: ROLE_ADMIN }
-        - { path: ^/api/auth/v1/user/list, roles: ROLE_ADMIN }
+        - { path: ^/api/auth/v1/users, roles: ROLE_ADMIN }
         - { path: ^/api/service/v1/menu, roles: ROLE_ADMIN }
         - { route: 'auth_change-status', roles: ROLE_ADMIN }
+
         # USER ACCESS
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }

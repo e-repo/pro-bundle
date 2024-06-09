@@ -15,4 +15,6 @@ interface UserStatusChangedEventInterface
     public function getStatus(): string;
 
     public function getRole(): string;
+
+    public function getChangedBy(): ?string;
 }

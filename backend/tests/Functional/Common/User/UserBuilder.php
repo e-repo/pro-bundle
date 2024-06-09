@@ -26,8 +26,20 @@ final class UserBuilder
             firstName: 'TestFirstName_2',
             email: 'test_2@test.ru',
             passwordHash: '$2y$13$ftB8l5tXUdp3aPALxhYAs.21OSP8Kq8ymWEOzctzJydUnvkE7zWZS', // hash: secret_2
-            role: 'ROLE_ADMIN',
-            status: 'active',
+            role: Role::ADMIN->value,
+            status: Status::ACTIVE->value,
+        );
+    }
+
+    public static function createUser(): self
+    {
+        return new self(
+            id: '76c3a2d9-49fd-4fbd-a0f4-0022d38dbaba',
+            firstName: 'TestFirstName_3',
+            email: 'test_3@test.ru',
+            passwordHash: '$2y$13$M9SZqESK6wvMVNXoRF7NduGufBIJgOatyZplw.dSVxRvH1Fw/1oju', // hash: secret_3
+            role: Role::USER->value,
+            status: Status::ACTIVE->value,
         );
     }
 

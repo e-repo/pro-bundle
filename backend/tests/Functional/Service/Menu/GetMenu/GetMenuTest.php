@@ -8,6 +8,7 @@ use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
+use Test\Functional\Common\User\UserBuilder;
 
 final class GetMenuTest extends FunctionalTestCase
 {
@@ -24,6 +25,10 @@ final class GetMenuTest extends FunctionalTestCase
         $client = $this->createClient();
 
         $expectedItemKeys = ['id', 'title', 'icon'];
+
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
 
         // action
         $client->request(
@@ -57,6 +62,10 @@ final class GetMenuTest extends FunctionalTestCase
         $client = $this->createClient();
         $expectedErrorRegex = "/Меню '.+' не найдено/";
 
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
+
         // action
         $client->request(
             method: 'GET',
@@ -72,5 +81,37 @@ final class GetMenuTest extends FunctionalTestCase
         // assert
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         self::assertMatchesRegularExpression($expectedErrorRegex, $errors[0]['detail']);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFailedAccessDenied(): void
+    {
+        // arrange
+        $client = $this->createClient();
+
+        $expectedErrorMessage = 'Доступ запрещен.';
+
+        $client->loginUser(
+            UserBuilder::createUser()->build()
+        );
+
+        // action
+        $client->request(
+            method: 'GET',
+            uri: self::URI,
+            parameters: [
+                'name' => $this->faker->uuid(),
+            ]
+        );
+
+        // assert
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $error = reset($response['errors']);
+        self::assertEquals($expectedErrorMessage, $error['detail']);
     }
 }

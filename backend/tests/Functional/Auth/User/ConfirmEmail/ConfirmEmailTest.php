@@ -16,7 +16,7 @@ final class ConfirmEmailTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
 
-    private const ENDPOINT_URL = 'api/auth/v1/user/confirm-email';
+    private const ENDPOINT_URL = '/api/auth/v1/user/confirm-email';
 
     public function setUp(): void
     {

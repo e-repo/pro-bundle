@@ -20,7 +20,9 @@ final readonly class Handler implements CommandHandlerInterface
         $user = $this->userRepository->find($command->id);
 
         if (null === $user) {
-            throw new DomainException('Пользователь не найден.');
+            throw new DomainException(
+                sprintf('Пользователь по идентификатору \'%s\' не найден.', $command->id)
+            );
         }
 
         $status = Status::tryFrom($command->status);
@@ -29,6 +31,6 @@ final readonly class Handler implements CommandHandlerInterface
             throw new DomainException('Передан не допустимый статус для изменения.');
         }
 
-        $user->changeStatus($status);
+        $user->changeStatus($status, $command->changedBy);
     }
 }

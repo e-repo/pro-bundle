@@ -45,7 +45,10 @@ class BaseUserFixture extends Fixture implements PrefixableInterface
             );
 
             if (isset($item['status'])) {
-                $user->changeStatus(Status::from($item['status']));
+                $user->changeStatus(
+                    status: Status::from($item['status']),
+                    changedBy: $user->getEmail()->value
+                );
             }
 
             if (isset($item['role'])) {

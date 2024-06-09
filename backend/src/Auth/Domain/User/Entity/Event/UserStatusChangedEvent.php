@@ -15,6 +15,7 @@ final readonly class UserStatusChangedEvent implements EventInterface, UserStatu
         private string $email,
         private string $status,
         private string $role,
+        private ?string $changedBy,
     ) {}
 
     public function getId(): string
@@ -40,5 +41,10 @@ final readonly class UserStatusChangedEvent implements EventInterface, UserStatu
     public function getRole(): string
     {
         return $this->role;
+    }
+
+    public function getChangedBy(): string
+    {
+        return $this->changedBy;
     }
 }
