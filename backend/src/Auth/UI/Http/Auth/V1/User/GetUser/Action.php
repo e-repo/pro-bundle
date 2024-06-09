@@ -9,14 +9,13 @@ use Auth\Domain\User\Dto\GetUserDto;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\DateTimeFormatter;
 use CoreKit\Infra\OpenApiDateTime;
-use CoreKit\UI\Http\Exception\ViolationException;
 use CoreKit\UI\Http\Response\ResponseWrapper;
 use CoreKit\UI\Http\Response\Violation;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 #[OA\Tag(name: 'Регистрация')]
 #[OA\Get(
@@ -62,7 +61,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class Action extends AbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
         private readonly QueryBusInterface $queryBus,
         private readonly DateTimeFormatter $dateTimeFormatter,
     ) {}
@@ -71,23 +69,15 @@ final class Action extends AbstractController
         path: 'api/auth/v1/user/{id}',
         name: 'auth_get-user',
         requirements: [
-            'id' => '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
-        ], // UUID
+            'id' => Requirement::UUID,
+        ],
         methods: ['GET']
     )]
-    public function __invoke(string $id): ResponseWrapper
+    public function __invoke(Request $request): ResponseWrapper
     {
-        $violationList = $this->validator->validate(
-            new Request($id)
-        );
-
-        if ($violationList->count() > 0) {
-            throw new ViolationException($violationList);
-        }
-
         /** @var GetUserDto $result */
         $result = $this->queryBus->dispatch(
-            new Query($id)
+            new Query($request->id)
         );
 
         return new ResponseWrapper($this->makeResponse($result));

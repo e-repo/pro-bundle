@@ -6,6 +6,7 @@ namespace Auth\Domain\User\Entity;
 
 use Auth\Domain\User\Entity\Event\UserCreatedEvent;
 use Auth\Domain\User\Entity\Event\UserPasswordResetEvent;
+use Auth\Domain\User\Entity\Event\UserStatusChangedEvent;
 use Auth\Domain\User\Entity\Exception\EmailNotUniqueException;
 use Auth\Domain\User\Entity\Specification\UniqueEmailSpecification;
 use Auth\Domain\User\Service\PasswordHasher\Hasher;
@@ -164,18 +165,22 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
             throw new DomainException('Передан не верный токен для подтверждения email.');
         }
 
-        $this->status = Status::ACTIVE;
-        $this->emailConfirmToken = null;
+        $this->changeStatus(Status::ACTIVE);
+
+        $this->resetEmailConfirmToken();
     }
 
-    public function block(): void
+    public function changeStatus(Status $status): void
     {
-        if ($this->status === Status::BLOCKED) {
-            throw new DomainException('Пользователь уже заблокирован');
-        }
+        $this->status = $status;
 
-        $this->status = Status::BLOCKED;
-        $this->emailConfirmToken = null;
+        $this->record($this->makeUserStatusChangedEvent());
+        $this->resetEmailConfirmToken();
+    }
+
+    public function changeRole(Role $role): void
+    {
+        $this->role = $role;
     }
 
     public function confirmResetPassword(
@@ -248,8 +253,24 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         );
     }
 
+    private function makeUserStatusChangedEvent(): UserStatusChangedEvent
+    {
+        return new UserStatusChangedEvent(
+            id: $this->id->value,
+            firstname: $this->name->first,
+            email: $this->email->value,
+            status: $this->status->value,
+            role: $this->role->value,
+        );
+    }
+
     private function isActive(): bool
     {
         return Status::ACTIVE === $this->status;
+    }
+
+    private function resetEmailConfirmToken(): void
+    {
+        $this->emailConfirmToken = null;
     }
 }

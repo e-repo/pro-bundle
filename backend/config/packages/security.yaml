@@ -45,28 +45,7 @@ security:
         - { path: ^/api/auth/v1/user, roles: ROLE_ADMIN }
         - { path: ^/api/auth/v1/user/list, roles: ROLE_ADMIN }
         - { path: ^/api/service/v1/menu, roles: ROLE_ADMIN }
+        - { route: 'auth_change-status', roles: ROLE_ADMIN }
         # USER ACCESS
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
-
-when@test:
-    security:
-        firewalls:
-            login:
-                pattern: ^/api
-                security: false
-
-            api:
-                pattern: ^/api
-                security: false
-
-            dev:
-                pattern: ^/
-                security: false
-
-        password_hashers:
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4
-                time_cost: 3
-                memory_cost: 10

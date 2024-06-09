@@ -7,6 +7,7 @@ namespace Test\Functional\Auth\User;
 use Auth\Domain\User\Entity\EmailVo;
 use Auth\Domain\User\Entity\IdVo;
 use Auth\Domain\User\Entity\NameVo;
+use Auth\Domain\User\Entity\Role;
 use Auth\Domain\User\Entity\Specification\UniqueEmailSpecification;
 use Auth\Domain\User\Entity\Status;
 use Auth\Domain\User\Entity\User;
@@ -14,12 +15,11 @@ use Auth\Domain\User\Service\PasswordHasher\Hasher;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Functional\Common\Fixture\BaseFixtureTrait;
+use Test\Functional\Common\Fixture\PrefixableInterface;
 
-class BaseUserFixture extends Fixture
+class BaseUserFixture extends Fixture implements PrefixableInterface
 {
     use BaseFixtureTrait;
-
-    public const NAME_PREFIX = 'user';
 
     public function __construct(
         private readonly Hasher $hasher,
@@ -44,19 +44,24 @@ class BaseUserFixture extends Fixture
                 hasher: $this->hasher,
             );
 
-            if ($item['status'] === Status::ACTIVE->value) {
-                $user->confirmUserEmail($user->getEmailConfirmToken());
+            if (isset($item['status'])) {
+                $user->changeStatus(Status::from($item['status']));
             }
 
-            if ($item['status'] === Status::BLOCKED->value) {
-                $user->block();
+            if (isset($item['role'])) {
+                $user->changeRole(Role::from($item['role']));
             }
 
             $manager->persist($user);
 
-            $this->addReference($this->getReferenceName(self::NAME_PREFIX, $key), $user);
+            $this->addReference(self::getPrefix($key), $user);
         }
 
         $manager->flush();
+    }
+
+    public static function getPrefix(string|int $key): string
+    {
+        return self::makeReferenceName('user', $key);
     }
 }

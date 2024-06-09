@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
@@ -67,6 +68,10 @@ final readonly class ExceptionListener
     {
         if ($throwable instanceof HandlerFailedException) {
             $throwable = $throwable->getPrevious();
+        }
+
+        if ($throwable instanceof AccessDeniedException) {
+            $throwable = new AccessDeniedException('Доступ запрещен.');
         }
 
         $exceptionAttributes = $this->exceptionResolver->resolve(get_class($throwable));
