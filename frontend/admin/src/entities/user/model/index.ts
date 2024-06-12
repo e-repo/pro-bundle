@@ -52,6 +52,12 @@ export const useUserModel = defineStore({
 		async signUp(user: CreateUser) {
 			await UserApi.requestCreateUser(user);
 		},
+		async block(userId: string) {
+			console.log(userId);
+		},
+		async activate(userId: string) {
+			console.log(userId);
+		},
 		async requestResetPassword(email: string, registrationSource: string) {
 			await UserApi.requestResetPassword(email, registrationSource);
 		},

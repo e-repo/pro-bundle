@@ -22,7 +22,7 @@
 					:items="tableOptions.serverItems"
 					:items-length="tableOptions.totalItems"
 					:loading="tableOptions.loading"
-					:search="tableOptions.search"
+					:search="tableOptions.email"
 					item-value="name"
 					@update:options="loadItems"
 				>
@@ -31,17 +31,18 @@
 						<div class="d-flex">
 
 							<v-text-field
-								v-model="tableOptions.name"
+								v-model="tableOptions.email"
 								density="compact"
 								class="sort-input mr-2"
-								placeholder="Search name..." hide-details
+								placeholder="Email..."
+								type="number"
+								hide-details
 							></v-text-field>
 							<v-text-field
-								v-model="tableOptions.calories"
+								v-model="tableOptions.firstName"
 								density="compact"
 								class="sort-input"
-								placeholder="Minimum calories"
-								type="number"
+								placeholder="Имя..."
 								hide-details
 							></v-text-field>
 
@@ -156,6 +157,19 @@
 						</div>
 						<v-divider class="mt-4 mb-4"></v-divider>
 
+					</template>
+					<template v-slot:item.actions="{ item }">
+						<v-icon
+							class="me-2"
+							@click="blockUser(item)"
+						>
+							mdi-account-off
+						</v-icon>
+						<v-icon
+							@click="activateUser(item)"
+						>
+							mdi-account-reactivate
+						</v-icon>
 					</template>
 				</v-data-table-server>
 			</v-col>
@@ -276,19 +290,35 @@ const breadcrumbs = ref<string[]>(['Система', 'Пользователи']
 const tableOptions = reactive({
 	itemsPerPage: 5,
 	headers: [
-		{ title: 'E-mail', key: 'email', align: 'start', sortable: false },
-		{ title: 'Имя', key: 'firstName', align: 'start', sortable: false },
-		{ title: 'Роль', key: 'role', align: 'start', sortable: false },
-		{ title: 'Статус', key: 'status', align: 'start', sortable: false },
-		{ title: 'Дата создания', key: 'createdAt', align: 'start', sortable: false },
+		{ title: 'E-mail', key: 'email', sortable: false },
+		{ title: 'Имя', key: 'firstName', sortable: false },
+		{ title: 'Роль', key: 'role', sortable: false },
+		{ title: 'Статус', key: 'status', sortable: false },
+		{ title: 'Дата создания', key: 'createdAt', sortable: false },
+		{ title: 'Действия', key: 'actions', sortable: false },
 	],
 	serverItems: userList,
 	loading: true,
 	totalItems: 0,
-	name: '',
-	calories: '',
-	search: '',
+	firstName: '',
+	email: '',
 });
+
+const blockUser = async (item: UserProfile) => {
+	try {
+		await userModel.block(item.id);
+	} catch (error: any) {
+
+	}
+}
+
+const activateUser = async (item: UserProfile) => {
+	try {
+		await userModel.activate(item.id);
+	} catch (error: any) {
+
+	}
+}
 
 const loadItems = async (options: LoadParam | null) => {
 	if (null === options) {
@@ -308,12 +338,12 @@ const loadItems = async (options: LoadParam | null) => {
 	tableOptions.loading = false;
 };
 
-watch(() => tableOptions.name,(): void => {
-	tableOptions.search = String(Date.now());
+watch(() => tableOptions.firstName,(): void => {
+	tableOptions.firstName = String(Date.now());
 })
 
-watch(() => tableOptions.calories,(): void => {
-	tableOptions.search = String(Date.now());
+watch(() => tableOptions.email,(): void => {
+	tableOptions.email = String(Date.now());
 })
 
 onMounted(() => {

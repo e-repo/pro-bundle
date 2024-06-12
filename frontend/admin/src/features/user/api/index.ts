@@ -9,7 +9,7 @@ useRefreshTokenListener();
 export const fetchUserList = async (filter: UserListFilter)=> {
 	try {
 		return (
-			await http.get('/auth/v1/user/list', {
+			await http.get('/auth/v1/users', {
 				params: filter
 			})
 		).data;
