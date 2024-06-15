@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Auth\Infra\User\Fetcher;
 
-use Auth\Domain\User\Dto\GetUserDto;
 use Auth\Domain\User\Dto\UserDto;
+use Auth\Domain\User\Dto\UserProfileDto;
 use Auth\Domain\User\Fetcher\ListFilter;
 use Auth\Domain\User\Fetcher\UserFetcherInterface;
 use CoreKit\Infra\BaseFetcher;
@@ -47,7 +47,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
     /**
      * @throws Exception
      */
-    public function findById(string $id): ?GetUserDto
+    public function findById(string $id): ?UserProfileDto
     {
         $qb = $this->createDBALQueryBuilder();
 
@@ -59,6 +59,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
                 'u.email as email',
                 'u.role as role',
                 'u.status as status',
+                'u.registration_source as registration_source',
                 'u.created_at as created_at',
             )
             ->from('auth.user', 'u')
@@ -84,6 +85,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
                 'u.email as email',
                 'u.role as role',
                 'u.status as status',
+                'u.registration_source as registration_source',
                 'u.created_at as created_at',
             )
             ->setFirstResult($offset)
@@ -108,7 +110,7 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
     /**
      * @throws Exception
      */
-    public function getById(string $id): GetUserDto
+    public function getById(string $id): UserProfileDto
     {
         $user = $this->findById($id);
 
@@ -135,15 +137,16 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
         );
     }
 
-    private function makeGetUserDto(array $user): GetUserDto
+    private function makeGetUserDto(array $user): UserProfileDto
     {
-        return new GetUserDto(
+        return new UserProfileDto(
             id: $user['id'],
             firstName: $user['name_first'],
             lastName: $user['name_last'],
             email: $user['email'],
             role: $user['role'],
             status: $user['status'],
+            registrationSource: $user['registration_source'],
             createdAt: DateTimeImmutable::createFromFormat('Y-m-d H:i:sT', $user['created_at'])
         );
     }

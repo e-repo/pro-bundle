@@ -6,7 +6,7 @@ namespace Auth\Domain\User\Dto;
 
 use DateTimeImmutable;
 
-final readonly class GetUserDto
+final readonly class UserProfileDto
 {
     public function __construct(
         public string $id,
@@ -15,6 +15,7 @@ final readonly class GetUserDto
         public string $email,
         public string $role,
         public string $status,
+        public ?string $registrationSource,
         public DateTimeImmutable $createdAt,
     ) {}
 }

@@ -7,7 +7,7 @@ namespace Auth\Domain\User\Dto;
 final readonly class UsersByListFilterDto
 {
     /**
-     * @param GetUserDto[] $userList
+     * @param UserProfileDto[] $userList
      */
     public function __construct(
         public array $userList,

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Auth\UI\Http\Auth\V1\User\GetUser;
 
 use Auth\Application\User\Query\GetUser\Query;
-use Auth\Domain\User\Dto\GetUserDto;
+use Auth\Domain\User\Dto\UserProfileDto;
 use CoreKit\Application\Bus\QueryBusInterface;
-use CoreKit\Infra\DateTimeFormatter;
 use CoreKit\Infra\OpenApiDateTime;
 use CoreKit\UI\Http\Response\ResponseWrapper;
 use CoreKit\UI\Http\Response\Violation;
@@ -41,6 +40,7 @@ use Symfony\Component\Routing\Requirement\Requirement;
                         email: 'test@test.ru',
                         role: 'ROLE_USER',
                         status: 'active',
+                        registrationSource: 'admin_panel',
                         createdAt: new OpenApiDateTime()
                     )
                 )
@@ -62,7 +62,6 @@ final class Action extends AbstractController
 {
     public function __construct(
         private readonly QueryBusInterface $queryBus,
-        private readonly DateTimeFormatter $dateTimeFormatter,
     ) {}
 
     #[Route(
@@ -75,7 +74,7 @@ final class Action extends AbstractController
     )]
     public function __invoke(Request $request): ResponseWrapper
     {
-        /** @var GetUserDto $result */
+        /** @var UserProfileDto $result */
         $result = $this->queryBus->dispatch(
             new Query($request->id)
         );
@@ -83,7 +82,7 @@ final class Action extends AbstractController
         return new ResponseWrapper($this->makeResponse($result));
     }
 
-    private function makeResponse(GetUserDto $result): Response
+    private function makeResponse(UserProfileDto $result): Response
     {
         return new Response(
             id: $result->id,
@@ -92,7 +91,8 @@ final class Action extends AbstractController
             email: $result->email,
             role: $result->role,
             status: $result->status,
-            createdAt: $this->dateTimeFormatter->toMskTimezone($result->createdAt)
+            registrationSource: $result->registrationSource,
+            createdAt: $result->createdAt,
         );
     }
 }

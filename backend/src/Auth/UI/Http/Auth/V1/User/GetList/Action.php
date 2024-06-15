@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Auth\UI\Http\Auth\V1\User\GetList;
 
 use Auth\Application\User\Query\GetList\Query;
-use Auth\Domain\User\Dto\GetUserDto;
+use Auth\Domain\User\Dto\UserProfileDto;
 use Auth\Domain\User\Dto\UsersByListFilterDto;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\OpenApiDateTime;
@@ -132,7 +132,7 @@ final class Action extends AbstractController
         );
     }
 
-    private function makeUserResponse(GetUserDto $userDto): Response
+    private function makeUserResponse(UserProfileDto $userDto): Response
     {
         return new Response(
             id: $userDto->id,

@@ -18,6 +18,7 @@ final class Response implements ResponseInterface
         public string $email,
         public string $role,
         public string $status,
+        public ?string $registrationSource,
         #[Context([
             DateTimeNormalizer::FORMAT_KEY => DATE_ATOM,
         ])]
