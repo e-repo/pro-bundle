@@ -31,6 +31,12 @@ final readonly class Handler implements CommandHandlerInterface
             throw new DomainException('Передан не допустимый статус для изменения.');
         }
 
+        if ($user->getStatus() === Status::WAIT) {
+            throw new DomainException(
+                'Невозможно изменить статус пользователя. На почту была отправлена ссылка для подтверждения email, перейдите по ссылке.'
+            );
+        }
+
         $user->changeStatus($status, $command->changedBy);
     }
 }

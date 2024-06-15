@@ -44,7 +44,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         $client = $this->createClient();
 
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(1),
+            name: UserFixture::getPrefix(3),
             class: User::class
         );
 
@@ -86,7 +86,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
 
         /** @var User $loadedUser */
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(1),
+            name: UserFixture::getPrefix(2),
             class: User::class
         );
 
@@ -116,6 +116,43 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         self::assertResponseIsSuccessful();
         self::assertEquals($expectedResponse, $response);
         self::assertEquals($loadedUser->getStatus()->value, Status::BLOCKED->value);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFailedActiveStatus(): void
+    {
+        // arrange
+        $client = $this->createClient();
+
+        $loadedUser = $this->referenceRepository->getReference(
+            name: UserFixture::getPrefix(1),
+            class: User::class
+        );
+
+        $expectedErrorMessage = 'Невозможно изменить статус пользователя. На почту была отправлена ссылка для подтверждения email, перейдите по ссылке.';
+
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
+
+        // action
+        $client->jsonRequest(
+            method: 'PATCH',
+            uri: $this->makeUrl($loadedUser->getId()->value),
+            parameters: [
+                'status' => 'active',
+            ]
+        );
+
+        // assert
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $error = reset($response['errors']);
+        self::assertEquals($expectedErrorMessage, $error['detail']);
     }
 
     public function testFailedInvalidStatus(): void
