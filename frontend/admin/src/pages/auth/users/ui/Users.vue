@@ -160,15 +160,16 @@
 					</template>
 					<template v-slot:item.actions="{ item }">
 						<v-icon
+							:disabled="item.status === 'wait'"
 							class="me-2"
-							@click="blockUser(item)"
+							@click="changeStatus(item)"
 						>
-							mdi-account-off
+							{{ item.status === 'blocked' ? 'mdi-account-reactivate-outline' : 'mdi-account-cancel-outline' }}
 						</v-icon>
 						<v-icon
-							@click="activateUser(item)"
+							@click="userInfo(item)"
 						>
-							mdi-account-reactivate
+							mdi-information-outline
 						</v-icon>
 					</template>
 				</v-data-table-server>
@@ -304,17 +305,30 @@ const tableOptions = reactive({
 	email: '',
 });
 
-const blockUser = async (item: UserProfile) => {
-	try {
-		await userModel.block(item.id);
-	} catch (error: any) {
+const changeStatus = async (item: UserProfile) => {
+	const isConfirm = confirm(`Вы уверены что хотите изменить статус пользователя ${item.email}?`);
 
+	if (! isConfirm) {
+		return;
 	}
+
+	switch (item.status) {
+		case "blocked": {
+			await userModel.activate(item.id);
+			break;
+		}
+		case "active": {
+			await userModel.block(item.id);
+			break;
+		}
+	}
+
+	await loadItems(currentLoadUsersOptions);
 }
 
-const activateUser = async (item: UserProfile) => {
+const userInfo = async (item: UserProfile) => {
 	try {
-		await userModel.activate(item.id);
+		console.log(item);
 	} catch (error: any) {
 
 	}

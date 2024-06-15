@@ -53,10 +53,10 @@ export const useUserModel = defineStore({
 			await UserApi.requestCreateUser(user);
 		},
 		async block(userId: string) {
-			console.log(userId);
+			await UserApi.block(userId);
 		},
 		async activate(userId: string) {
-			console.log(userId);
+			await UserApi.activate(userId);
 		},
 		async requestResetPassword(email: string, registrationSource: string) {
 			await UserApi.requestResetPassword(email, registrationSource);

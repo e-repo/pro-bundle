@@ -8,12 +8,14 @@ export interface UserListFilter {
 	status?: string;
 }
 
+export type UserStatus = 'wait' | 'active' | 'blocked';
+
 export interface UserProfile {
 	id: string;
 	email: string;
 	firstName: string;
 	role: string;
-	status: string;
+	status: UserStatus;
 	createdAt: string;
 	lastName?: string;
 }

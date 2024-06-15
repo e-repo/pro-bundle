@@ -39,6 +39,30 @@ export const requestCreateUser = async (user: CreateUser) => {
 	}
 };
 
+export const activate = async (userId: string) => {
+	try {
+		return (
+			await httpBearerToken.patch(`/auth/v1/user/${userId}/status`, {
+				status: 'active'
+			})
+		).data;
+	} catch (error: unknown) {
+		tryRefreshToken(error);
+	}
+};
+
+export const block = async (userId: string) => {
+	try {
+		return (
+			await httpBearerToken.patch(`/auth/v1/user/${userId}/status`, {
+				status: 'blocked'
+			})
+		).data;
+	} catch (error: unknown) {
+		tryRefreshToken(error);
+	}
+};
+
 export const confirmResetPassword = async (token: string, password: string)=> {
 	return (
 		await http.post('/auth/v1/user/confirm-reset-password', {
