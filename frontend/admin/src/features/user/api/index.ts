@@ -17,3 +17,13 @@ export const fetchUserList = async (filter: UserListFilter)=> {
 		tryRefreshToken(error);
 	}
 };
+
+export const fetchUserById = async (userId: string)=> {
+	try {
+		return (
+			await http.get(`/auth/v1/user/${userId}`)
+		).data;
+	} catch (error: unknown) {
+		tryRefreshToken(error);
+	}
+};

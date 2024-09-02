@@ -167,7 +167,7 @@
 							{{ item.status === 'blocked' ? 'mdi-account-reactivate-outline' : 'mdi-account-cancel-outline' }}
 						</v-icon>
 						<v-icon
-							@click="userInfo(item)"
+							@click="userInfoDialogOpen(item)"
 						>
 							mdi-information-outline
 						</v-icon>
@@ -177,6 +177,47 @@
 		</v-row>
 
 	</v-container>
+
+	<v-dialog
+		transition="dialog-top-transition"
+		v-model="userInfoDialog.isShow"
+		width="600px"
+	>
+		<v-card
+			prepend-icon="mdi-information-outline"
+			title="Профиль пользователя"
+		>
+			<template v-slot:text>
+				<div
+					class="text-center"
+					v-if="userInfoDialog.user === null"
+				>
+					<v-progress-circular indeterminate></v-progress-circular>
+				</div>
+				<div v-else>
+					<v-table density="compact">
+						<tbody>
+							<tr
+								v-for="(item, key) in userInfoDialog.user"
+							>
+								<th>{{ key + 1 }}.</th>
+								<td>{{ item.attribute }}:</td>
+								<td>{{ item.value ? `${item.value}` : '-' }}</td>
+							</tr>
+						</tbody>
+					</v-table>
+				</div>
+			</template>
+			<template v-slot:actions>
+				<v-btn
+					class="ms-auto"
+					variant="outlined"
+					text="Закрыть"
+					@click="userInfoDialogClose()"
+				></v-btn>
+			</template>
+		</v-card>
+	</v-dialog>
 
 </template>
 
@@ -194,12 +235,29 @@ const userModel = useUserModel();
 
 type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 
+interface UserDialogItems
+{
+	attribute: string;
+	value: string|int|null;
+}
+
+interface UserInfoDialog
+{
+	isShow: boolean;
+	user: UserDialogItems[]|null;
+}
+
 interface LoadParam
 {
-	page: number,
-	itemsPerPage: number,
-	sortBy: SortItem[]
+	page: number;
+	itemsPerPage: number;
+	sortBy: SortItem[];
 }
+
+let userInfoDialog = reactive<UserInfoDialog>({
+	isShow: false,
+	user: null
+});
 
 let userList = ref<UserProfile[]>([])
 let currentLoadUsersOptions: LoadParam | null = null;
@@ -326,12 +384,22 @@ const changeStatus = async (item: UserProfile) => {
 	await loadItems(currentLoadUsersOptions);
 }
 
-const userInfo = async (item: UserProfile) => {
-	try {
-		console.log(item);
-	} catch (error: any) {
+const userInfoDialogOpen = async (item: UserProfile) => {
+	userInfoDialog.isShow = true;
 
-	}
+	const user = <UserProfile>await UserFetcher.getUserById(item.id);
+
+	userInfoDialog.user = [
+		{attribute: 'Имя', value: user.firstName},
+		{attribute: 'Фамилия', value: user.lastName},
+		{attribute: 'Email', value: user.email},
+		{attribute: 'Источник регистрации', value: user.registrationSource},
+	];
+}
+
+const userInfoDialogClose = () => {
+	userInfoDialog.isShow = false;
+	userInfoDialog.user = null;
 }
 
 const loadItems = async (options: LoadParam | null) => {

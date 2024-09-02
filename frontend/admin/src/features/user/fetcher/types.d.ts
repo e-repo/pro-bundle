@@ -18,4 +18,5 @@ export interface UserProfile {
 	status: UserStatus;
 	createdAt: string;
 	lastName?: string;
+	registrationSource?: string|null;
 }
