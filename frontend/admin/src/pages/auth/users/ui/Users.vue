@@ -22,7 +22,6 @@
 					:items="tableOptions.serverItems"
 					:items-length="tableOptions.totalItems"
 					:loading="tableOptions.loading"
-					:search="tableOptions.email"
 					item-value="name"
 					@update:options="loadItems"
 				>
@@ -35,7 +34,7 @@
 								density="compact"
 								class="sort-input mr-2"
 								placeholder="Email..."
-								type="number"
+								type="email"
 								hide-details
 							></v-text-field>
 							<v-text-field
@@ -238,7 +237,7 @@ type SortItem = { key: string, order?: boolean | 'asc' | 'desc' }
 interface UserDialogItems
 {
 	attribute: string;
-	value: string|int|null;
+	value: string|null|undefined;
 }
 
 interface UserInfoDialog
@@ -407,12 +406,16 @@ const loadItems = async (options: LoadParam | null) => {
 		return;
 	}
 
+	console.log(tableOptions.email);
+
 	currentLoadUsersOptions = options;
 	tableOptions.loading = true;
 
 	const result = await UserFetcher.getUserList({
 		offset: (options.page - 1) * options.itemsPerPage,
 		limit: options.itemsPerPage,
+		...(tableOptions.email.trim() && { email: tableOptions.email.trim() }),
+		...(tableOptions.firstName.trim() && { firstName: tableOptions.firstName.trim() })
 	}) as List
 
 	tableOptions.serverItems = <UserProfile[]>result.data;
@@ -420,16 +423,26 @@ const loadItems = async (options: LoadParam | null) => {
 	tableOptions.loading = false;
 };
 
-watch(() => tableOptions.firstName,(): void => {
-	tableOptions.firstName = String(Date.now());
+watch(() => tableOptions.firstName, async(): Promise<void> => {
+	const isFirstName = tableOptions.firstName.trim().length > 1
+
+	if (!tableOptions.firstName.trim() || isFirstName) {
+		await loadItems(currentLoadUsersOptions);
+	}
 })
 
-watch(() => tableOptions.email,(): void => {
-	tableOptions.email = String(Date.now());
+watch(() => tableOptions.email, async (): Promise<void> => {
+	const isEmail = FormHelper.emailPattern.test(
+		tableOptions.email.trim()
+	);
+
+	if (!tableOptions.email.trim() || isEmail) {
+		await loadItems(currentLoadUsersOptions);
+	}
 })
 
 onMounted(() => {
-	EmitterService.dispatchComponentOnMountedEvent()
+	EmitterService.dispatchComponentOnMountedEvent();
 });
 
 </script>
