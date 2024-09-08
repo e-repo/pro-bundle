@@ -1,5 +1,5 @@
 import { AuthLayout } from '@/shared/ui/layout';
-import { useAuth, useGuest, useMiddlewarePipeline } from './middleware';
+import { useRoleUser, useRoleAdmin, useMiddlewarePipeline } from './middleware';
 import { Middleware, MiddlewareContext, MiddlewarePayload } from './middleware/types';
 
 import {
@@ -18,7 +18,8 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/home'),
 		meta: {
 			middleware: [
-				useAuth,
+				useRoleUser,
+				useRoleAdmin,
 			] as Middleware[]
 		}
 	},
@@ -28,7 +29,8 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/auth/users'),
 		meta: {
 			middleware: [
-				useAuth,
+				useRoleUser,
+				useRoleAdmin,
 			] as Middleware[]
 		}
 	},
@@ -38,9 +40,6 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/auth/login'),
 		meta: {
 			layout: AuthLayout,
-			middleware: [
-				useGuest,
-			] as Middleware[]
 		}
 	},
 	{
@@ -49,9 +48,6 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/auth/confirm-password'),
 		meta: {
 			layout: AuthLayout,
-			middleware: [
-				useGuest,
-			] as Middleware[]
 		}
 	},
 	{
@@ -60,9 +56,6 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/auth/confirm-email'),
 		meta: {
 			layout: AuthLayout,
-			middleware: [
-				useGuest,
-			] as Middleware[]
 		}
 	},
 	{
@@ -71,9 +64,14 @@ const routes: RouteRecordRaw[] = [
 		component: () => import('@/pages/auth/request-reset-password'),
 		meta: {
 			layout: AuthLayout,
-			middleware: [
-				useGuest,
-			] as Middleware[]
+		}
+	},
+	{
+		path: '/forbidden',
+		name: 'Forbidden',
+		component: () => import('@/pages/auth/forbidden'),
+		meta: {
+			layout: AuthLayout,
 		}
 	},
 	{

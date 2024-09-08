@@ -14,6 +14,6 @@ export default function useMiddlewarePipeline(
 	return () => {
 		const nextPipeline = useMiddlewarePipeline(context, middlewares, index + 1);
 
-		nextMiddleware({ ...context, nextMiddleware: nextPipeline });
+		return nextMiddleware({ ...context, nextMiddleware: nextPipeline });
 	};
 }

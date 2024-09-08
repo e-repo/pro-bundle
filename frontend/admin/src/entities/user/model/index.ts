@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { CreateUser, UserApi } from '../index';
+import { JwtParser } from '@/shared/lib';
 
 interface AuthStoreUser {
 	isAuthenticated: boolean,
@@ -101,11 +102,7 @@ export const useUserModel = defineStore({
 				return null;
 			}
 
-			return JSON.parse(
-				atob(
-					this.user.token.split('.')[1]
-				)
-			);
+			return JwtParser.parsePayload(this.user.token);
 		},
 		userFromToken(): UserFromToken {
 			const tokenPayload = this.tokenPayload;
