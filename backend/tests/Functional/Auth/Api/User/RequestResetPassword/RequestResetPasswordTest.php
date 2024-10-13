@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\RequestResetPassword;
+namespace Test\Functional\Auth\Api\User\RequestResetPassword;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\ConfirmResetPassword;
+namespace Test\Functional\Auth\Api\User\SignUp;
 
 use Test\Functional\Common\Fixture\Auth\BaseUserFixture;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\ConfirmEmail;
+namespace Test\Functional\Auth\Api\User\ConfirmEmail;
 
 use Blog\Application\Reader\Listener\UserCreatedOrUpdatedListener;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;

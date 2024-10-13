@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\GetUserList;
+namespace Test\Functional\Auth\Api\User\GetUserList;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use JsonException;

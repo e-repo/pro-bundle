@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\SignUp;
+namespace Test\Functional\Auth\Api\User\SignUp;
 
 use Auth\Application\User\Event\UserCreatedOrUpdatedEvent;
 use Blog\Application\Reader\Listener\UserCreatedOrUpdatedListener;

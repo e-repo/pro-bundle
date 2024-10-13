@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\ChangeStatus;
+namespace Test\Functional\Auth\Api\User\ChangeStatus;
 
 use Auth\Domain\User\Entity\Status;
 use Auth\Domain\User\Entity\User;

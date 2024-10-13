@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User\ChangeStatus;
+namespace Test\Functional\Auth\Api\User\GetUser;
 
-use Auth\Domain\User\Entity\Role;
-use Auth\Domain\User\Entity\Status;
 use Test\Functional\Common\Fixture\Auth\BaseUserFixture;
 
 final class UserFixture extends BaseUserFixture
@@ -19,7 +17,7 @@ final class UserFixture extends BaseUserFixture
                 'lastName' => 'TestLastName_1',
                 'email' => 'test_1@test.ru',
                 'password' => 'secret_1',
-                'status' => Status::WAIT->value,
+                'status' => 'wait',
                 'registrationSource' => 'blog',
             ],
             [
@@ -28,8 +26,7 @@ final class UserFixture extends BaseUserFixture
                 'lastName' => 'TestLastName_2',
                 'email' => 'test_2@test.ru',
                 'password' => 'secret_2',
-                'status' => Status::ACTIVE->value,
-                'role' => Role::ADMIN->value,
+                'status' => 'active',
                 'registrationSource' => 'blog',
             ],
             [
@@ -38,7 +35,7 @@ final class UserFixture extends BaseUserFixture
                 'lastName' => 'TestLastName_3',
                 'email' => 'test_3@test.ru',
                 'password' => 'secret_3',
-                'status' => Status::BLOCKED->value,
+                'status' => 'blocked',
                 'registrationSource' => 'blog',
             ],
         ];
