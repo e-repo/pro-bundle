@@ -51,8 +51,9 @@
     "psr-4": {
       "UI\\": "src/UI",
       "Auth\\": "src/Auth",
-      "CoreKit\\": "src/CoreKit",
-      "Service\\": "src/Service"
+      "Service\\": "src/Service",
+      "Blog\\": "src/Blog",
+      "CoreKit\\": "src/CoreKit"
     }
   },
   "autoload-dev": {
@@ -103,6 +104,7 @@
     "symfony/css-selector": "6.3.*",
     "symfony/maker-bundle": "^1.51",
     "symfony/phpunit-bridge": "^6.3",
-    "symplify/easy-coding-standard": "^12.1"
+    "symplify/easy-coding-standard": "^12.1",
+    "zenstruck/messenger-test": "^1.11"
   }
 }

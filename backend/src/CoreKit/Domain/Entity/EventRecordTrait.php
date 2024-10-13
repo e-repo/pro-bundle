@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace CoreKit\Domain\Entity;
 
-use CoreKit\Domain\Event\EventInterface;
+use CoreKit\Domain\Event\DomainEventInterface;
 
 trait EventRecordTrait
 {
-    /** @var EventInterface[] */
+    /** @var DomainEventInterface[] */
     private array $events = [];
 
     /**
-     * @return EventInterface[]
+     * @return DomainEventInterface[]
      */
     public function getRecordedEvents(): array
     {
@@ -24,7 +24,7 @@ trait EventRecordTrait
         $this->events = [];
     }
 
-    public function record(EventInterface $event): void
+    public function record(DomainEventInterface $event): void
     {
         $this->events[] = $event;
     }

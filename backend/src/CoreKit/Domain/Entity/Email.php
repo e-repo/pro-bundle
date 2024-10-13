@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Auth\Domain\User\Entity;
+namespace CoreKit\Domain\Entity;
 
 use Stringable;
 use Webmozart\Assert\Assert;
 
-final readonly class EmailVo implements Stringable
+final readonly class Email implements Stringable
 {
     public function __construct(
         public string $value

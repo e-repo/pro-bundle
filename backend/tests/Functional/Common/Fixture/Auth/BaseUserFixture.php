@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Auth\User;
+namespace Test\Functional\Common\Fixture\Auth;
 
-use Auth\Domain\User\Entity\EmailVo;
-use Auth\Domain\User\Entity\IdVo;
 use Auth\Domain\User\Entity\NameVo;
 use Auth\Domain\User\Entity\Role;
 use Auth\Domain\User\Entity\Specification\UniqueEmailSpecification;
 use Auth\Domain\User\Entity\Status;
 use Auth\Domain\User\Entity\User;
 use Auth\Domain\User\Service\PasswordHasher\Hasher;
+use CoreKit\Domain\Entity\Email;
+use CoreKit\Domain\Entity\Id;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Functional\Common\Fixture\BaseFixtureTrait;
-use Test\Functional\Common\Fixture\PrefixableInterface;
+use Test\Functional\Common\Fixture\ReferencableInterface;
 
-class BaseUserFixture extends Fixture implements PrefixableInterface
+class BaseUserFixture extends Fixture implements ReferencableInterface
 {
     use BaseFixtureTrait;
 
@@ -32,12 +32,12 @@ class BaseUserFixture extends Fixture implements PrefixableInterface
             ++$key;
 
             $user = new User(
-                id: new IdVo($item['id']),
+                id: new Id($item['id']),
                 name: new NameVo(
                     first: $item['firstName'],
                     last: $item['lastName']
                 ),
-                email: new EmailVo($item['email']),
+                email: new Email($item['email']),
                 password: $item['password'],
                 registrationSource: $item['registrationSource'],
                 uniqueEmailSpecification: $this->uniqueEmailSpecification,
@@ -55,16 +55,18 @@ class BaseUserFixture extends Fixture implements PrefixableInterface
                 $user->changeRole(Role::from($item['role']));
             }
 
+            $user->clearRecordedEvents();
+
             $manager->persist($user);
 
-            $this->addReference(self::getPrefix($key), $user);
+            $this->addReference(self::getReferenceName($key), $user);
         }
 
         $manager->flush();
     }
 
-    public static function getPrefix(string|int $key): string
+    public static function getPrefix(): string
     {
-        return self::makeReferenceName('user', $key);
+        return 'user';
     }
 }

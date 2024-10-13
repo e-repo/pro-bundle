@@ -12,7 +12,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\PersistentCollection;
 
 #[AsDoctrineListener(event: Events::onFlush)]
-final readonly class DomainEventListener
+final readonly class ORMEventListener
 {
     public function __construct(
         private EventBusInterface $eventBus,
@@ -20,10 +20,10 @@ final readonly class DomainEventListener
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $this->sendEntityDomainEvents($args);
+        $this->sendDomainEvents($args);
     }
 
-    public function sendEntityDomainEvents(OnFlushEventArgs $args): void
+    public function sendDomainEvents(OnFlushEventArgs $args): void
     {
         $uow = $args->getObjectManager()->getUnitOfWork();
 
@@ -65,10 +65,11 @@ final readonly class DomainEventListener
 
     private function sendRecordedEvents(HasEventsInterface $entity): void
     {
-        foreach ($entity->getRecordedEvents() as $event) {
+        $entityEvents = $entity->getRecordedEvents();
+        $entity->clearRecordedEvents();
+
+        foreach ($entityEvents as $event) {
             $this->eventBus->publish($event);
         }
-
-        $entity->clearRecordedEvents();
     }
 }

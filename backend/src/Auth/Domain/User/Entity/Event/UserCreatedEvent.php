@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Auth\Domain\User\Entity\Event;
 
-use CoreKit\Domain\Event\EventInterface;
-use CoreKit\Domain\Event\UserCreatedEventInterface;
+use CoreKit\Domain\Event\DomainEventInterface;
 use DateTimeImmutable;
 
-final readonly class UserCreatedEvent implements EventInterface, UserCreatedEventInterface
+final readonly class UserCreatedEvent implements DomainEventInterface
 {
     public function __construct(
         private string $id,

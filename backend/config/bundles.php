@@ -49,4 +49,7 @@ return [
     Nelmio\CorsBundle\NelmioCorsBundle::class => [
         'all' => true,
     ],
+    Zenstruck\Messenger\Test\ZenstruckMessengerTestBundle::class => [
+        'test' => true,
+    ],
 ];

@@ -16,7 +16,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-final readonly class PasswordResetListener implements EventListenerInterface
+final readonly class UserPasswordResetListener implements EventListenerInterface
 {
     public function __construct(
         private MailerInterface $mailer,

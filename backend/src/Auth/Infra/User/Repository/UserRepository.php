@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Auth\Infra\User\Repository;
 
-use Auth\Domain\User\Entity\EmailVo;
 use Auth\Domain\User\Entity\User;
 use Auth\Domain\User\Repository\UserRepositoryInterface;
+use CoreKit\Domain\Entity\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -33,7 +33,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     public function findByEmail(string $email): ?User
     {
         return $this->findOneBy([
-            'email' => new EmailVo($email),
+            'email' => new Email($email),
         ]);
     }
 

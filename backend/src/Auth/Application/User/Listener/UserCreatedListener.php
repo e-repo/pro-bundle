@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Auth\Application\User\Listener;
 
+use Auth\Application\User\Event\UserCreatedOrUpdatedEvent;
 use Auth\Domain\User\Entity\Event\UserCreatedEvent;
+use CoreKit\Application\Bus\EventBusInterface;
 use CoreKit\Application\Bus\EventListenerInterface;
 use DomainException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -27,6 +29,7 @@ final readonly class UserCreatedListener implements EventListenerInterface
         private Environment $twig,
         private string $appEmail,
         private array $registrationSources,
+        private EventBusInterface $eventBus,
     ) {}
 
     /**
@@ -37,6 +40,17 @@ final readonly class UserCreatedListener implements EventListenerInterface
      */
     public function __invoke(UserCreatedEvent $event): void
     {
+        $this->eventBus->publish(
+            new UserCreatedOrUpdatedEvent(
+                id: $event->getId(),
+                firstname: $event->getFirstname(),
+                lastname: $event->getLastname(),
+                email: $event->getEmail(),
+                status: $event->getStatus(),
+                role: $event->getRole(),
+            )
+        );
+
         $this->sendConfirmEmail($event);
     }
 

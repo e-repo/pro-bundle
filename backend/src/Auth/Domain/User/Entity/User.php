@@ -11,8 +11,10 @@ use Auth\Domain\User\Entity\Exception\EmailNotUniqueException;
 use Auth\Domain\User\Entity\Specification\UniqueEmailSpecification;
 use Auth\Domain\User\Service\PasswordHasher\Hasher;
 use Auth\Domain\User\Service\PasswordHasher\PasswordHashedUserInterface;
+use CoreKit\Domain\Entity\Email;
 use CoreKit\Domain\Entity\EventRecordTrait;
 use CoreKit\Domain\Entity\HasEventsInterface;
+use CoreKit\Domain\Entity\Id;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,16 +28,16 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     use EventRecordTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: 'user_id', options: [
+    #[ORM\Column(type: 'uuid', options: [
         'comment' => 'Код пользователя',
     ])]
-    private IdVo $id;
+    private Id $id;
 
     #[ORM\Embedded(NameVo::class)]
     private NameVo $name;
 
-    #[ORM\Column(type: 'user_email', length: 100, unique: true)]
-    private EmailVo $email;
+    #[ORM\Column(type: 'email', length: 100, unique: true)]
+    private Email $email;
 
     #[ORM\Column(length: 50, nullable: true, options: [
         'comment' => 'Токен для подтверждения email',
@@ -72,14 +74,14 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     private ResetPasswordToken $resetPasswordToken;
 
     #[ORM\Column(
-        type: 'user_email',
+        type: 'email',
         length: 100,
         nullable: true,
         options: [
             'comment' => 'Новый email (при смене)',
         ]
     )]
-    private ?EmailVo $newEmail = null;
+    private ?Email $newEmail = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, options: [
         'comment' => 'Дата создания пользователя',
@@ -87,9 +89,9 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     private DateTimeImmutable $createdAt;
 
     public function __construct(
-        IdVo $id,
+        Id $id,
         NameVo $name,
-        EmailVo $email,
+        Email $email,
         string $password,
         string $registrationSource,
         UniqueEmailSpecification $uniqueEmailSpecification,
@@ -116,7 +118,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         $this->record($this->makeUserCreatedEvent());
     }
 
-    public function getId(): IdVo
+    public function getId(): Id
     {
         return $this->id;
     }
@@ -126,7 +128,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return $this->name;
     }
 
-    public function getEmail(): EmailVo
+    public function getEmail(): Email
     {
         return $this->email;
     }
@@ -262,6 +264,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
         return new UserStatusChangedEvent(
             id: $this->id->value,
             firstname: $this->name->first,
+            lastname: $this->name->last,
             email: $this->email->value,
             status: $this->status->value,
             role: $this->role->value,

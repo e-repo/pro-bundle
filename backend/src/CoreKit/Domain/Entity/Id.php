@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Auth\Domain\User\Entity;
+namespace CoreKit\Domain\Entity;
 
 use Ramsey\Uuid\Uuid;
 use Stringable;
 
-final readonly class IdVo implements Stringable
+final readonly class Id implements Stringable
 {
     public function __construct(
         public string $value

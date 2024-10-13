@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Functional\Auth\User\ConfirmEmail;
 
+use Blog\Application\Reader\Listener\UserCreatedOrUpdatedListener;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
 use JsonException;
@@ -11,6 +12,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
+use Test\Functional\Common\Listener\MockUserCreatedOrUpdatedListener;
 
 final class ConfirmEmailTest extends FunctionalTestCase
 {
@@ -39,6 +41,10 @@ final class ConfirmEmailTest extends FunctionalTestCase
         // arrange
         $loadedUser = UserFixture::allItems()[0];
         $client = $this->createClient();
+
+        // Убираем создание Reader по событию - тестируется отдельно
+        $userCreatedOrUpdatedListener = $this->createMock(MockUserCreatedOrUpdatedListener::class);
+        $this->container->set(UserCreatedOrUpdatedListener::class, $userCreatedOrUpdatedListener);
 
         $expectedResponse = [
             'data' => [

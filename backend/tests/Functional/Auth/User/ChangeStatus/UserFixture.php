@@ -6,7 +6,7 @@ namespace Test\Functional\Auth\User\ChangeStatus;
 
 use Auth\Domain\User\Entity\Role;
 use Auth\Domain\User\Entity\Status;
-use Test\Functional\Auth\User\BaseUserFixture;
+use Test\Functional\Common\Fixture\Auth\BaseUserFixture;
 
 final class UserFixture extends BaseUserFixture
 {

@@ -6,12 +6,14 @@ namespace Test\Functional\Auth\User\ChangeStatus;
 
 use Auth\Domain\User\Entity\Status;
 use Auth\Domain\User\Entity\User;
+use Blog\Application\Reader\Listener\UserCreatedOrUpdatedListener;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
+use Test\Functional\Common\Listener\MockUserCreatedOrUpdatedListener;
 use Test\Functional\Common\User\UserBuilder;
 
 final class ChangeUserStatusTest extends FunctionalTestCase
@@ -25,6 +27,10 @@ final class ChangeUserStatusTest extends FunctionalTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        // Убираем создание Reader - тестируется отдельно
+        $userCreatedOrUpdatedListener = $this->createMock(MockUserCreatedOrUpdatedListener::class);
+        $this->container->set(UserCreatedOrUpdatedListener::class, $userCreatedOrUpdatedListener);
 
         // arrange
         $this->referenceRepository = $this->databaseTool
@@ -44,7 +50,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         $client = $this->createClient();
 
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(3),
+            name: UserFixture::getReferenceName(3),
             class: User::class
         );
 
@@ -86,7 +92,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
 
         /** @var User $loadedUser */
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(2),
+            name: UserFixture::getReferenceName(2),
             class: User::class
         );
 
@@ -127,7 +133,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         $client = $this->createClient();
 
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(1),
+            name: UserFixture::getReferenceName(1),
             class: User::class
         );
 
@@ -161,7 +167,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
         $client = $this->createClient();
 
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(1),
+            name: UserFixture::getReferenceName(1),
             class: User::class
         );
 
@@ -225,7 +231,7 @@ final class ChangeUserStatusTest extends FunctionalTestCase
 
         /** @var User $loadedUser */
         $loadedUser = $this->referenceRepository->getReference(
-            name: UserFixture::getPrefix(1),
+            name: UserFixture::getReferenceName(1),
             class: User::class
         );
 

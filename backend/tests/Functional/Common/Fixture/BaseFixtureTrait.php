@@ -6,9 +6,9 @@ namespace Test\Functional\Common\Fixture;
 
 trait BaseFixtureTrait
 {
-    private static function makeReferenceName(string $referencePrefix, string|int $key): string
+    public static function getReferenceName(string|int $key): string
     {
-        return sprintf('%s_%s', $referencePrefix, $key);
+        return sprintf('%s_%s', self::getPrefix(), $key);
     }
 
     public static function allItems(): array

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Auth\Application\User\Command\ConfirmEmail;
 
-use Auth\Domain\User\Entity\IdVo;
 use Auth\Domain\User\Repository\UserRepositoryInterface;
 use CoreKit\Application\Bus\CommandHandlerInterface;
+use CoreKit\Domain\Entity\Id;
 use DomainException;
 
 final readonly class Handler implements CommandHandlerInterface
@@ -17,7 +17,7 @@ final readonly class Handler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $user = $this->userRepository->find(new IdVo($command->userId));
+        $user = $this->userRepository->find(new Id($command->userId));
 
         if (null === $user) {
             throw new DomainException(

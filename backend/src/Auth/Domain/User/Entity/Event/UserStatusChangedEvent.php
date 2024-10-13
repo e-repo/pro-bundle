@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Auth\Domain\User\Entity\Event;
 
-use CoreKit\Domain\Event\EventInterface;
-use CoreKit\Domain\Event\UserStatusChangedEventInterface;
+use CoreKit\Domain\Event\DomainEventInterface;
 
-final readonly class UserStatusChangedEvent implements EventInterface, UserStatusChangedEventInterface
+final readonly class UserStatusChangedEvent implements DomainEventInterface
 {
     public function __construct(
         private string $id,
         private string $firstname,
+        private string $lastname,
         private string $email,
         private string $status,
         private string $role,
@@ -26,6 +26,11 @@ final readonly class UserStatusChangedEvent implements EventInterface, UserStatu
     public function getFirstname(): string
     {
         return $this->firstname;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
     }
 
     public function getEmail(): string

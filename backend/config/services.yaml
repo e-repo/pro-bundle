@@ -44,6 +44,12 @@ services:
             - '../src/Auth/{Kernel.php,*Dto.php}'
             - '../src/Auth/{Entity,Enum,Event}'
 
+    Blog\:
+        resource: '../src/Blog'
+        exclude:
+            - '../src/Blog/{Kernel.php,*Dto.php}'
+            - '../src/Blog/{Entity,Enum,Event}'
+
     Service\:
         resource: '../src/Service'
         exclude:
@@ -64,7 +70,7 @@ services:
     CoreKit\UI\Http\Listener\ResponseListener:
         tags: [ { name: 'kernel.event_listener' } ]
 
-    CoreKit\Application\Listener\DomainEventListener:
+    CoreKit\Application\Listener\ORMEventListener:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 

@@ -2,24 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Auth\Domain\User\Entity\Type;
+namespace CoreKit\Domain\Entity;
 
-use Auth\Domain\User\Entity\IdVo;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\GuidType;
+use Doctrine\DBAL\Types\StringType;
 
-final class IdType extends GuidType
+final class EmailType extends StringType
 {
-    public const NAME = 'user_id';
+    public const NAME = 'email';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        return $value instanceof IdVo ? $value->value : $value;
+        return $value instanceof Email ? $value->value : $value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?IdVo
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?Email
     {
-        return null !== $value ? new IdVo($value) : null;
+        return null !== $value ? new Email($value) : null;
     }
 
     public function getName(): string

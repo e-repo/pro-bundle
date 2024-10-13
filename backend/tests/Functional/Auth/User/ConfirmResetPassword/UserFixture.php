@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Functional\Auth\User\ConfirmResetPassword;
 
-use Test\Functional\Auth\User\BaseUserFixture;
+use Test\Functional\Common\Fixture\Auth\BaseUserFixture;
 
 final class UserFixture extends BaseUserFixture
 {

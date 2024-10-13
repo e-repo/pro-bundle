@@ -4,8 +4,8 @@ doctrine:
         use_savepoints: true
 
         types:
-            user_id: Auth\Domain\User\Entity\Type\IdType
-            user_email: Auth\Domain\User\Entity\Type\EmailType
+            uuid: CoreKit\Domain\Entity\IdType
+            email: CoreKit\Domain\Entity\EmailType
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
@@ -24,8 +24,13 @@ doctrine:
             Auth:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Auth'
+                dir: '%kernel.project_dir%/src/Auth/Domain'
                 prefix: 'Auth'
+            Blog:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Blog/Domain'
+                prefix: 'Blog'
 
 when@prod:
     doctrine:

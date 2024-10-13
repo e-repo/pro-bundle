@@ -4,18 +4,32 @@ declare(strict_types=1);
 
 namespace Test\Functional\Auth\User\SignUp;
 
+use Auth\Application\User\Event\UserCreatedOrUpdatedEvent;
+use Blog\Application\Reader\Listener\UserCreatedOrUpdatedListener;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\DBAL\Exception;
 use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
+use Test\Functional\Common\Listener\MockUserCreatedOrUpdatedListener;
+use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 final class SignUpTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
+    use InteractsWithMessenger;
 
     private const ENDPOINT_URL = '/api/auth/v1/user/sign-up';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Убираем создание Reader - тестируется отдельно
+        $userCreatedOrUpdatedListener = $this->createMock(MockUserCreatedOrUpdatedListener::class);
+        $this->container->set(UserCreatedOrUpdatedListener::class, $userCreatedOrUpdatedListener);
+    }
 
     /**
      * @throws Exception
@@ -36,6 +50,7 @@ final class SignUpTest extends FunctionalTestCase
         ];
 
         $client = $this->createClient();
+        $eventBus = $this->bus('event.bus');
 
         // action
         $client->jsonRequest(
@@ -55,6 +70,7 @@ final class SignUpTest extends FunctionalTestCase
         // assert
         self::assertResponseIsSuccessful();
         self::assertEquals($expectedResponse, $response);
+        $eventBus->dispatched()->assertContains(UserCreatedOrUpdatedEvent::class);
 
         self::assertEquals($userEmail, $user['email']);
         self::assertEquals('wait', $user['status']);
@@ -79,7 +95,7 @@ final class SignUpTest extends FunctionalTestCase
     /**
      * @throws JsonException
      */
-    public function testSuccessSignUpWithSystemSource(): void
+    public function testSuccessWithSystemSource(): void
     {
         // arrange
         $userEmail = 'test@test.ru';
