@@ -55,7 +55,7 @@ final class GetUserTest extends FunctionalTestCase
 
         // assert
         self::assertResponseIsSuccessful();
-        self::assertNull($responseData['meta']);
+        self::assertNull($response['meta']);
         self::assertEquals($loadedUser['id'], $responseData['id']);
         self::assertEquals($loadedUser['firstName'], $responseData['firstName']);
         self::assertEquals($loadedUser['lastName'], $responseData['lastName']);
