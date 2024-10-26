@@ -13,4 +13,9 @@ interface UserRepositoryInterface
     public function findByEmail(string $email): ?User;
 
     public function findByResetPasswordToken(string $token): ?User;
+
+    /**
+     * @return User[]
+     */
+    public function getIterator(): iterable;
 }

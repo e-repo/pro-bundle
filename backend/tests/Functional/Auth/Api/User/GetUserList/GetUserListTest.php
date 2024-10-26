@@ -10,10 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Test\Common\DataFromJsonResponseTrait;
 use Test\Common\FunctionalTestCase;
 use Test\Functional\Common\User\UserBuilder;
+use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 final class GetUserListTest extends FunctionalTestCase
 {
     use DataFromJsonResponseTrait;
+    use InteractsWithMessenger;
 
     private const ENDPOINT_URL = '/api/auth/v1/users';
 

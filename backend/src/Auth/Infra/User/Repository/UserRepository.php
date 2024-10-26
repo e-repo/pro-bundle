@@ -43,4 +43,14 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             'resetPasswordToken.token' => $token,
         ]);
     }
+
+    /**
+     * @return User[]
+     */
+    public function getIterator(): iterable
+    {
+        return $this->createQueryBuilder('u')
+            ->getQuery()
+            ->toIterable();
+    }
 }
