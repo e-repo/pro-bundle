@@ -19,8 +19,6 @@ final class Version20231231094455 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE SEQUENCE refresh_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-
         $this->addSql(
             '
             CREATE TABLE "auth"."refresh_tokens" (
@@ -32,6 +30,7 @@ final class Version20231231094455 extends AbstractMigration
             )'
         );
 
+        $this->addSql('CREATE SEQUENCE IF NOT EXISTS refresh_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_39BB651DC74F2195 ON "auth"."refresh_tokens" (refresh_token)');
     }
 

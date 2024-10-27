@@ -41,15 +41,15 @@ final class Version20231122140441 extends AbstractMigration
 
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6707FF82E7927C74 ON "auth"."user" (email)');
 
-        $this->addSql('COMMENT ON COLUMN "auth"."user".id IS \'Код пользователя(DC2Type:user_id)\'');
-        $this->addSql('COMMENT ON COLUMN "auth"."user".email IS \'(DC2Type:user_email)\'');
+        $this->addSql('COMMENT ON COLUMN "auth"."user".id IS \'Код пользователя(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN "auth"."user".email IS \'(DC2Type:email)\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".email_confirm_token IS \'Токен для подтверждения email\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".status IS \'Статус пользователя\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".role IS \'Роль пользователя\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".password_hash IS \'Хэш пароля\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".reset_password_token IS \'Токен сброса пароля\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".password_token_expires IS \'Дата действия токена сброса пароля(DC2Type:datetimetz_immutable)\'');
-        $this->addSql('COMMENT ON COLUMN "auth"."user".new_email IS \'Новый email (при смене)(DC2Type:user_email)\'');
+        $this->addSql('COMMENT ON COLUMN "auth"."user".new_email IS \'Новый email (при смене)(DC2Type:email)\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".created_at IS \'Дата создания пользователя(DC2Type:datetimetz_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".name_first IS \'Имя\'');
         $this->addSql('COMMENT ON COLUMN "auth"."user".name_last IS \'Фамилия\'');

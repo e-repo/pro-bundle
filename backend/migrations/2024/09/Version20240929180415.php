@@ -19,7 +19,7 @@ final class Version20240929180415 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA blog');
+        $this->addSql('CREATE SCHEMA IF NOT EXISTS blog');
 
         $this->addSql(
             '
@@ -33,8 +33,8 @@ final class Version20240929180415 extends AbstractMigration
         );
 
         $this->addSql('CREATE UNIQUE INDEX UNIQ_136FF762E7927C74 ON "blog"."reader" (email)');
-        $this->addSql('COMMENT ON COLUMN "blog"."reader".id IS \'Код читателя(DC2Type:reader_id)\'');
-        $this->addSql('COMMENT ON COLUMN "blog"."reader".email IS \'(DC2Type:reader_email)\'');
+        $this->addSql('COMMENT ON COLUMN "blog"."reader".id IS \'Код читателя(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN "blog"."reader".email IS \'(DC2Type:email)\'');
         $this->addSql('COMMENT ON COLUMN "blog"."reader".created_at IS \'Дата создания читателя(DC2Type:datetimetz_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "blog"."reader".name_first IS \'Имя\'');
         $this->addSql('COMMENT ON COLUMN "blog"."reader".name_last IS \'Фамилия\'');

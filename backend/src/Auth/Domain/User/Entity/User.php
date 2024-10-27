@@ -22,7 +22,7 @@ use DomainException;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity]
-#[ORM\Table(name: '`user`', schema: 'auth')]
+#[ORM\Table(schema: 'auth')]
 class User implements PasswordHashedUserInterface, HasEventsInterface
 {
     use EventRecordTrait;

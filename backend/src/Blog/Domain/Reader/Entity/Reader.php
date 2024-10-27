@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 
 #[ORM\Entity]
-#[ORM\Table(name: '`reader`', schema: 'blog')]
+#[ORM\Table(schema: 'blog')]
 class Reader
 {
     #[ORM\Id]
