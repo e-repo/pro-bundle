@@ -28,4 +28,11 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
     {
         $this->_em->persist($category);
     }
+
+    public function findByName(string $name): ?Category
+    {
+        return $this->findOneBy([
+            'name' => $name,
+        ]);
+    }
 }

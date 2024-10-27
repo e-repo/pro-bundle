@@ -34,14 +34,19 @@ class Reader
     private DateTimeImmutable $createdAt;
 
     public function __construct(
-        Id $id,
-        NameVo $name,
-        Email $email,
+        ReaderDto $readerDto,
         SpecificationAggregator $specificationAggregator,
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
+        $this->id = null === $readerDto->id
+            ? Id::next()
+            : new Id($readerDto->id);
+
+        $this->name = new NameVo(
+            first: $readerDto->firstname,
+            last: $readerDto->lastname
+        );
+
+        $this->email = new Email($readerDto->email);
         $this->createdAt = new DateTimeImmutable();
 
         $this->checkSpecifications($specificationAggregator);

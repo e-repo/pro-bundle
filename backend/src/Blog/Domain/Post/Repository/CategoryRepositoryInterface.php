@@ -9,4 +9,6 @@ use Blog\Domain\Post\Entity\Category;
 interface CategoryRepositoryInterface
 {
     public function add(Category $category): void;
+
+    public function findByName(string $name): ?Category;
 }

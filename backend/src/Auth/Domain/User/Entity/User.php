@@ -88,6 +88,7 @@ class User implements PasswordHashedUserInterface, HasEventsInterface
     ])]
     private DateTimeImmutable $createdAt;
 
+    // @TODO рассмотреть возможность вынести основные поля пользователя в VO
     public function __construct(
         Id $id,
         NameVo $name,

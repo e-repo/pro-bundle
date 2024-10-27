@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Blog\Application\Reader\Command\CreateOrUpdate;
 
-use Blog\Domain\Reader\Entity\NameVo;
 use Blog\Domain\Reader\Entity\Reader;
+use Blog\Domain\Reader\Entity\ReaderDto;
 use Blog\Domain\Reader\Entity\ReaderHashVo;
 use Blog\Domain\Reader\Entity\Specification\SpecificationAggregator;
 use Blog\Domain\Reader\Repository\ReaderRepositoryInterface;
 use CoreKit\Application\Bus\CommandHandlerInterface;
-use CoreKit\Domain\Entity\Email;
-use CoreKit\Domain\Entity\Id;
 
 final readonly class Handler implements CommandHandlerInterface
 {
@@ -37,12 +35,12 @@ final readonly class Handler implements CommandHandlerInterface
         }
 
         $reader = new Reader(
-            id: new Id($command->id),
-            name: new NameVo(
-                first: $command->firstname,
-                last: $command->lastname,
+            readerDto: new ReaderDto(
+                firstname: $command->firstname,
+                lastname: $command->lastname,
+                email: $command->email,
+                id: $command->id,
             ),
-            email: new Email($command->email),
             specificationAggregator: $this->specificationAggregator,
         );
 

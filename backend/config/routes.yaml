@@ -3,6 +3,10 @@ service_controllers:
     type: annotation
 
 auth_controllers:
+    resource: ../src/Blog/UI/Http
+    type: annotation
+
+blog_controllers:
     resource: ../src/Auth/UI/Http
     type: annotation
 

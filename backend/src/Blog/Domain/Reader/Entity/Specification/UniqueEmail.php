@@ -6,9 +6,8 @@ namespace Blog\Domain\Reader\Entity\Specification;
 
 use Blog\Domain\Reader\Entity\Reader;
 use Blog\Domain\Reader\Repository\ReaderRepositoryInterface;
-use CoreKit\Domain\Entity\SpecificationInterface;
 
-final readonly class UniqueEmailSpecification implements SpecificationInterface
+final readonly class UniqueEmail
 {
     public function __construct(
         private ReaderRepositoryInterface $readerRepository

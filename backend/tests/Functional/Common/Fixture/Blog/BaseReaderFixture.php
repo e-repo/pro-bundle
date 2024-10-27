@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Test\Functional\Common\Fixture\Blog;
 
-use Blog\Domain\Reader\Entity\NameVo;
 use Blog\Domain\Reader\Entity\Reader;
+use Blog\Domain\Reader\Entity\ReaderDto;
 use Blog\Domain\Reader\Entity\Specification\SpecificationAggregator;
-use CoreKit\Domain\Entity\Email;
-use CoreKit\Domain\Entity\Id;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Functional\Common\Fixture\BaseFixtureTrait;
@@ -28,12 +26,12 @@ class BaseReaderFixture extends Fixture implements ReferencableInterface
             ++$key;
 
             $reader = new Reader(
-                id: new Id($item['id']),
-                name: new NameVo(
-                    first: $item['firstName'],
-                    last: $item['lastName'],
+                readerDto: new ReaderDto(
+                    firstname: $item['firstName'],
+                    lastname: $item['lastName'],
+                    email: $item['email'],
+                    id: $item['id'],
                 ),
-                email: new Email($item['email']),
                 specificationAggregator: $this->specificationAggregator
             );
 
