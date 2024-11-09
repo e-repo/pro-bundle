@@ -4,4 +4,4 @@ services:
         autoconfigure: true
 
     Test\:
-        resource: '%kernel.project_dir%/tests/**/*Fixture.php'
+        resource: '%kernel.project_dir%/tests/Test/**/*Fixture.php'
