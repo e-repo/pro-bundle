@@ -162,4 +162,48 @@ final class CreateCategoryTest extends FunctionalTestCase
             $response['errors'][0]['detail']
         );
     }
+
+    public function testFailedByWhitespace(): void
+    {
+        // arrange
+        $name = '   ';
+        $description = '   ';
+
+        $expectedResponse = [
+            'message' => 'Некорректные данные запроса.',
+            'errors' => [
+                [
+                    'detail' => 'Поле \'name\' не может состоять только из пробелов.',
+                    'source' => 'name',
+                    'data' => [],
+                ],
+                [
+                    'detail' => 'Поле \'description\' не может состоять только из пробелов.',
+                    'source' => 'description',
+                    'data' => [],
+                ],
+            ],
+        ];
+
+        $client = $this->createClient();
+        $client->loginUser(
+            UserBuilder::createAdmin()->build()
+        );
+
+        // action
+        $client->jsonRequest(
+            method: 'POST',
+            uri: self::ENDPOINT_URL,
+            parameters: [
+                'name' => $name,
+                'description' => $description,
+            ]
+        );
+
+        $response = $this->getDataFromJsonResponse($client->getResponse());
+
+        // assert
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        self::assertEquals($expectedResponse, $response);
+    }
 }
