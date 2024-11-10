@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\Application\Post\Command\CreateCategory;
+namespace Blog\Application\Post\Category\Command\Create;
 
 final readonly class Command
 {

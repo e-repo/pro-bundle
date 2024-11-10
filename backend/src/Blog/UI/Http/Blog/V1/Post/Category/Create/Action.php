@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\UI\Http\Blog\V1\Post\Category\Create;
 
-use Auth\UI\Http\Auth\V1\User\SignUp\Response;
-use Blog\Application\Post\Command\CreateCategory\Command;
+use Blog\Application\Post\Category\Command\Create\Command;
 use CoreKit\Application\Bus\CommandBusInterface;
 use CoreKit\Infra\Security\Role;
 use CoreKit\UI\Http\Response\ResponseWrapper;

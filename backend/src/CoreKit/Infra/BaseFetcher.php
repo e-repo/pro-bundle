@@ -10,7 +10,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 readonly class BaseFetcher
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
     ) {}
 
     protected function createDBALQueryBuilder(): QueryBuilder

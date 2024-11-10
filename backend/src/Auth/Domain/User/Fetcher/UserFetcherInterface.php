@@ -13,8 +13,6 @@ interface UserFetcherInterface
 
     public function findById(string $id): ?UserProfileDto;
 
-    public function getById(string $id): UserProfileDto;
-
     /**
      * @param ListFilter $filter
      * @param int $offset

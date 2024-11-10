@@ -18,6 +18,7 @@
     "lexik/jwt-authentication-bundle": "^2.20",
     "nelmio/api-doc-bundle": "^4.12",
     "nelmio/cors-bundle": "^2.4",
+    "nesbot/carbon": "^3.8",
     "ramsey/uuid": "*",
     "scienta/doctrine-json-functions": "~4.3",
     "symfony/asset": "6.3.*",

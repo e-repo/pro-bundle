@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Blog\Domain\Post\Entity;
 
+use DateTimeImmutable;
+
 final readonly class CategoryDto
 {
     public function __construct(
         public string $name,
         public string $description,
         public ?string $id = null,
+        public ?DateTimeImmutable $createdAt = null,
     ) {}
 }

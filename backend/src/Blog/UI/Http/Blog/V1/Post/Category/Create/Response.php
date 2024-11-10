@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Blog\UI\Http\Blog\V1\Post\Category\Create;
 
-final class Response
+use CoreKit\UI\Http\Response\ResponseInterface;
+
+final class Response implements ResponseInterface
 {
-    public function __construct() {}
+    public function __construct(
+        public string $status,
+    ) {}
 }

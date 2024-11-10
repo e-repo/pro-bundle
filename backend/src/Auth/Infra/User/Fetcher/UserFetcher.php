@@ -12,7 +12,6 @@ use CoreKit\Infra\BaseFetcher;
 use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
-use DomainException;
 
 final readonly class UserFetcher extends BaseFetcher implements UserFetcherInterface
 {
@@ -105,22 +104,6 @@ final readonly class UserFetcher extends BaseFetcher implements UserFetcherInter
             ->fetchOne();
 
         return $count ? (int) $count : 0;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getById(string $id): UserProfileDto
-    {
-        $user = $this->findById($id);
-
-        if (null === $user) {
-            throw new DomainException(
-                sprintf("Пользователь по идентификатору '%s' не найден", $id)
-            );
-        }
-
-        return $user;
     }
 
     private function makeUserDto(array $user): UserDto

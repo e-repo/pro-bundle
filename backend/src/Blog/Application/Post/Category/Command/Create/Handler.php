@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\Application\Post\Command\CreateCategory;
+namespace Blog\Application\Post\Category\Command\Create;
 
 use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Entity\CategoryDto;
