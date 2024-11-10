@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\UI\Http\Blog\V1\Post\CreateCategory;
+namespace Blog\UI\Http\Blog\V1\Post\Category\Create;
 
 use CoreKit\Infra\Validator\NotWhitespace\NotWhitespace;
 use CoreKit\UI\Http\Request\RequestPayloadInterface;

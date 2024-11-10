@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\UI\Http\Blog\V1\Post\CreateCategory;
+namespace Blog\UI\Http\Blog\V1\Post\Category\Create;
 
 use Auth\UI\Http\Auth\V1\User\SignUp\Response;
 use Blog\Application\Post\Command\CreateCategory\Command;
