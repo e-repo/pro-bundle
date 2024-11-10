@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Service\UI\Http\V1\Menu;
 
 use CoreKit\Application\Bus\QueryBusInterface;
+use CoreKit\Infra\Security\Role;
 use CoreKit\UI\Http\Response\ResponseWrapper;
 use CoreKit\UI\Http\Response\Violation;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -13,6 +14,7 @@ use Service\Application\Menu\Query\GetMenu\Query;
 use Service\Application\Menu\Query\GetMenu\Result;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Сервисные URL')]
 #[OA\Get(
@@ -75,6 +77,7 @@ final class Action extends AbstractController
         name: 'service_get-menu',
         methods: ['GET']
     )]
+    #[IsGranted(attribute: Role::ADMIN->value)]
     public function __invoke(Request $request): ResponseWrapper
     {
         /** @var Result $result */

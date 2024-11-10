@@ -34,20 +34,17 @@ security:
 
     access_control:
         # PUBLIC ACCESS
-        - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/service/ping, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/v1/user/sign-up, roles: PUBLIC_ACCESS }
+        # Module auth
+        - { path: ^/api/auth/v1/user/(sign-up|confirm-email), roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/user/request-reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/v1/user/confirm-reset-password, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/v1/user/confirm-email, roles: PUBLIC_ACCESS }
+        - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
+        # Module blog
+        - { path: ^/api/blog/v1/post, methods: GET, roles: PUBLIC_ACCESS }
 
-        # ADMIN ACCESS
-        - { path: ^/api/auth/v1/user, roles: ROLE_ADMIN }
-        - { path: ^/api/auth/v1/users, roles: ROLE_ADMIN }
-        - { path: ^/api/service/v1/menu, roles: ROLE_ADMIN }
-        - { route: 'auth_change-status', roles: ROLE_ADMIN }
-
-        # USER ACCESS
+        # То что не PUBLIC_ACCESS, то ROLE_USER.
+        # ROLE_ADMIN - прописываем в Action
         - { path: ^/api, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }

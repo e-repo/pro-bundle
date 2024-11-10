@@ -8,6 +8,7 @@ use Auth\Application\User\Command\ChangeStatus\Command;
 use Auth\UI\Http\Auth\V1\User\ConfirmEmail\Response;
 use CoreKit\Application\Bus\CommandBusInterface;
 use CoreKit\Application\Security\AuthenticationInterface;
+use CoreKit\Infra\Security\Role;
 use CoreKit\UI\Http\Response\ResponseWrapper;
 use CoreKit\UI\Http\Response\Violation;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -15,6 +16,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Регистрация')]
 #[OA\Patch(
@@ -74,6 +76,7 @@ final class Action extends AbstractController
         ],
         methods: ['PATCH']
     )]
+    #[IsGranted(attribute: Role::ADMIN->value)]
     public function __invoke(Request $request): ResponseWrapper
     {
         $user = $this->authenticationService->getUser();
