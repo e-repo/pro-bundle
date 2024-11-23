@@ -9,4 +9,11 @@ use Blog\Domain\Post\Entity\CategoryDto;
 interface CategoryFetcherInterface
 {
     public function findById(string $id): ?CategoryDto;
+
+    /**
+     * @return CategoryDto[]
+     */
+    public function findAllByName(?string $name, int $offset, int $limit): array;
+
+    public function countByName(?string $name): int;
 }

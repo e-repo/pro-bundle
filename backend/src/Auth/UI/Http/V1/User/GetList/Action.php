@@ -59,7 +59,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     responses: [
         new OA\Response(
             response: 200,
-            description: 'Пользователь успешно создан',
+            description: 'Список пользователей',
             content: new OA\JsonContent(
                 ref: new Model(type: ResponseWrapper::class),
                 example: new ResponseWrapper(
