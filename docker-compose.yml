@@ -116,6 +116,26 @@ services:
             - traefik-network
             - default
 
+    minio:
+        container_name: bb-minio
+        image: 'bitnami/minio:2024.7.31'
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-network
+            - traefik.http.routers.bb-minio.rule=Host(`minio.localhost`)
+            - traefik.http.routers.bb-minio.entryPoints=http
+            - traefik.http.services.bb-minio.loadBalancer.server.port=9011
+        environment:
+            - MINIO_ROOT_USER=minio-root-user
+            - MINIO_ROOT_PASSWORD=minio-root-password
+            - MINIO_API_PORT_NUMBER=9010
+            - MINIO_CONSOLE_PORT_NUMBER=9011
+        networks:
+            - traefik-network
+            - default
+        volumes:
+            - vol-minio:/bitnami/minio/data
+
 #    zookeeper:
 #        image: bitnami/zookeeper:latest
 #        container_name: bb-zookeeper
@@ -165,6 +185,7 @@ services:
 volumes:
     vol-postgres:
     vol-composer:
+    vol-minio:
 #    vol-zookeeper:
 #    vol-kafka:
 

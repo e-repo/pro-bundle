@@ -10,6 +10,7 @@ BE-NGINX=nginx
 BE-FPM=php-fpm
 BE-CLI=php-cli
 BE-MAILER=mailer
+BE-MINIO=minio
 
 
 # fe admin services
@@ -46,7 +47,7 @@ admin-lint:
 
 
 be-docker-up:
-	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX) $(BE-MAILER)
+	docker-compose up -d -- $(TRAEFIK) $(BE-POSTGRES) $(BE-MINIO) $(BE-FPM) $(BE-CLI) $(BE-NGINX) $(BE-MAILER)
 
 admin-docker-up:
 	docker-compose up -d -- $(TRAEFIK) $(ADMIN_NGINX) $(ADMIN_NODE)
@@ -61,13 +62,13 @@ docker-down:
 #	docker-compose down -v --remove-orphans
 
 be-docker-pull:
-	docker-compose pull -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
+	docker-compose pull -- $(TRAEFIK) $(BE-POSTGRES) $(BE-MINIO) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
 
 admin-docker-pull:
 	docker-compose pull -- $(TRAEFIK) $(ADMIN_NGINX) $(ADMIN_NODE)
 
 be-docker-build:
-	docker-compose build -- $(TRAEFIK) $(BE-POSTGRES) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
+	docker-compose build -- $(TRAEFIK) $(BE-POSTGRES) $(BE-MINIO) $(BE-FPM) $(BE-CLI) $(BE-NGINX)
 
 admin-init:
 	@docker-compose run --rm $(ADMIN_NODE) yarn install
