@@ -1,8 +1,7 @@
 # bb - backend "bundle", bundle - имя проекта
 version: '3.8'
 services:
-
-    bb-traefik:
+    traefik:
         container_name: bb-traefik
         image: traefik:v2.10.4
         command:
@@ -15,15 +14,15 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:ro
         labels:
             - traefik.enable=true
-            - traefik.docker.network=bb-traefik-network
+            - traefik.docker.network=traefik-network
         networks:
-            - bb-traefik-network
+            - traefik-network
 
-    bb-postgres:
+    postgres:
         container_name: bb-postgres
         image: postgres:15.4-alpine
         volumes:
-            - vol-bb-postgres:/var/lib/postgresql/data
+            - vol-postgres:/var/lib/postgresql/data
             - ./backend/docker/development/create-test-database.sh:/docker-entrypoint-initdb.d/create-test-database.sh
         environment:
             POSTGRES_USER: app
@@ -33,8 +32,8 @@ services:
         ports:
             - "54321:5432"
 
-    bb-fpm:
-        container_name: bb-fpm
+    php-fpm:
+        container_name: bb-php-fpm
         build:
             context: ./backend/docker/development/fpm
         environment:
@@ -42,50 +41,50 @@ services:
         volumes:
             - ./backend/:/app
         depends_on:
-            - bb-postgres
+            - postgres
 
-    bb-cli:
-        container_name: bb-cli
+    php-cli:
+        container_name: bb-php-cli
         build:
             context: ./backend/docker/development/cli
         environment:
             PHP_IDE_CONFIG: "serverName=bb.local"
         volumes:
             - ./:/app
-            - vol-bb-composer:/root/.composer/cache
+            - vol-composer:/root/.composer/cache
         depends_on:
-            - bb-postgres
+            - postgres
 
-    bb-nginx:
+    nginx:
         container_name: bb-nginx
         build:
             context: ./backend/docker/development/nginx
         volumes:
             - ./backend/:/app
         depends_on:
-            - bb-fpm
+            - php-fpm
         labels:
             - traefik.enable=true
-            - traefik.docker.network=bb-traefik-network
+            - traefik.docker.network=traefik-network
             - traefik.http.routers.bb-nginx.rule=Host(`bb.localhost`)
             - traefik.http.routers.bb-nginx.entryPoints=http
             - traefik.http.services.bb-nginx.loadBalancer.server.port=80
         networks:
-            - bb-traefik-network
+            - traefik-network
             - default
 
-    fb-admin-nginx:
+    admin-nginx:
         container_name: fb-admin-nginx
         build:
             context: frontend/admin/docker/development/nginx
         depends_on:
-            - bb-traefik
+            - traefik
         networks:
-            - bb-traefik-network
+            - traefik-network
             - default
         labels:
             - traefik.enable=true
-            - traefik.docker.network=bb-traefik-network
+            - traefik.docker.network=traefik-network
             - traefik.http.routers.fb-admin-nginx.rule=Host(`admin.localhost`)
             - traefik.http.routers.fb-admin-nginx.entryPoints=http
             - traefik.http.services.fb-admin-nginx.loadBalancer.server.port=80
@@ -94,30 +93,30 @@ services:
             - traefik.http.middlewares.admin-redirect.redirectRegex.permanent=true
             - traefik.http.routers.fb-admin-nginx.middlewares=admin-redirect
 
-    fb-admin-node:
+    node:
         container_name: fb-admin-node
         build:
             context: frontend/admin/docker/development/node
         depends_on:
-            - fb-admin-nginx
+            - admin-nginx
         volumes:
             - ./frontend/admin:/app
         tty: true
 
-    bb-mailer:
+    mailer:
         container_name: bb-mailer
         image: mailhog/mailhog
         labels:
             - traefik.enable=true
-            - traefik.docker.network=bb-traefik-network
+            - traefik.docker.network=traefik-network
             - traefik.http.routers.bb-mailer.rule=Host(`mailer.localhost`)
             - traefik.http.routers.bb-mailer.entryPoints=http
             - traefik.http.services.bb-mailer.loadBalancer.server.port=8025
         networks:
-            - bb-traefik-network
+            - traefik-network
             - default
 
-#    bb-zookeeper:
+#    zookeeper:
 #        image: bitnami/zookeeper:latest
 #        container_name: bb-zookeeper
 #        ports:
@@ -125,9 +124,9 @@ services:
 #        environment:
 #            - ALLOW_ANONYMOUS_LOGIN=yes
 #        volumes:
-#            - vol-bb-zookeeper:/bitnami/zookeeper
+#            - vol-zookeeper:/bitnami/zookeeper
 #
-#    bb-kafka:
+#    kafka:
 #        image: 'bitnami/kafka:latest'
 #        container_name: bb-kafka
 #        ports:
@@ -137,11 +136,11 @@ services:
 #            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
 #            - ALLOW_PLAINTEXT_LISTENER=yes
 #        volumes:
-#            - vol-bb-kafka:/bitnami/kafka
+#            - vol-kafka:/bitnami/kafka
 #        depends_on:
-#            - bb-zookeeper
+#            - zookeeper
 #
-#    bb-kafka-ui:
+#    kafka-ui:
 #        image: provectuslabs/kafka-ui:v0.6.2
 #        container_name: bb-kafka-ui
 #        ports:
@@ -154,8 +153,8 @@ services:
 #            - KAFKA_CLUSTERS_0_READONLY=false
 #            - DYNAMIC_CONFIG_ENABLED=true
 #        depends_on:
-#            - bb-zookeeper
-#            - bb-kafka
+#            - zookeeper
+#            - kafka
 #        labels:
 #            - traefik.enable=true
 #            - traefik.docker.network=traefik-shop
@@ -164,11 +163,11 @@ services:
 #            - traefik.http.services.bb-kafka-ui.loadBalancer.server.port=8080
 
 volumes:
-    vol-bb-postgres:
-    vol-bb-composer:
-    vol-bb-zookeeper:
-    vol-bb-kafka:
+    vol-postgres:
+    vol-composer:
+#    vol-zookeeper:
+#    vol-kafka:
 
 networks:
-    bb-traefik-network:
-        name: bb-traefik-network
+    traefik-network:
+        name: pro-bundle_traefik-network

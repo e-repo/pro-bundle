@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[OA\Tag(name: 'Регистрация')]
+#[OA\Tag(name: 'Блог: категория поста')]
 #[OA\Get(
     summary: 'Получение списка категорий',
     parameters: [

@@ -2,19 +2,19 @@ UID=1000
 DOCKER_ARGS=--log-level=ERROR
 
 # common services
-TRAEFIK=bb-traefik
+TRAEFIK=traefik
 
 # be services
-BE-POSTGRES=bb-postgres
-BE-NGINX=bb-nginx
-BE-FPM=bb-fpm
-BE-CLI=bb-cli
-BE-MAILER=bb-mailer
+BE-POSTGRES=postgres
+BE-NGINX=nginx
+BE-FPM=php-fpm
+BE-CLI=php-cli
+BE-MAILER=mailer
 
 
 # fe admin services
-ADMIN_NODE=fb-admin-node
-ADMIN_NGINX=fb-admin-nginx
+ADMIN_NODE=node
+ADMIN_NGINX=admin-nginx
 
 
 # init apps
