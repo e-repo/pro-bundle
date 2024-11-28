@@ -1,7 +1,7 @@
 Пост
 1.1 Навести порядок в именах сервисов docker-compose +
 1.2 Поднять minio +
-1.2 Разобраться с блоком secrets: тут - https://github.com/deworkerpro/demo-auction/blob/master/docker-compose.yml
+1.2 Разобраться с блоком secrets: тут - https://github.com/deworkerpro/demo-auction/blob/master/docker-compose.yml +
 2. Создание структуры поста (пока без тегов и коментов, если где-то на них будет ссылка)
 3. Создание поста (по теме отправки файла и данных в одном запросе - https://chatgpt.com/share/674230ac-2610-8002-bc24-6053dce0caeb)
 3.1 Докрутить CoreKit\UI\Http\Request\RequestArgumentResolver что-бы он мог принимать файлы и данные с файлом в одном запросе (предположительно поля file, data - для josn)
@@ -12,3 +12,4 @@
 100. Создать модуль EventStore, который будет подписываться на основные события в системе и хранить информацию об эвентах для дальнейшего анализа по принципу EventStreaming
 
 Остановился:
+1.2 Разобраться с блоком secrets: тут - https://github.com/deworkerpro/demo-auction/blob/master/docker-compose.yml +

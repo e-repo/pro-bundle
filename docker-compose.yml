@@ -26,11 +26,13 @@ services:
             - ./backend/docker/development/create-test-database.sh:/docker-entrypoint-initdb.d/create-test-database.sh
         environment:
             POSTGRES_USER: app
-            POSTGRES_PASSWORD: secret
+            POSTGRES_PASSWORD_FILE: /run/secrets/db_password
             POSTGRES_DB: app
             POSTGRES_TEST_DB: test
         ports:
             - "54321:5432"
+        secrets:
+            - db_password
 
     php-fpm:
         container_name: bb-php-fpm
@@ -126,15 +128,16 @@ services:
             - traefik.http.routers.bb-minio.entryPoints=http
             - traefik.http.services.bb-minio.loadBalancer.server.port=9011
         environment:
-            - MINIO_ROOT_USER=minio-root-user
-            - MINIO_ROOT_PASSWORD=minio-root-password
-            - MINIO_API_PORT_NUMBER=9010
-            - MINIO_CONSOLE_PORT_NUMBER=9011
+            MINIO_ROOT_USER: minio-root-user
+            MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_root_password
+            MINIO_CONSOLE_PORT_NUMBER: 9011
         networks:
             - traefik-network
             - default
         volumes:
             - vol-minio:/bitnami/minio/data
+        secrets:
+            - minio_root_password
 
 #    zookeeper:
 #        image: bitnami/zookeeper:latest
@@ -181,6 +184,12 @@ services:
 #            - traefik.http.routers.bb-kafka-ui.rule=Host(`kafka-shop.localhost`)
 #            - traefik.http.routers.bb-kafka-ui.entryPoints=http
 #            - traefik.http.services.bb-kafka-ui.loadBalancer.server.port=8080
+
+secrets:
+    db_password:
+        file: ./extra/docker/development/secrets/db_password
+    minio_root_password:
+        file: ./extra/docker/development/secrets/minio_root_password
 
 volumes:
     vol-postgres:
