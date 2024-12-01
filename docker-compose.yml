@@ -1,5 +1,4 @@
 # bb - backend "bundle", bundle - имя проекта
-version: '3.8'
 services:
     traefik:
         container_name: bb-traefik
