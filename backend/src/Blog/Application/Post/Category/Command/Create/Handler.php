@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Blog\Application\Post\Category\Command\Create;
 
 use Blog\Domain\Post\Entity\Category;
-use Blog\Domain\Post\Entity\CategoryDto;
-use Blog\Domain\Post\Entity\Specification\SpecificationAggregator;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
+use Blog\Domain\Post\Entity\Specification\Category\SpecificationAggregator;
 use Blog\Domain\Post\Repository\CategoryRepositoryInterface;
 use CoreKit\Application\Bus\CommandHandlerInterface;
 

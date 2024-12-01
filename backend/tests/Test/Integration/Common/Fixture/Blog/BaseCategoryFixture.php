@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Test\Integration\Common\Fixture\Blog;
 
 use Blog\Domain\Post\Entity\Category;
-use Blog\Domain\Post\Entity\CategoryDto;
-use Blog\Domain\Post\Entity\Specification\SpecificationAggregator;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
+use Blog\Domain\Post\Entity\Specification\Category\SpecificationAggregator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Integration\Common\Fixture\BaseFixtureTrait;

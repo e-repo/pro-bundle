@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\Application\Post\Category\Query\GetOne;
 
-use Blog\Domain\Post\Entity\CategoryDto;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
 use Blog\Domain\Post\Fetcher\CategoryFetcherInterface;
 use CoreKit\Application\Bus\QueryHandlerInterface;
 use DomainException;

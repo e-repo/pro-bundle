@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Blog\UI\Http\V1\Post\Category\GetOne;
 
 use Blog\Application\Post\Category\Query\GetOne\Query;
-use Blog\Domain\Post\Entity\CategoryDto;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\OpenApiDateTime;
 use CoreKit\UI\Http\Response\ResponseWrapper;

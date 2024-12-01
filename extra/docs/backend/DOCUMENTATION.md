@@ -408,7 +408,7 @@ data:
 |       title       | varchar(255) |   нет    |           Заголовок            |
 |    short_title    | varchar(100) |   нет    |       Короткий заголовок       |
 |      content      |     text     |   нет    |       Содержание статьи        |
-|     published     |   boolean    |   нет    |       Статус публикации        |
+|      status       | string(enum) |   нет    |       Статус публикации        |
 | comment_available |   boolean    |   нет    |    Доступность комментариев    |
 |    category_id    |     UUID     |   нет    |        Категория поста         |
 |   meta_keyword    | varchar(255) |    да    | Ключевые слова поста (для сео) |

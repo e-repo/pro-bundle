@@ -6,7 +6,7 @@ namespace Blog\UI\Http\V1\Post\Category\GetList;
 
 use Blog\Application\Post\Category\Query\GetList\Query;
 use Blog\Application\Post\Category\Query\GetList\Result;
-use Blog\Domain\Post\Entity\CategoryDto;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
 use CoreKit\Application\Bus\QueryBusInterface;
 use CoreKit\Infra\OpenApiDateTime;
 use CoreKit\UI\Http\Response\ResponseMeta;

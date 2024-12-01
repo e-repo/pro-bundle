@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Blog\Domain\Post\Entity;
 
-use Blog\Domain\Post\Entity\Specification\SpecificationAggregator;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
+use Blog\Domain\Post\Entity\Specification\Category\SpecificationAggregator;
 use Blog\Infra\Post\Repository\CategoryRepository;
 use CoreKit\Domain\Entity\Id;
 use DateTimeImmutable;

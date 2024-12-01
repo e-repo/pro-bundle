@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\Domain\Post\Fetcher;
 
-use Blog\Domain\Post\Entity\CategoryDto;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
 
 interface CategoryFetcherInterface
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\Infra\Post\Fetcher;
 
-use Blog\Domain\Post\Entity\CategoryDto;
+use Blog\Domain\Post\Entity\Dto\CategoryDto;
 use Blog\Domain\Post\Fetcher\CategoryFetcherInterface;
 use Carbon\Carbon;
 use CoreKit\Infra\BaseFetcher;

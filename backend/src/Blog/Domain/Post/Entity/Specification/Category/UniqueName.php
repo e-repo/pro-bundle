@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\Post\Entity\Specification;
+namespace Blog\Domain\Post\Entity\Specification\Category;
 
 use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Repository\CategoryRepositoryInterface;
