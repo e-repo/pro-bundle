@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CoreKit\UI\Http\Request;
 
 use CoreKit\UI\Http\Exception\ViolationException;
+use http\Exception\RuntimeException;
+use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -20,6 +22,9 @@ final readonly class RequestArgumentResolver implements ValueResolverInterface
         private ValidatorInterface $validator,
     ) {}
 
+    /**
+     * @throws JsonException
+     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $payload = [];
@@ -34,6 +39,7 @@ final readonly class RequestArgumentResolver implements ValueResolverInterface
         }
 
         $payload = array_replace(
+            $this->getPayload($request),
             $request->query->all(),
             $request->attributes->get('_route_params'),
             $payload
@@ -57,25 +63,6 @@ final readonly class RequestArgumentResolver implements ValueResolverInterface
             if (false === property_exists($dto, $propertyName)) {
                 continue;
             }
-
-            /**
-             * При заголовке multipart form data можно передавать
-             * вместе с файлом данные. Для этого в request выделяется
-             * свойство с именем 'data'
-             *
-             * @ToDo Для определения типа формируемого объекта данных
-             * идущих вместе с файлом возможно лучше использовать ArgumentMetadata,
-             * либо потискать другой способ. ArgumentMetadata::getType()
-             * ( $argumentType = $argument->getType() ) - не подойдет
-             */
-            //            if ($propertyName === 'data') {
-            //                $dto->{$propertyName} = $this->payloadToDto(
-            //                    payload: json_decode($formData, true, 512, JSON_THROW_ON_ERROR),
-            //                    argumentType: $argumentType
-            //                );
-            //
-            //                continue;
-            //            }
 
             try {
                 $dto->{$propertyName} = $formData;
@@ -117,5 +104,25 @@ final readonly class RequestArgumentResolver implements ValueResolverInterface
         if ($violations->count() > 0) {
             throw new ViolationException($violations);
         }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function getPayload(Request $request): array
+    {
+        $data = $request->request->get('payload');
+
+        if (! is_string($data)) {
+            return [];
+        }
+
+        if (! json_validate($data)) {
+            return throw new RuntimeException('Некорректные данные запроса.');
+        }
+
+        return [
+            'payload' => json_decode($data, true, 512, JSON_THROW_ON_ERROR),
+        ];
     }
 }

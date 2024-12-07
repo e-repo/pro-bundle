@@ -16,8 +16,8 @@ final readonly class PostDto
         public string $content,
         public Status $status,
         public Category $category,
+        public ?string $id = null,
         public bool $commentAvailable = false,
         public ?MetadataDto $meta = null,
-        public ?string $id = null,
     ) {}
 }

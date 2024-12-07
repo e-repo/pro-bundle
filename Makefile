@@ -7,7 +7,9 @@ TRAEFIK=traefik
 # be services
 BE-POSTGRES=postgres
 BE-NGINX=nginx
+BE-NGINX-SERVICE=bb-nginx
 BE-FPM=php-fpm
+BE-FPM-SERVICE=bb-php-fpm
 BE-CLI=php-cli
 BE-MAILER=mailer
 BE-MINIO=minio
@@ -93,4 +95,4 @@ admin-chown:
 	@docker exec $(ADMIN_NODE) chown -R $(UID):$(UID) ./
 
 b-chown:
-	@docker exec $(BE-NGINX) chown -R $(UID):$(UID) ./
+	@docker exec $(BE-FPM-SERVICE) chown -R $(UID):$(UID) ./
