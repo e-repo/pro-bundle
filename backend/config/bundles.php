@@ -52,4 +52,7 @@ return [
     Zenstruck\Messenger\Test\ZenstruckMessengerTestBundle::class => [
         'test' => true,
     ],
+    Oneup\FlysystemBundle\OneupFlysystemBundle::class => [
+        'all' => true,
+    ],
 ];

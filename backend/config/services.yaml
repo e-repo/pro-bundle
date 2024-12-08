@@ -95,3 +95,8 @@ services:
     CoreKit\Infra\FixPostgreSQLDefaultSchemaListener:
         tags:
             - { name: doctrine.event_listener, event: postGenerateSchema }
+
+    # S3
+    CoreKit\Infra\FileStorage\S3StorageClient:
+        arguments:
+            $s3FileSystem: '@oneup_flysystem.s3_filesystem_filesystem'
