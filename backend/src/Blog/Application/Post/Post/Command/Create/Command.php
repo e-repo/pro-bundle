@@ -14,7 +14,7 @@ final readonly class Command
         public string $title,
         public string $shortTitle,
         public string $content,
-        public string $categoryUuid,
+        public string $categoryId,
         public ?MetaCommand $meta = null
     ) {}
 }

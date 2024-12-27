@@ -3,7 +3,7 @@ oneup_flysystem:
     adapters:
         cache_adapter:
             local:
-                location: '%kernel.cache_dir%/flysystem'
+                location: '%kernel.cache_dir%'
 
         s3_adapter:
             awss3v3:
@@ -15,6 +15,9 @@ oneup_flysystem:
         cache:
             adapter: cache_adapter
             alias: cache_storage
+        s3_filesystem:
+            adapter: s3_adapter
+            alias: s3_filesystem
 
 services:
     Aws\S3\S3Client:

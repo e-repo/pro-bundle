@@ -6,6 +6,7 @@ namespace Blog\Infra\Post\Repository;
 
 use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Repository\CategoryRepositoryInterface;
+use CoreKit\Domain\Entity\Id;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -33,6 +34,13 @@ class CategoryRepository extends ServiceEntityRepository implements CategoryRepo
     {
         return $this->findOneBy([
             'name' => $name,
+        ]);
+    }
+
+    public function findById(string $id): ?Category
+    {
+        return $this->findOneBy([
+            'id' => new Id($id),
         ]);
     }
 }

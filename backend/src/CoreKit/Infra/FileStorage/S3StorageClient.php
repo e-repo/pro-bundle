@@ -9,7 +9,7 @@ use DateTimeInterface;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 
-final readonly class S3StorageClient implements StorageClientInterface
+readonly class S3StorageClient implements StorageClientInterface
 {
     public function __construct(
         private FilesystemOperator $s3FileSystem

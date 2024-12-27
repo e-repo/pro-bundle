@@ -6,7 +6,7 @@ RUN apk add --no-cache autoconf build-base linux-headers \
 
 RUN apk add --no-cache postgresql-dev git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo_pgsql
+    && docker-php-ext-install pdo_pgsql intl
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
 

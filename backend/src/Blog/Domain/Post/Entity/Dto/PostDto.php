@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Blog\Domain\Post\Entity\Dto;
 
-use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Entity\Status;
 
 final readonly class PostDto
@@ -15,7 +14,7 @@ final readonly class PostDto
         public string $shortTitle,
         public string $content,
         public Status $status,
-        public Category $category,
+        public ImageDto $image,
         public ?string $id = null,
         public bool $commentAvailable = false,
         public ?MetadataDto $meta = null,

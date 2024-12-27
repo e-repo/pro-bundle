@@ -11,7 +11,7 @@ final readonly class Upload
     public function __construct(
         public string $name,
         public string $key,
-        public string $type,
+        public string $systemFileType,
         public string $extension,
         public SplFileInfo $file,
     ) {}

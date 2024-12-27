@@ -6,17 +6,21 @@ namespace Blog\Domain\Post\Entity\Specification\Category;
 
 use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Repository\CategoryRepositoryInterface;
+use CoreKit\Domain\Entity\SpecificationInterface;
 
-final readonly class UniqueName
+final readonly class UniqueName implements SpecificationInterface
 {
     public function __construct(
         private CategoryRepositoryInterface $categoryRepository,
     ) {}
 
-    public function isSatisfiedBy(Category $category): bool
+    /**
+     * @param Category $candidate
+     */
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         $category = $this->categoryRepository->findByName(
-            name: $category->getName()
+            name: $candidate->getName()
         );
 
         return null === $category;

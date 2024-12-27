@@ -21,7 +21,7 @@ final readonly class StorageService
     public function upload(Upload $upload): void
     {
         $location = $this->makeLocationLine(
-            fileType: $upload->type,
+            fileType: $upload->systemFileType,
             extension: $upload->extension,
             key: $upload->key
         );

@@ -28,4 +28,25 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
     {
         $this->_em->persist($category);
     }
+
+    public function findBySlug(string $slug): ?Post
+    {
+        return $this->findOneBy([
+            'slug' => $slug,
+        ]);
+    }
+
+    public function findByTitle(string $title): ?Post
+    {
+        return $this->findOneBy([
+            'title' => $title,
+        ]);
+    }
+
+    public function findByShortTitle(string $shortTitle): ?Post
+    {
+        return $this->findOneBy([
+            'shortTitle' => $shortTitle,
+        ]);
+    }
 }

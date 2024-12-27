@@ -6,17 +6,21 @@ namespace Blog\Domain\Reader\Entity\Specification;
 
 use Blog\Domain\Reader\Entity\Reader;
 use Blog\Domain\Reader\Repository\ReaderRepositoryInterface;
+use CoreKit\Domain\Entity\SpecificationInterface;
 
-final readonly class UniqueEmail
+final readonly class UniqueEmail implements SpecificationInterface
 {
     public function __construct(
         private ReaderRepositoryInterface $readerRepository
     ) {}
 
-    public function isSatisfiedBy(Reader $reader): bool
+    /**
+     * @param Reader $candidate
+     */
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         $user = $this->readerRepository->findByEmail(
-            $reader->getEmail()->value
+            $candidate->getEmail()->value
         );
 
         return null === $user;

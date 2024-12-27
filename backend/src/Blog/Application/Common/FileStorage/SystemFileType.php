@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\Common\FileStorage;
+namespace Blog\Application\Common\FileStorage;
 
-enum FileType: string
+enum SystemFileType: string
 {
     case POST_IMAGE = 'post_img';
 

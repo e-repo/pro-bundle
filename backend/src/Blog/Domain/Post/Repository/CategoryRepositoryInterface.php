@@ -11,4 +11,6 @@ interface CategoryRepositoryInterface
     public function add(Category $category): void;
 
     public function findByName(string $name): ?Category;
+
+    public function findById(string $id): ?Category;
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CoreKit\Infra\FileStorage;
 
-use Blog\Domain\Common\FileStorage\MimeTypeInterface;
+use Blog\Application\Common\FileStorage\MimeTypeInterface;
 use Symfony\Component\Mime\MimeTypes;
 
 final class MimeType implements MimeTypeInterface

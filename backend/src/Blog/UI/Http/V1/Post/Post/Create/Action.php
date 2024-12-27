@@ -90,7 +90,7 @@ final class Action extends AbstractController
                 title: $request->payload->title,
                 shortTitle: $request->payload->shortTitle,
                 content: $request->payload->content,
-                categoryUuid: $request->payload->categoryUuid,
+                categoryId: $request->payload->categoryUuid,
                 meta: new Command\MetaCommand(
                     keyword: $request->payload->metaKeyword,
                     description: $request->payload->metaDescription,

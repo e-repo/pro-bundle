@@ -9,4 +9,10 @@ use Blog\Domain\Post\Entity\Post;
 interface PostRepositoryInterface
 {
     public function add(Post $category): void;
+
+    public function findBySlug(string $slug): ?Post;
+
+    public function findByTitle(string $title): ?Post;
+
+    public function findByShortTitle(string $shortTitle): ?Post;
 }

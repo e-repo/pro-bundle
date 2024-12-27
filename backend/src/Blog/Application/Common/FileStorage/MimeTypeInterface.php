@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\Common\FileStorage;
+namespace Blog\Application\Common\FileStorage;
 
 interface MimeTypeInterface
 {
