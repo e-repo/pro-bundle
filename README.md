@@ -1,7 +1,7 @@
 ## Основные технологии
 `Backend:`
 - PHP 8.2
-- Symfony 6.3
+- Symfony 6.4
 - minio (файловое хранилище)
 - Архитектурный подход CQRS + Элементы DDD + Разбивка на слои (UI, Application, Domain, Infra)
 

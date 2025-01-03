@@ -55,4 +55,7 @@ return [
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => [
         'all' => true,
     ],
+    Intervention\Image\Symfony\InterventionImageBundle::class => [
+        'all' => true,
+    ],
 ];
