@@ -1,8 +1,8 @@
 FROM php:8.2-fpm-alpine
 
-RUN apk add --no-cache autoconf build-base linux-headers \
-    && pecl install xdebug-3.2.1 \
-    && docker-php-ext-enable xdebug
+RUN apk add --no-cache autoconf build-base linux-headers imagemagick-dev \
+    && pecl install xdebug-3.2.1 imagick \
+    && docker-php-ext-enable xdebug imagick
 
 RUN apk add --no-cache postgresql-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
