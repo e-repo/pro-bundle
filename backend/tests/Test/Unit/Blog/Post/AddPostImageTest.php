@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Test\Unit\Blog\Post;
 
+use Blog\Application\Post\Post\Listener\MainImageAddedListener;
 use Blog\Domain\Post\Entity\Category;
 use Blog\Domain\Post\Entity\Dto\ImageDto;
 use Blog\Domain\Post\Entity\Dto\PostDto;
+use Blog\Domain\Post\Entity\Event\MainImageAddedEvent;
 use Blog\Domain\Post\Entity\Event\PostCreatedEvent;
 use Blog\Domain\Post\Entity\ImageType;
 use Blog\Domain\Post\Entity\Post;
@@ -17,6 +19,7 @@ use Blog\Domain\Post\Entity\Status;
 use CoreKit\Domain\Entity\Id;
 use DomainException;
 use Ramsey\Uuid\Uuid;
+use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class AddPostImageTest extends KernelTestCase
@@ -38,27 +41,32 @@ final class AddPostImageTest extends KernelTestCase
             ->method('getName')
             ->willReturn('Комнатные растения.');
 
-        $uniqueShortTitleSpecification = $this->createStub(UniqueShortTitle::class);
-        $uniqueShortTitleSpecification
+        $uniqueShortTitleSpecificationStub = $this->createStub(UniqueShortTitle::class);
+        $uniqueShortTitleSpecificationStub
             ->method('isSatisfiedBy')
             ->willReturn(true);
 
-        $uniqueTitleSpecification = $this->createStub(UniqueTitle::class);
-        $uniqueTitleSpecification
+        $uniqueTitleSpecificationStub = $this->createStub(UniqueTitle::class);
+        $uniqueTitleSpecificationStub
             ->method('isSatisfiedBy')
             ->willReturn(true);
 
-        self::getContainer()->set(UniqueShortTitle::class, $uniqueShortTitleSpecification);
-        self::getContainer()->set(UniqueTitle::class, $uniqueTitleSpecification);
+        self::getContainer()->set(UniqueShortTitle::class, $uniqueShortTitleSpecificationStub);
+        self::getContainer()->set(UniqueTitle::class, $uniqueTitleSpecificationStub);
 
         $this->specificationAggregator = self::getContainer()->get(SpecificationAggregator::class);
+
+        $mainImageAddedListenerMock = $this->createMock(MainImageAddedListener::class);
+        self::getContainer()->set(MainImageAddedListener::class, $mainImageAddedListenerMock);
     }
 
     public function testSuccess(): void
     {
         // arrange
+        $uploadFilePath = __DIR__ . '/Data/img.png';
+
         $postId = Uuid::uuid4()->toString();
-        $imageId = Uuid::uuid4()->toString();
+        $fileKey = Uuid::uuid4()->toString();
 
         $postDto = new PostDto(
             slug: 'bonsay',
@@ -66,7 +74,12 @@ final class AddPostImageTest extends KernelTestCase
             shortTitle: 'Бонсай',
             content: 'Бонсай - искусство выращивания точной копии настоящего дерева в миниатюре',
             status: Status::DRAFT,
-            image: new ImageDto(new Id($imageId), ImageType::MAIN),
+            image: new ImageDto(
+                file: new SplFileInfo($uploadFilePath),
+                originalFileName: 'img.png',
+                fileKey: new Id($fileKey),
+                type: ImageType::MAIN
+            ),
             id: $postId,
         );
 
@@ -79,8 +92,8 @@ final class AddPostImageTest extends KernelTestCase
 
         // assert
         self::assertCount(1, $post->getImages());
-        self::assertCount(1, $post->getRecordedEvents());
-        self::assertEquals($imageId, $post->getImages()->first()->getFileKey()->value);
+        self::assertCount(2, $post->getRecordedEvents());
+        self::assertEquals($fileKey, $post->getImages()->first()->getFileKey()->value);
         self::assertEquals($postId, $post->getId()->value);
         self::assertEquals($postDto->slug, $post->getSlug());
         self::assertEquals($postDto->title, $post->getTitle());
@@ -88,16 +101,40 @@ final class AddPostImageTest extends KernelTestCase
         self::assertEquals($postDto->content, $post->getContent());
         self::assertEquals($postDto->status, $post->getStatus());
 
+        $postCreatedEvents = array_filter(
+            $post->getRecordedEvents(),
+            static fn ($event) => $event instanceof PostCreatedEvent
+        );
         /** @var PostCreatedEvent $postCreatedEvent */
-        $postCreatedEvent = $post->getRecordedEvents()[0];
+        $postCreatedEvent = reset($postCreatedEvents);
+
+        self::assertEquals($postId, $postCreatedEvent->id);
+        self::assertEquals($postDto->slug, $postCreatedEvent->slug);
+        self::assertEquals($postDto->title, $postCreatedEvent->title);
+        self::assertEquals($postDto->status, $postCreatedEvent->status);
         self::assertEquals('Комнатные растения.', $postCreatedEvent->categoryName);
+
+        $mainImageAddedEvents = array_filter(
+            $post->getRecordedEvents(),
+            static fn ($event) => $event instanceof MainImageAddedEvent
+        );
+        /** @var MainImageAddedEvent $mainImageAddedEvent */
+        $mainImageAddedEvent = reset($mainImageAddedEvents);
+
+        self::assertEquals($postId, $mainImageAddedEvent->postId->value);
+        self::assertEquals(ImageType::MAIN, $mainImageAddedEvent->type);
+        self::assertEquals($fileKey, $mainImageAddedEvent->fileKey);
+        self::assertEquals('png', $mainImageAddedEvent->extension);
+        self::assertEquals('img.png', $mainImageAddedEvent->originalFileName);
     }
 
     public function testFailedByImageTypeAlreadyExists(): void
     {
         // arrange
+        $uploadFilePath = __DIR__ . '/Data/img.png';
+
         $postId = Uuid::uuid4()->toString();
-        $imageId = Uuid::uuid4()->toString();
+        $fileKey = Uuid::uuid4()->toString();
 
         $postDto = new PostDto(
             slug: 'bonsay',
@@ -105,7 +142,12 @@ final class AddPostImageTest extends KernelTestCase
             shortTitle: 'Бонсай',
             content: 'Бонсай - искусство выращивания точной копии настоящего дерева в миниатюре',
             status: Status::DRAFT,
-            image: new ImageDto(new Id($imageId), ImageType::MAIN),
+            image: new ImageDto(
+                file: new SplFileInfo($uploadFilePath),
+                originalFileName: 'img.png',
+                fileKey: new Id($fileKey),
+                type: ImageType::MAIN
+            ),
             id: $postId,
         );
 
@@ -120,7 +162,12 @@ final class AddPostImageTest extends KernelTestCase
 
         try {
             $post->addImage(
-                new ImageDto(new Id($imageId), ImageType::MAIN)
+                new ImageDto(
+                    file: new SplFileInfo($uploadFilePath),
+                    originalFileName: 'img.png',
+                    fileKey: new Id($fileKey),
+                    type: ImageType::MAIN
+                ),
             );
         } catch (DomainException $exception) {
             $exceptionMessage = $exception->getMessage();
@@ -138,8 +185,10 @@ final class AddPostImageTest extends KernelTestCase
     public function testFailedByImageAlreadyExists(): void
     {
         // arrange
+        $uploadFilePath = __DIR__ . '/Data/img.png';
+
         $postId = Uuid::uuid4()->toString();
-        $imageId = Uuid::uuid4()->toString();
+        $fileKey = Uuid::uuid4()->toString();
 
         $postDto = new PostDto(
             slug: 'bonsay',
@@ -147,7 +196,12 @@ final class AddPostImageTest extends KernelTestCase
             shortTitle: 'Бонсай',
             content: 'Бонсай - искусство выращивания точной копии настоящего дерева в миниатюре',
             status: Status::DRAFT,
-            image: new ImageDto(new Id($imageId), ImageType::MAIN),
+            image: new ImageDto(
+                file: new SplFileInfo($uploadFilePath),
+                originalFileName: 'img.png',
+                fileKey: new Id($fileKey),
+                type: ImageType::MAIN
+            ),
             id: $postId,
         );
 
@@ -162,7 +216,12 @@ final class AddPostImageTest extends KernelTestCase
 
         try {
             $post->addImage(
-                new ImageDto(new Id($imageId), ImageType::MAIN_THUMBNAIL_400)
+                new ImageDto(
+                    file: new SplFileInfo($uploadFilePath),
+                    originalFileName: 'img.png',
+                    fileKey: new Id($fileKey),
+                    type: ImageType::MAIN_THUMBNAIL_300
+                )
             );
         } catch (DomainException $exception) {
             $exceptionMessage = $exception->getMessage();

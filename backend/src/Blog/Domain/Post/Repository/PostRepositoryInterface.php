@@ -10,6 +10,8 @@ interface PostRepositoryInterface
 {
     public function add(Post $category): void;
 
+    public function findByUuid(string $uuid): ?Post;
+
     public function findBySlug(string $slug): ?Post;
 
     public function findByTitle(string $title): ?Post;

@@ -13,4 +13,9 @@ final class MimeType implements MimeTypeInterface
     {
         return MimeTypes::getDefault()->guessMimeType($path);
     }
+
+    public function guessExtension(string $path): ?string
+    {
+        return MimeTypes::getDefault()->getExtensions($this->guessMimeType($path))[0] ?? null;
+    }
 }

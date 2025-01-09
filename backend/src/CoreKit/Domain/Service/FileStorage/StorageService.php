@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CoreKit\Domain\Service\FileStorage;
 
+use CoreKit\Domain\Entity\FileMetadata;
+use CoreKit\Domain\Repository\FileMetadataRepositoryInterface;
+use DateTimeImmutable;
 use DateTimeInterface;
 use League\Flysystem\UnableToReadFile;
 use SplFileInfo;
@@ -13,6 +16,7 @@ final readonly class StorageService
 {
     public function __construct(
         private StorageClientInterface $storage,
+        private FileMetadataRepositoryInterface $fileMetadataRepository,
     ) {}
 
     /**
@@ -39,6 +43,16 @@ final readonly class StorageService
                 previous: $exception
             );
         }
+    }
+
+    /**
+     * @throws FileUploadException
+     */
+    public function addFileMetadataAndUpload(Upload $upload): void
+    {
+        $this->addFileMetadata($upload);
+
+        $this->upload($upload);
     }
 
     /**
@@ -132,5 +146,18 @@ final readonly class StorageService
         string $key
     ): string {
         return sprintf('%s/%s/%s', $fileType, $extension, $key);
+    }
+
+    private function addFileMetadata(Upload $upload): void
+    {
+        $fileMetadata = new FileMetadata(
+            key: $upload->key,
+            name: $upload->name,
+            type: $upload->mimeType,
+            extension: $upload->extension,
+            createdAt: new DateTimeImmutable(),
+        );
+
+        $this->fileMetadataRepository->add($fileMetadata);
     }
 }

@@ -14,6 +14,7 @@ use Blog\Domain\Post\Entity\Status;
 use CoreKit\Domain\Entity\Id;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use SplFileInfo;
 use Test\Integration\Blog\Api\Post\CreateCategory\CategoryFixture;
 use Test\Integration\Common\Fixture\BaseFixtureTrait;
 use Test\Integration\Common\Fixture\ReferencableInterface;
@@ -39,6 +40,8 @@ class BasePostFixture extends Fixture implements ReferencableInterface
                     content: $item['content'],
                     status: Status::from($item['status']),
                     image: new ImageDto(
+                        file: new SplFileInfo($item['file']),
+                        originalFileName: $item['originalFileName'],
                         fileKey: new Id($item['fileKey']),
                         type: ImageType::from($item['imageType'])
                     ),

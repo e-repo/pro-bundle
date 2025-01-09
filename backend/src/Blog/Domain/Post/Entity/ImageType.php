@@ -8,7 +8,7 @@ enum ImageType: string
 {
     case MAIN = 'main';
 
-    case MAIN_THUMBNAIL_400 = 'main_thumbnail_400';
+    case MAIN_THUMBNAIL_300 = 'main_thumbnail_300';
 
     case CONTENT = 'content';
 

@@ -29,6 +29,11 @@ class PostRepository extends ServiceEntityRepository implements PostRepositoryIn
         $this->_em->persist($category);
     }
 
+    public function findByUuid(string $uuid): ?Post
+    {
+        return $this->find($uuid);
+    }
+
     public function findBySlug(string $slug): ?Post
     {
         return $this->findOneBy([

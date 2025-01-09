@@ -6,6 +6,7 @@ namespace Blog\Domain\Post\Entity;
 
 use Blog\Domain\Post\Entity\Dto\ImageDto;
 use Blog\Domain\Post\Entity\Dto\PostDto;
+use Blog\Domain\Post\Entity\Event\MainImageAddedEvent;
 use Blog\Domain\Post\Entity\Event\PostCreatedEvent;
 use Blog\Domain\Post\Entity\Specification\Post\SpecificationAggregator;
 use Blog\Infra\Post\Repository\PostRepository;
@@ -216,6 +217,12 @@ class Post implements HasEventsInterface
 
         $this->images->add($image);
 
+        if ($image->getType() === ImageType::MAIN) {
+            $this->record(
+                $this->makeMainImageAddedEvent($imageDto)
+            );
+        }
+
         return $this;
     }
 
@@ -282,6 +289,17 @@ class Post implements HasEventsInterface
             categoryId: $this->category->getId()->value,
             categoryName: $this->getCategory()->getName(),
             createdAt: $this->getCreatedAt(),
+        );
+    }
+
+    private function makeMainImageAddedEvent(ImageDto $imageDto): MainImageAddedEvent
+    {
+        return new MainImageAddedEvent(
+            postId: $this->getId(),
+            type: $imageDto->type,
+            fileKey: $imageDto->fileKey->value,
+            extension: $imageDto->file->getExtension(),
+            originalFileName: $imageDto->originalFileName,
         );
     }
 

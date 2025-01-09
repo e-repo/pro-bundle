@@ -16,15 +16,14 @@ use Blog\Domain\Post\Entity\Status;
 use Blog\Domain\Post\Repository\CategoryRepositoryInterface;
 use Blog\Domain\Post\Repository\PostRepositoryInterface;
 use CoreKit\Application\Bus\CommandHandlerInterface;
-use CoreKit\Domain\Entity\FileMetadata;
 use CoreKit\Domain\Entity\Id;
-use CoreKit\Domain\Repository\FileMetadataRepositoryInterface;
 use CoreKit\Domain\Service\FileStorage\FileUploadException;
 use CoreKit\Domain\Service\FileStorage\StorageService;
 use CoreKit\Domain\Service\FileStorage\Upload;
 use DateTimeImmutable;
 use DomainException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 final readonly class Handler implements CommandHandlerInterface
@@ -32,7 +31,6 @@ final readonly class Handler implements CommandHandlerInterface
     public function __construct(
         private CategoryRepositoryInterface $categoryRepository,
         private SpecificationAggregator $specificationAggregator,
-        private FileMetadataRepositoryInterface $fileMetadataRepository,
         private StorageService $storageService,
         private PostRepositoryInterface $postRepository,
         private SluggerInterface $slugger,
@@ -48,20 +46,26 @@ final readonly class Handler implements CommandHandlerInterface
             );
 
         if (null === $category) {
+            unlink($command->image->file->getRealPath());
+
             throw new DomainException('Категория не найдена.');
         }
 
-        $fileKey = Id::next();
+        try {
+            $fileKey = Id::next();
 
-        $this->sendImageToStorage($command->image, $fileKey);
+            $post = new Post(
+                postDto: $this->makePost($command, $fileKey),
+                category: $category,
+                specificationAggregator: $this->specificationAggregator,
+            );
 
-        $post = new Post(
-            postDto: $this->makePost($command, $fileKey),
-            category: $category,
-            specificationAggregator: $this->specificationAggregator,
-        );
+            $this->postRepository->add($post);
 
-        $this->postRepository->add($post);
+            $this->sendImageToStorage($command->image, $fileKey);
+        } finally {
+            unlink($command->image->file->getRealPath());
+        }
     }
 
     private function makePost(Command $command, Id $fileKey): PostDto
@@ -86,14 +90,23 @@ final readonly class Handler implements CommandHandlerInterface
             shortTitle: $command->shortTitle,
             content: $command->content,
             status: Status::DRAFT,
-            image: $this->makeImage($fileKey),
+            image: $this->makeImage(
+                file: $command->image->file,
+                fileKey: $fileKey,
+                originalFileName: $command->image->originalFileName,
+            ),
             meta: $meta,
         );
     }
 
-    private function makeImage(Id $fileKey): ImageDto
-    {
+    private function makeImage(
+        UploadedFile $file,
+        Id $fileKey,
+        string $originalFileName,
+    ): ImageDto {
         return new ImageDto(
+            file: $file->getFileInfo(),
+            originalFileName: $originalFileName,
             fileKey: $fileKey,
             type: ImageType::MAIN,
             createdAt: new DateTimeImmutable(),
@@ -116,16 +129,16 @@ final readonly class Handler implements CommandHandlerInterface
             name: $image->originalFileName,
             key: $fileKey->value,
             systemFileType: SystemFileType::POST_IMAGE->value,
+            mimeType: $this->mimeType
+                ->guessMimeType(
+                    $image->file->getRealPath()
+                ),
             extension: $image->extension,
             file: $image->file
         );
 
-        $this->addFileMetadata($image, $fileKey);
-
         try {
-            $this->storageService->upload($upload);
-
-            unlink($upload->file->getRealPath());
+            $this->storageService->addFileMetadataAndUpload($upload);
         } catch (FileUploadException $exception) {
             $this->logger->error('Ошибка загрузки изображения в хранилище', [
                 'errorMessage' => $exception->getMessage(),
@@ -136,22 +149,5 @@ final readonly class Handler implements CommandHandlerInterface
                 'Не удалось загрузить изображение в хранилище. Попробуйте позднее или свяжитесь с администратором.'
             );
         }
-    }
-
-    private function addFileMetadata(
-        Command\ImageCommand $image,
-        Id $fileKey
-    ): void {
-        $type = $this->mimeType->guessMimeType($image->file->getRealPath());
-
-        $fileMetadata = new FileMetadata(
-            key: $fileKey->value,
-            name: $image->originalFileName,
-            type: $type,
-            extension: $image->extension,
-            createdAt: new DateTimeImmutable(),
-        );
-
-        $this->fileMetadataRepository->add($fileMetadata);
     }
 }

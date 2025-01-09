@@ -12,6 +12,7 @@ final readonly class Upload
         public string $name,
         public string $key,
         public string $systemFileType,
+        public string $mimeType,
         public string $extension,
         public SplFileInfo $file,
     ) {}
